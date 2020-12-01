@@ -21,11 +21,24 @@ fn main() {
 
         println!("{:?}", ints);
 
+        // part 1
         for i in ints.clone() {
             for j in ints.clone() {
                 if i + j == 2020 {
                     println!("{} + {} = 2020", i, j);
                     println!("{} x {} = {}", i, j, i * j);
+                }
+            }
+        }
+
+        // part 2
+        for i in ints.clone() {
+            for j in ints.clone() {
+                for k in ints.clone() {
+                    if i + j + k == 2020 {
+                        println!("{} + {} + {} = 2020", i, j, k);
+                        println!("{} x {} x {} = {}", i, j, k, i * j * k);
+                    }
                 }
             }
         }
