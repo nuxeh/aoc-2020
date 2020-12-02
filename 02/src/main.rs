@@ -40,7 +40,7 @@ fn main() {
         // part 1
         let mut valid = 0;
 
-        for p in v {
+        for p in &v {
             let count = p.password.split(&p.letter).count() - 1;
             if (p.range_from..=p.range_to).contains(&count) {
                 valid += 1;
@@ -51,13 +51,28 @@ fn main() {
         println!("valid count: {}", valid);
 
         // part 2
-        let valid_2 = 0;
+        let mut valid_2 = 0;
 
         for p in v {
-            let first = p.password.get(p.range_from-1);
-            let first = p.password.get(p.range_to-1);
+            let mut count = 0;
+            let first: Vec<char> = p.password.chars().skip(p.range_from-1).take(1).collect();
+            let second: Vec<char> = p.password.chars().skip(p.range_to-1).take(1).collect();
+
+            print!("{} {} {} {} {:?} {:?}", p.password, p.letter, p.range_from, p.range_to, first, second);
+
+            if first[0].to_string() == p.letter {
+                count += 1;
+            }
+            if second[0].to_string() == p.letter {
+                count += 1;
+            }
+
+            if count == 1 {
+                println!("OK");
+                valid_2 += 1;
+            }
         }
 
-        println!("valid count: {}", valid);
+        println!("valid count: {}", valid_2);
     }
 }
