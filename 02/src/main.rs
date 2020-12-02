@@ -37,6 +37,7 @@ fn main() {
 
         println!("{:?}", v);
 
+        // part 1
         let mut valid = 0;
 
         for p in v {
@@ -45,6 +46,16 @@ fn main() {
                 valid += 1;
             }
             //println!("{} {} {} {}", p.password, p.letter, count, (p.range_from..p.range_to).contains(&count));
+        }
+
+        println!("valid count: {}", valid);
+
+        // part 2
+        let valid_2 = 0;
+
+        for p in v {
+            let first = p.password.get(p.range_from-1);
+            let first = p.password.get(p.range_to-1);
         }
 
         println!("valid count: {}", valid);
