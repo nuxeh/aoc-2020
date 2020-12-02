@@ -41,10 +41,10 @@ fn main() {
 
         for p in v {
             let count = p.password.split(&p.letter).count() - 1;
-            if (p.range_from..p.range_to).contains(&count) {
+            if (p.range_from..=p.range_to).contains(&count) {
                 valid += 1;
             }
-            println!("{} {} {} {}", p.password, p.letter, count, (p.range_from..p.range_to).contains(&count));
+            //println!("{} {} {} {}", p.password, p.letter, count, (p.range_from..p.range_to).contains(&count));
         }
 
         println!("valid count: {}", valid);
