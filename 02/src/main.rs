@@ -12,7 +12,7 @@ impl PassSpec {
     fn from_str(s: &str) -> Self {
         let mut r = Self::default();
         let parts: Vec<&str> = s.split(' ').collect();
-        let range: Vec<u32> = parts[0].split('-').map(|s| s.parse().ok()).flatten().collect();
+        let range: Vec<u32> = parts[0].split('-').map(|s| s.parse()).flatten().collect();
         r
     }
 }
