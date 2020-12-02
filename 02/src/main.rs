@@ -4,7 +4,7 @@ use aocf::Aoc;
 struct PassSpec {
     range_from: u32,
     range_to: u32,
-    letter: char,
+    letter: String,
     password: String,
 }   
 
@@ -13,6 +13,10 @@ impl PassSpec {
         let mut r = Self::default();
         let parts: Vec<&str> = s.split(' ').collect();
         let range: Vec<u32> = parts[0].split('-').map(|s| s.parse()).flatten().collect();
+        r.range_from = range[0];
+        r.range_to = range[1];
+        r.letter = parts[1].to_string();
+        r.password = parts[2].to_string();
         r
     }
 }
