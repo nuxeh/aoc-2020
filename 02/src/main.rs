@@ -58,7 +58,7 @@ fn main() {
             let first: Vec<char> = p.password.chars().skip(p.range_from-1).take(1).collect();
             let second: Vec<char> = p.password.chars().skip(p.range_to-1).take(1).collect();
 
-            print!("{} {} {} {} {:?} {:?}", p.password, p.letter, p.range_from, p.range_to, first, second);
+            //print!("{} {} {} {} {:?} {:?}", p.password, p.letter, p.range_from, p.range_to, first, second);
 
             if first[0].to_string() == p.letter {
                 count += 1;
@@ -68,7 +68,7 @@ fn main() {
             }
 
             if count == 1 {
-                println!("OK");
+                //println!("OK");
                 valid_2 += 1;
             }
         }
