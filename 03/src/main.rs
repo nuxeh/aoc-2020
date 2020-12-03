@@ -3,7 +3,7 @@ use aocf::Aoc;
 fn main() {
     let mut aoc = Aoc::new()
         .year(Some(2020))
-        .day(Some(2))
+        .day(Some(3))
         .init()
         .unwrap();
 
@@ -15,6 +15,8 @@ fn main() {
         let v: Vec<Vec<bool>> = i.lines()
             .map(|l| l.chars().map(|c| c == '#').collect())
             .collect();
+
+        println!("{:#?}", v);
 
         println!("number of trees: {}", trees);
     }
