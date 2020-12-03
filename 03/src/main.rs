@@ -4,7 +4,6 @@ fn count_trees(i: &str, right: usize, down: usize) -> usize {
     let mut trees = 0;
 
     let v: Vec<Vec<bool>> = i
-        .repeat(down)
         .lines()
         .map(|l| {
             l.repeat(200).chars().map(|c| c == '#').collect()
