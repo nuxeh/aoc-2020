@@ -16,11 +16,11 @@ fn count_trees(i: &str, right: usize, down: usize) -> usize {
         .for_each(|(y, c)| c.iter()
              .take(1)
              .for_each(|l| l.chunks_exact(right)
-                       .skip(y)
-                       .take(1)
-                       .for_each(|c| if c[0] {
-                           trees += 1
-                       })));
+                    .skip(y)
+                    .take(1)
+                    .for_each(|c| if c[0] {
+                        trees += 1
+                    })));
     trees
 }
 
