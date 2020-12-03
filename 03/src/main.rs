@@ -40,8 +40,15 @@ fn main() {
 
         println!("number of trees: {}", trees);
 
+        let mut multiplicand = 1;
+
         for (r, d) in &[(1, 1), (3, 1), (5, 1), (7, 1), (1, 2)] {
-            println!("{:?} {}", (r, d), count_trees(&i, *r, *d));
+            let trees = count_trees(&i, *r, *d);
+            println!("{:?} {}", (r, d), trees);
+            multiplicand *= trees;
         }
+
+        println!("number of trees: {}", multiplicand);
+
     }
 }
