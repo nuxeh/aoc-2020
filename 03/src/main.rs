@@ -11,7 +11,10 @@ fn count_trees(i: &str, right: usize, down: usize) -> usize {
         })
         .collect();
 
-    v.iter()
+    v.chunks_exact(down)
+        .map(|c| c.iter().take(1).collect::<Vec<bool>>())
+        .for_each(|c| println!("{:#?}\n", c));
+        /*
         .enumerate()
         .for_each(|(y, l)| l.chunks_exact(right)
                   .skip(y)
@@ -19,7 +22,7 @@ fn count_trees(i: &str, right: usize, down: usize) -> usize {
                   .for_each(|c| if c[0] {
                       trees += 1
                   }));
-
+*/
     trees
 }
 
@@ -34,7 +37,7 @@ fn main() {
 
     if let Ok(i) = input {
 
-        //println!("{:#?}", v);
+        println!("{}", i.repeat(2));
         
         let trees = count_trees(&i, 3, 1);
 
