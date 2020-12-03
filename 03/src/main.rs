@@ -16,7 +16,16 @@ fn main() {
             .map(|l| l.chars().map(|c| c == '#').collect())
             .collect();
 
-        println!("{:#?}", v);
+        //println!("{:#?}", v);
+        
+        v.iter()
+            .enumerate()
+            .for_each(|(y, l)| l.chunks_exact(3)
+                      .skip(y)
+                      .take(1)
+                      .for_each(|c| {
+                          println!("{}", y); if c[0] { trees += 1}
+                      }));
 
         println!("number of trees: {}", trees);
     }
