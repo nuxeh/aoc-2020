@@ -3,7 +3,9 @@ use aocf::Aoc;
 fn count_trees(i: &str, right: usize, down: usize) -> usize {
     let mut trees = 0;
 
-    let v: Vec<Vec<bool>> = i.lines()
+    let v: Vec<Vec<bool>> = i
+        .repeat(down)
+        .lines()
         .map(|l| {
             l.repeat(200).chars().map(|c| c == '#').collect()
         })
@@ -37,5 +39,9 @@ fn main() {
         let trees = count_trees(&i, 3, 1);
 
         println!("number of trees: {}", trees);
+
+        for (r, d) in &[(1, 1), (3, 1), (5, 1), (7, 1), (1, 2)] {
+            println!("{:?}", (r, d));
+        }
     }
 }
