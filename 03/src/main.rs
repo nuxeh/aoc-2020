@@ -12,10 +12,10 @@ fn count_trees(i: &str, right: usize, down: usize) -> usize {
         .collect();
 
     v.chunks_exact(down)
-        .map(|c| c.iter()
+        .enumerate()
+        .for_each(|(y, c)| c.iter()
              .take(1)
-             .enumerate()
-             .for_each(|(y, l)| l.chunks_exact(right)
+             .for_each(|l| l.chunks_exact(right)
                        .skip(y)
                        .take(1)
                        .for_each(|c| if c[0] {
