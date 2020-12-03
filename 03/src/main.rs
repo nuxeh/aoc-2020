@@ -13,7 +13,9 @@ fn main() {
         let mut trees = 0;
 
         let v: Vec<Vec<bool>> = i.lines()
-            .map(|l| l.chars().map(|c| c == '#').collect())
+            .map(|l| {
+                l.repeat(200).chars().map(|c| c == '#').collect()
+            })
             .collect();
 
         //println!("{:#?}", v);
@@ -23,8 +25,8 @@ fn main() {
             .for_each(|(y, l)| l.chunks_exact(3)
                       .skip(y)
                       .take(1)
-                      .for_each(|c| {
-                          println!("{}", y); if c[0] { trees += 1}
+                      .for_each(|c| if c[0] {
+                          trees += 1
                       }));
 
         println!("number of trees: {}", trees);
