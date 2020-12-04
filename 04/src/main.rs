@@ -67,8 +67,57 @@ fn main() {
 */
 
 fn check_valid(map: &HashMap<&str, &str>) -> bool {
-   let a =  map.get("byr")
-        .map(u32::parse())
-        .filter(|v| v >= 1920 && w <= 2002);
-   println!("{:#?}", a);
+   let a = map.get("byr")
+        .map(|v| v.parse::<u32>().ok())
+        .flatten()
+        .filter(|v| *v >= 1920 && *v <= 2002);
+   if a.is_none() { return false }
+
+   let a = map.get("iyr")
+        .map(|v| v.parse::<u32>().ok())
+        .flatten()
+        .filter(|v| *v >= 2010 && *v <= 2020);
+   if a.is_none() { return false }
+
+   let a = map.get("eyr")
+        .map(|v| v.parse::<u32>().ok())
+        .flatten()
+        .filter(|v| *v >= 2020 && *v <= 2030);
+   if a.is_none() { return false }
+
+   let a = map.get("hgt")
+        .filter(|v| {
+            match (v.contains("in"), v.contains("cm"), v.replace("cm", "").replace("in", "").parse::<u32>()) {
+                (true, _, Ok(num)) => num >= 59 && num <= 76,
+                (_, true, Ok(num)) => num >= 150 && num <= 193,
+                _ => false,
+            }
+        });
+   if a.is_none() { return false }
+
+   let a = map.get("hcl")
+        .filter(|v| v.chars().take(1).collect::<String>() == "#");
+   if a.is_none() { return false }
+
+   let a = map.get("hcl")
+        .map(|v| {
+            "0x".chars()
+                .chain(v.chars().skip(1))
+                .collect::<String>()
+                .parse::<u32>()
+                .ok()
+                .filter(|v| *v <= 0xffffff)
+        });
+   if a.is_none() { return false }
+
+   let a = map.get("ecl")
+        .filter(|v| ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"].contains(v));
+   if a.is_none() { return false }
+
+   let a = map.get("pid")
+        .filter(|v| v.parse::<u32>().ok().is_some())
+        .filter(|v| v.len() == 9);
+   if a.is_none() { return false }
+
+   true
 }
