@@ -24,8 +24,8 @@ fn main() {
                     v.split(" ")
                         .for_each(|f| {
                             let mut s = f.split(":");
-                            let key = s.next();
-                            let value = s.next();
+                            let key = s.next().unwrap();
+                            let value = s.next().unwrap();
                             acc.last_mut().unwrap().insert(key, value);
                         });
                     acc
