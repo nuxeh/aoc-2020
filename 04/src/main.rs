@@ -12,7 +12,7 @@ fn main() {
     if let Ok(i) = input {
         let mut valid = 0;
 
-        println!("{}", i);
+        println!("{:#?}", i.lines().collect::<Vec<&str>>());
 
         println!("number of valid passports: {}", valid);
 
