@@ -1,4 +1,5 @@
 use aocf::Aoc;
+use std::collections::HashMap;
 
 fn main() {
     let mut aoc = Aoc::new()
@@ -13,6 +14,25 @@ fn main() {
         let mut valid = 0;
 
         println!("{:#?}", i.lines().collect::<Vec<&str>>());
+
+        let passports = i.lines()
+            .fold(vec![HashMap::new()], |mut acc, v| {
+                if v.is_empty() {
+                    acc.push(HashMap::new());
+                    acc
+                } else {
+                    v.split(" ")
+                        .for_each(|f| {
+                            let mut s = f.split(":");
+                            let key = s.next();
+                            let value = s.next();
+                            acc.last_mut().unwrap().insert(key, value);
+                        });
+                    acc
+                }
+            });
+
+        println!("{:#?}", passports);
 
         println!("number of valid passports: {}", valid);
 
