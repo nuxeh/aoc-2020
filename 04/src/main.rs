@@ -32,6 +32,10 @@ fn main() {
                 }
             });
 
+        valid += passports.iter()
+            .filter(|p| p.len() == 8)
+            .count();
+
         println!("{:#?}", passports);
 
         println!("number of valid passports: {}", valid);
