@@ -67,12 +67,8 @@ fn main() {
 */
 
 fn check_valid(map: &HashMap<&str, &str>) -> bool {
-    match map.get("byr") {
-        Some(v) if v.parse::<u32>.is_some() => {
-            if let Ok(w) = v.parse() && w >= 1920 && w <= 2002 {
-
-        },
-        _ => return false,
-    }
-    true
+   let a =  map.get("byr")
+        .map(u32::parse())
+        .filter(|v| v >= 1920 && w <= 2002);
+   println!("{:#?}", a);
 }
