@@ -32,6 +32,9 @@ fn main() {
                 }
             });
 
+        //println!("{:#?}", passports);
+
+        // Part 1
         valid += passports.iter()
             .filter(|p| p.len() == 8)
             .count();
@@ -40,11 +43,9 @@ fn main() {
             .filter(|p| p.len() == 7 && !p.contains_key("cid"))
             .count();
 
-        //println!("{:#?}", passports);
         println!("number of valid passports: {}", valid);
 
         // Part 2
-
         valid = passports.iter()
             .filter(|p| check_valid(p))
             .count();
