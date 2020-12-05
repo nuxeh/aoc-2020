@@ -33,7 +33,8 @@ fn main() {
         println!("{:#?}", diff);
 
         diff.iter()
-            .for_each(|v| if *v > &min.unwrap() && *v < &max.unwrap() { println!("{}", v) });
+            .filter(|v| **v > &min.unwrap() && **v < &max.unwrap())
+            .for_each(|v| println!("{}", v));
     }
 }
 
