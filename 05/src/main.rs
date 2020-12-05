@@ -14,17 +14,19 @@ fn main() {
     }
 }
 
+fn scale(r: (u32, u32), c: char) -> (u32, u32) {
+    let r2 = (r.1 - r.0) / 2;
+    if c == 'F' {
+        (r.0, r.1 - r2)
+    } else {
+        (r.0 + r2, r.1)
+    }
+}
+
 fn get_id(pass: &str) -> u32 {
     let r = pass.chars()
         .take(7)
-        .fold((0, 127), |acc, c| {
-            let r2 = (acc.1 - acc.0) / 2;
-            if c == 'F' {
-                (acc.0, acc.1 - r2)
-            } else {
-                (acc.0 + r2, acc.1)
-            }
-        });
+        .fold((0, 127), |acc, c| scale(acc, c));
 
     println!("{:?}", r);
 
@@ -32,6 +34,7 @@ fn get_id(pass: &str) -> u32 {
         .skip(7)
         .take(3)
         .fold((0, 127), |acc, c| {
+            acc
         });
     
     r.0 * 8 + c.0
