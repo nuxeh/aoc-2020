@@ -12,11 +12,11 @@ fn main() {
 
     if let Ok(i) = input {
         // Part 1
-        let max = i.lines().map(get_id).max();
+        let max = i.lines().map(get_id).max().unwrap();
         println!("{:?}", max);
 
         // Part 2
-        let min = i.lines().map(get_id).min();
+        let min = i.lines().map(get_id).min().unwrap();
         let seats: HashSet<_> = (0..(127*8)).collect();
 
         let taken = i.lines()
@@ -26,14 +26,14 @@ fn main() {
                 acc
             });
 
-        let mut diff: Vec<_> = seats.difference(&taken).collect();
+        let mut diff: Vec<&u32> = seats.difference(&taken).collect();
 
         diff.sort();
 
         println!("{:#?}", diff);
 
         diff.iter()
-            .filter(|v| **v > &min.unwrap() && **v < &max.unwrap())
+            .filter(|v| **v > &min && **v < &max)
             .for_each(|v| println!("{}", v));
     }
 }
