@@ -26,16 +26,16 @@ fn scale(r: (u32, u32), c: char) -> (u32, u32) {
 fn get_id(pass: &str) -> u32 {
     let r = pass.chars()
         .take(7)
-        .fold((0, 127), |acc, c| scale(acc, c));
+        .fold((0, 127), scale);
 
     println!("{:?}", r);
 
     let c = pass.chars()
         .skip(7)
         .take(3)
-        .fold((0, 127), |acc, c| {
-            acc
-        });
+        .fold((0, 7), scale);
+
+    println!("{:?}", c);
     
     r.0 * 8 + c.0
 }
