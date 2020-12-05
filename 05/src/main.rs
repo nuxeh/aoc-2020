@@ -23,11 +23,8 @@ fn main() {
         let taken: HashSet<_> = passes.collect();
         let diff: Vec<&u32> = seats.difference(&taken).collect();
 
-        //diff.sort();
-        //println!("{:#?}", diff);
-
         diff.iter()
-            .filter(|v| **v > &min && **v < &max)
+            .filter(|v| ***v > min && ***v < max)
             .for_each(|v| println!("{}", v));
     }
 }
