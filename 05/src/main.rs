@@ -17,13 +17,11 @@ fn main() {
 fn scale(r: (u32, u32), c: char) -> (u32, u32) {
     let r2 = (r.1 - r.0) / 2;
     let ret = match c {
-        'F' if r2 == 1 => (r.0, r.0),
-        'B' if r2 == 1 => (r.1, r.1),
         'F' => (r.0, r.1 - r2 - 1),
         'B' => (r.0 + r2 + 1, r.1),
         _ => r,
     };
-    println!("{} {:?}", c, ret);
+    println!("{} {} {:?}", c, r2, ret);
     ret
 }
 
@@ -50,6 +48,6 @@ fn get_id(pass: &str) -> u32 {
 fn test_get_id() {
     assert_eq!(get_id("FBFBBFFRLR"), 357);
     assert_eq!(get_id("FFFBBBFRRR"), 119);
-    //assert_eq!(get_id("BFFFBBFRRR"), 567);
+    assert_eq!(get_id("BFFFBBFRRR"), 567);
     assert_eq!(get_id("BBFFBBFRLL"), 820);
 }
