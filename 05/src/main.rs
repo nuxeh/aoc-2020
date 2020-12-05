@@ -24,9 +24,10 @@ fn main() {
                 acc
             });
 
-        println!("{:#?}", seats.difference(&taken));
+        let mut diff: Vec<_> = seats.difference(&taken).collect();
 
-        
+        diff.sort();
+        println!("{:#?}", diff);
 
             /*
             .fold(vec![0usize, 8 * 127], |acc, v| {
