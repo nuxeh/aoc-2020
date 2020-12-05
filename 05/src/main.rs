@@ -27,28 +27,18 @@ fn main() {
         let mut diff: Vec<_> = seats.difference(&taken).collect();
 
         diff.sort();
-        println!("{:#?}", diff);
 
-            /*
-            .fold(vec![0usize, 8 * 127], |acc, v| {
-                acc.get_mut(v).and_then(|s| {
-                    *s = 1;
-                    acc
-                })
-            });
-            */
+        println!("{:#?}", diff);
     }
 }
 
 fn scale(r: (u32, u32), c: char) -> (u32, u32) {
     let r2 = (r.1 - r.0) / 2;
-    let ret = match c {
+    match c {
         'F' => (r.0, r.1 - r2 - 1),
         'B' => (r.0 + r2 + 1, r.1),
         _ => r,
-    };
-    //println!("{} {} {:?}", c, r2, ret);
-    ret
+    }
 }
 
 fn get_id(pass: &str) -> u32 {
@@ -63,8 +53,6 @@ fn get_id(pass: &str) -> u32 {
         .skip(7)
         .take(3)
         .fold((0, 7), scale);
-
-    //println!("{} {} {} {}", pass, r.0, c.0, r.0 * 8 + c.0);
 
     r.0 * 8 + c.0
 }
