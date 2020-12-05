@@ -18,23 +18,20 @@ fn get_id(pass: &str) -> u32 {
     let r = pass.chars()
         .take(7)
         .fold((0, 127), |acc, c| {
-            let range = acc.1 - acc.0;
+            let r2 = (acc.1 - acc.0) / 2;
             if c == 'F' {
-                (acc.0, (acc.1 / 2))
+                (acc.0, acc.1 - r2)
             } else {
-                (acc.0 + (acc.1 / 2), acc.1)
+                (acc.0 + r2, acc.1)
             }
         });
 
+    println!("{:?}", r);
+
     let c = pass.chars()
-        .take(7)
+        .skip(7)
+        .take(3)
         .fold((0, 127), |acc, c| {
-            let range = acc.1 - acc.0;
-            if c == 'F' {
-                (acc.0, (acc.1 / 2))
-            } else {
-                (acc.0 + (acc.1 / 2), acc.1)
-            }
         });
     
     r.0 * 8 + c.0
