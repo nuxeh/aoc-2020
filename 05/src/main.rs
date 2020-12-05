@@ -19,11 +19,7 @@ fn get_id(pass: &str) -> u32 {
 }
 
 #[cfg(test)]
-mod test {
-    use super::*;
-
-    #[test]
-    fn test_get_id() {
-        assert_eq!(get_id("FBFBBFFRLR"), 357);
-    }
+#[test]
+fn test_get_id() {
+    assert_eq!(get_id("FBFBBFFRLR"), 357);
 }
