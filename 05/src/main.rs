@@ -12,9 +12,11 @@ fn main() {
 
     if let Ok(i) = input {
         // Part 1
-        println!("{:?}", i.lines().map(get_id).max());
+        let max = i.lines().map(get_id).max();
+        println!("{:?}", max);
 
         // Part 2
+        let min = i.lines().map(get_id).min();
         let seats: HashSet<_> = (0..(127*8)).collect();
 
         let taken = i.lines()
@@ -29,6 +31,9 @@ fn main() {
         diff.sort();
 
         println!("{:#?}", diff);
+
+        diff.iter()
+            .for_each(|v| if *v > &min.unwrap() && *v < &max.unwrap() { println!("{}", v) });
     }
 }
 
