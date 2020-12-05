@@ -15,7 +15,29 @@ fn main() {
 }
 
 fn get_id(pass: &str) -> u32 {
-    5
+    let r = pass.chars()
+        .take(7)
+        .fold((0, 127), |acc, c| {
+            let range = acc.1 - acc.0;
+            if c == 'F' {
+                (acc.0, (acc.1 / 2))
+            } else {
+                (acc.0 + (acc.1 / 2), acc.1)
+            }
+        });
+
+    let c = pass.chars()
+        .take(7)
+        .fold((0, 127), |acc, c| {
+            let range = acc.1 - acc.0;
+            if c == 'F' {
+                (acc.0, (acc.1 / 2))
+            } else {
+                (acc.0 + (acc.1 / 2), acc.1)
+            }
+        });
+    
+    r.0 * 8 + c.0
 }
 
 #[cfg(test)]
