@@ -17,8 +17,10 @@ fn main() {
 fn scale(r: (u32, u32), c: char) -> (u32, u32) {
     let r2 = (r.1 - r.0) / 2;
     if c == 'F' {
+        println!("{:?}", (r.0, r.1 - r2));
         (r.0, r.1 - r2)
     } else {
+        println!("{:?}", (r.0 + r2, r.1));
         (r.0 + r2, r.1)
     }
 }
