@@ -32,8 +32,8 @@ fn main() {
 fn scale(r: (u32, u32), c: char) -> (u32, u32) {
     let r2 = (r.1 - r.0) / 2;
     match c {
-        'F' => (r.0, r.1 - r2 - 1),
-        'B' => (r.0 + r2 + 1, r.1),
+        'F' | 'L' => (r.0, r.1 - r2 - 1),
+        'B' | 'R' => (r.0 + r2 + 1, r.1),
         _ => r,
     }
 }
@@ -44,8 +44,6 @@ fn get_id(pass: &str) -> u32 {
         .fold((0, 127), scale);
 
     let c = pass
-        .replace("L", "F")
-        .replace("R", "B")
         .chars()
         .skip(7)
         .take(3)
