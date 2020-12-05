@@ -11,26 +11,20 @@ fn main() {
     let input = aoc.get_input(false);
 
     if let Ok(i) = input {
+        let passes = i.lines().map(get_id);
+
         // Part 1
-        let max = i.lines().map(get_id).max().unwrap();
+        let max = passes.clone().max().unwrap();
         println!("{:?}", max);
 
         // Part 2
-        let min = i.lines().map(get_id).min().unwrap();
+        let min = passes.clone().min().unwrap();
         let seats: HashSet<_> = (0..(127*8)).collect();
+        let taken: HashSet<_> = passes.collect();
+        let diff: Vec<&u32> = seats.difference(&taken).collect();
 
-        let taken = i.lines()
-            .map(get_id)
-            .fold(HashSet::new(), |mut acc, v| {
-                acc.insert(v);
-                acc
-            });
-
-        let mut diff: Vec<&u32> = seats.difference(&taken).collect();
-
-        diff.sort();
-
-        println!("{:#?}", diff);
+        //diff.sort();
+        //println!("{:#?}", diff);
 
         diff.iter()
             .filter(|v| **v > &min && **v < &max)
