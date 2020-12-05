@@ -10,9 +10,7 @@ fn main() {
     let input = aoc.get_input(false);
 
     if let Ok(i) = input {
-        println!("{:?}", i.lines()
-            .map(get_id)
-            .max());
+        println!("{:?}", i.lines().map(get_id).max());
     }
 }
 
@@ -20,3 +18,12 @@ fn get_id(pass: &str) -> u32 {
     5
 }
 
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_get_id() {
+        assert_eq!(get_id("FBFBBFFRLR"), 357);
+    }
+}
