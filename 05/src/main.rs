@@ -1,5 +1,4 @@
 use aocf::Aoc;
-use std::collections::HashMap;
 
 fn main() {
     let mut aoc = Aoc::new()
@@ -11,9 +10,13 @@ fn main() {
     let input = aoc.get_input(false);
 
     if let Ok(i) = input {
-        let mut valid = 0;
-
-        println!("{:#?}", i.lines().collect::<Vec<&str>>());
-
+        println!("{:?}", i.lines()
+            .map(get_id)
+            .max());
     }
 }
+
+fn get_id(pass: &str) -> u32 {
+    5
+}
+
