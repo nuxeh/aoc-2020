@@ -62,7 +62,7 @@ fn main() {
             })
             .collect();
 
-        println!("{:#?}", group_intersections);
+        //println!("{:#?}", group_intersections);
 
         let result: usize = group_intersections
             .iter()
