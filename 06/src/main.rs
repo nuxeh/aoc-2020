@@ -38,7 +38,7 @@ fn main() {
         println!("{}", sums.iter().sum::<usize>());
 
         // Part 2
-        let group_answers = i.lines()
+        let group_answers: Vec<Vec<_>> = i.lines()
             .fold(vec![vec![]], |mut acc, v| {
                 if v.is_empty() {
                     acc.push(vec![]);
@@ -55,10 +55,11 @@ fn main() {
         let group_intersections: Vec<_> = group_answers
             .iter()
             .map(|v| {
+                let first = v.clone().into_iter().nth(0).unwrap();
                 v
                     .iter()
                     .skip(1)
-                    .fold(v.clone().into_iter().nth(0).unwrap(), |acc, w| w.intersection(&acc).cloned().collect())
+                    .fold(first, |acc, w| w.intersection(&acc).cloned().collect())
             })
             .collect();
 
