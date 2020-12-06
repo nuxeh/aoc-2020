@@ -18,7 +18,8 @@ fn main() {
                     acc.push(HashSet::new());
                     acc
                 } else {
-                    v.chars()
+                    v
+                        .chars()
                         .for_each(|f| {
                             acc.last_mut().unwrap().insert(f);
                         });
@@ -27,5 +28,12 @@ fn main() {
             });
 
         println!("{:#?}", group_answers);
+
+        let sums: Vec<_> = group_answers
+            .iter()
+            .map(|set| set.iter().count())
+            .collect();
+
+        println!("{}", sums.iter().fold(0, |acc, v| acc + v));
     }
 }
