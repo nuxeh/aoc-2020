@@ -28,7 +28,7 @@ fn main() {
                 }
             });
 
-        println!("{:#?}", group_answers);
+        //println!("{:#?}", group_answers);
 
         let sums: Vec<_> = group_answers
             .iter()
@@ -50,6 +50,15 @@ fn main() {
                 }
             });
 
-        println!("{:#?}", group_answers);
+        //println!("{:#?}", group_answers);
+
+        group_answers
+            .iter()
+            .map(|v| {
+                v
+                    .iter()
+                    .skip(1)
+                    .fold(v.clone().into_iter().nth(0).unwrap(), |acc, w| w.intersection(&acc).cloned().collect()) 
+            });
     }
 }
