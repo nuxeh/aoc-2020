@@ -52,13 +52,17 @@ fn main() {
 
         //println!("{:#?}", group_answers);
 
-        group_answers
+        let group_intersections: Vec<_> = group_answers
             .iter()
             .map(|v| {
                 v
                     .iter()
                     .skip(1)
-                    .fold(v.clone().into_iter().nth(0).unwrap(), |acc, w| w.intersection(&acc).cloned().collect()) 
-            });
+                    .fold(v.clone().into_iter().nth(0).unwrap(), |acc, w| w.intersection(&acc).cloned().collect())
+            })
+            .collect();
+
+        println!("{:#?}", group_intersections);
+
     }
 }
