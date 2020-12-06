@@ -11,5 +11,21 @@ fn main() {
     let input = aoc.get_input(false);
 
     if let Ok(i) = input {
+
+        let group_answers = i.lines()
+            .fold(vec![HashSet::new()], |mut acc, v| {
+                if v.is_empty() {
+                    acc.push(HashSet::new());
+                    acc
+                } else {
+                    v.chars()
+                        .for_each(|f| {
+                            acc.last_mut().unwrap().insert(f);
+                        });
+                    acc
+                }
+            });
+
+        println!("{:#?}", group_answers);
     }
 }
