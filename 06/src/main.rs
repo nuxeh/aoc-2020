@@ -34,6 +34,6 @@ fn main() {
             .map(|set| set.iter().count())
             .collect();
 
-        println!("{}", sums.iter().fold(0, |acc, v| acc + v));
+        println!("{}", sums.iter().sum::<usize>());
     }
 }
