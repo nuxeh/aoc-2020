@@ -64,5 +64,11 @@ fn main() {
 
         println!("{:#?}", group_intersections);
 
+        let result: usize = group_intersections
+            .iter()
+            .map(|v| v.iter().count())
+            .sum();
+
+        println!("{}", result);
     }
 }
