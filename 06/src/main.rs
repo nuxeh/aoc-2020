@@ -12,6 +12,7 @@ fn main() {
 
     if let Ok(i) = input {
 
+        // Part 1
         let group_answers = i.lines()
             .fold(vec![HashSet::new()], |mut acc, v| {
                 if v.is_empty() {
@@ -35,5 +36,20 @@ fn main() {
             .collect();
 
         println!("{}", sums.iter().sum::<usize>());
+
+        // Part 2
+        let group_answers = i.lines()
+            .fold(vec![vec![]], |mut acc, v| {
+                if v.is_empty() {
+                    acc.push(vec![]);
+                    acc
+                } else {
+                    let set: HashSet<_> = v.chars().collect();
+                    acc.last_mut().unwrap().push(set);
+                    acc
+                }
+            });
+
+        println!("{:#?}", group_answers);
     }
 }
