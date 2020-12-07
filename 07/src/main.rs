@@ -64,7 +64,7 @@ fn run(i: &str) {
     }
 }
 
-fn get_contained_bags(bags: &Vec<Bag>, bag: u64, mut set: HashSet<u64>) -> HashSet<u64> {
+fn get_contained_bags(bags: &Vec<Bag>, bag: u64, set: &mut HashSet<u64>) {
     let bag = bags.iter().filter(|b| b.hash == bag).nth(0).unwrap();
 
     if !bag.contents.is_empty() {
@@ -74,7 +74,6 @@ fn get_contained_bags(bags: &Vec<Bag>, bag: u64, mut set: HashSet<u64>) -> HashS
         }
     }
 
-    set
 }
 
 fn run_2(i: &str) {
@@ -86,6 +85,18 @@ fn run_2(i: &str) {
     let mut weights: HashMap<_, _> = HashMap::new();
     let mut last_len = 1;
 
+    let mut relevant_bags = HashSet::new();
+    get_contained_bags(&bags, hash_string("shiny gold"), &mut relevant_bags);
+    println!("{}", relevant_bags.iter().count());
+
+    // Filter only relevant bags
+    bags = bags
+        .into_iter()
+        .filter(|bag| relevant_bags.contains(&bag.hash))
+        .collect();
+
+    println!("{}", bags.iter().count());
+
     // Give root bags weights
     bags
         .iter_mut()
@@ -95,6 +106,8 @@ fn run_2(i: &str) {
                 weights.insert(bag.hash, bag.weight);
             }
         });
+
+    println!("{}", weights.iter().count());
 
     loop {
         // Update weights for all bags and known weights
