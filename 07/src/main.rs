@@ -83,30 +83,28 @@ fn run_2(i: &str) {
         });
 
     loop {
-        weights = {
-            let mut new_weights = weights.clone();
-
-            for (hash, weight) in &weights {
-                let fresh_weights = bags
-                    .par_iter_mut()
-                    .fold(|| { HashMap::new() }, |mut acc, bag| {
-                        while bag.contents.contains(hash) {
-                            if let Ok(index) = bag.contents.binary_search(hash) {
-                                bag.weight += weight;
-                                bag.contents.remove(index);
-                            }
+        // Update weights for all bags and known weights
+        for (hash, weight) in &weights {
+            bags
+                .par_iter_mut()
+                .for_each(|bag| {
+                    while bag.contents.contains(hash) {
+                        if let Ok(index) = bag.contents.binary_search(hash) {
+                            bag.weight += weight;
+                            bag.contents.remove(index);
                         }
-                        if bag.contents.is_empty() {
-                            acc.insert(bag.hash, bag.weight);
-                        }
-                        acc
-                    });
+                    }
+                });
+        }
 
-                new_weights.extend(fresh_weights.into_iter());
-            }
-
-            new_weights
-        };
+        // Update known weights
+        bags
+            .iter()
+            .for_each(|bag| {
+                if bag.contents.is_empty() && !weights.contains_key(&bag.hash) {
+                    weights.insert(bag.hash, bag.weight);
+                }
+            });
 
         // End condition
         if weights.len() == last_len {
