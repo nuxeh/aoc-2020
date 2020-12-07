@@ -61,11 +61,16 @@ fn parse(spec: &str) -> Bag {
         
     let contents: Vec<_> = contents
         .split(", ")
+        .map(parse_contents)
         .collect();
 
     println!("{:?}", contents);
 
     bag
+}
+
+fn parse_contents(spec: &str) -> (usize, u64) {
+   (0, hash_string(spec)) 
 }
 
 fn hash_string(text: &str) -> u64 {
