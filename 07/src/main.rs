@@ -64,7 +64,13 @@ fn parse(spec: &str) -> Bag {
         .map(parse_contents)
         .collect();
 
-    println!("{:?}", contents);
+    contents
+        .iter()
+        .for_each(|c| {
+            for _ in 0..c.0 {
+                bag.contents.push(c.1);
+            }
+        });
 
     bag
 }
@@ -80,8 +86,6 @@ fn parse_contents(spec: &str) -> (usize, u64) {
         .skip(1)
         .map(|v| format!("{} ", v))
         .collect();
-
-    println!("{}", tag);
 
     let hash = hash_string(&tag);
 
