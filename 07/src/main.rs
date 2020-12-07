@@ -89,9 +89,11 @@ fn run_2(i: &str) {
                 bags
                     .iter_mut()
                     .for_each(|bag| {
-                        if let Ok(index) = bag.contents.binary_search(hash) {
-                            bag.weight += weight;
-                            bag.contents.remove(index);
+                        while bag.contents.contains(hash) {
+                            if let Ok(index) = bag.contents.binary_search(hash) {
+                                bag.weight += weight;
+                                bag.contents.remove(index);
+                            }
                         }
                         if bag.contents.is_empty() {
                             new_weights.insert(bag.hash, bag.weight);
@@ -108,11 +110,11 @@ fn run_2(i: &str) {
         }
         last_len = weights.len();
 
-        println!("{:#?}", weights);
+        //println!("{:#?}", weights);
     }
 
-    println!("{:#?}", bags);
-    println!("{:#?}", weights.values().sum::<usize>());
+    //println!("{:#?}", bags);
+    println!("{:#?}", weights.values().sum::<usize>() - 1);
 }
 
 #[cfg(test)]
