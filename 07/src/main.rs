@@ -118,14 +118,20 @@ fn run_2(i: &str) {
                 .iter_mut()
                 .for_each(|bag| {
                     println!("==== {} ==== {} ====\n{:?}\n====", hash, weight, bag);
-                    while bag.contents.contains(hash) {
-                        println!("{:?}", bag.contents.binary_search(hash));
-                        if let Ok(index) = bag.contents.binary_search(hash) {
+
+                    bag.contents = bag.contents.clone()
+                        .into_iter()
+                        .map(|b| {
                             println!("YES");
-                            bag.weight += weight;
-                            bag.contents.remove(index);
-                        }
-                    }
+                            if &b == hash {
+                                bag.weight += weight;
+                                None
+                            } else {
+                                Some(b)
+                            }
+                        })
+                        .flatten()
+                        .collect();
                 });
         }
 
