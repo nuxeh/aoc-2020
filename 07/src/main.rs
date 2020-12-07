@@ -70,6 +70,7 @@ fn run_2(i: &str) {
         .collect();
 
     let mut weights: HashMap<_, _> = HashMap::new();
+    let mut last_len = 1;
 
     bags
         .iter_mut()
@@ -101,8 +102,17 @@ fn run_2(i: &str) {
             new_weights
         };
 
+        // End condition
+        if weights.len() == last_len {
+            break;
+        }
+        last_len = weights.len();
+
         println!("{:#?}", weights);
     }
+
+    println!("{:#?}", bags);
+    println!("{:#?}", weights.values().sum::<usize>());
 }
 
 #[cfg(test)]
@@ -118,6 +128,15 @@ vibrant plum bags contain 5 faded blue bags, 6 dotted black bags.
 faded blue bags contain no other bags.
 dotted black bags contain no other bags.";
     run(&demo);
+
+    let demo2 = "shiny gold bags contain 2 dark red bags.
+dark red bags contain 2 dark orange bags.
+dark orange bags contain 2 dark yellow bags.
+dark yellow bags contain 2 dark green bags.
+dark green bags contain 2 dark blue bags.
+dark blue bags contain 2 dark violet bags.
+dark violet bags contain no other bags.";
+    run_2(&demo2);
 }
 
 fn parse(spec: &str) -> Bag {
