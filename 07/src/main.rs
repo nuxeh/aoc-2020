@@ -28,10 +28,10 @@ fn main() {
 
         println!("{:#?}", bags);
 
-        let good_bags: HashSet<u64> = vec![hash_string("shiny gold")].into_iter().collect();
+        let mut good_bags: HashSet<u64> = vec![hash_string("shiny gold")].into_iter().collect();
 
         loop {
-            let good_bags = {
+            good_bags = {
                 let mut new_good_bags = good_bags.clone();
 
                 for good_bag in &good_bags {
@@ -44,6 +44,7 @@ fn main() {
 
                 new_good_bags
             };
+            println!("{}", good_bags.len());
         }
     }
 }
