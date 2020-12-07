@@ -34,15 +34,14 @@ fn run(i: &str) {
     //println!("{:#?}", bags);
 
     let mut good_bags: HashSet<u64> = vec![hash_string("shiny gold")].into_iter().collect();
+    let mut last_len = 1;
 
     loop {
         good_bags = {
             let mut new_good_bags = good_bags.clone();
 
             for good_bag in &good_bags {
-                println!("{:?}", good_bag);
                 for bag in &bags {
-                    println!("{:?}", bag);
                     if bag.contents.contains(&good_bag) {
                         new_good_bags.insert(bag.hash);
                     }
@@ -52,8 +51,12 @@ fn run(i: &str) {
             new_good_bags
         };
 
-        println!("{}", good_bags.len());
-        break;
+        if good_bags.len() == last_len {
+            break;
+        }
+        last_len = good_bags.len();
+
+        println!("{}", good_bags.len() - 1);
     }
 }
 
@@ -116,8 +119,7 @@ fn parse_contents(spec: &str) -> (usize, u64) {
         .map(|v| format!("{} ", v))
         .collect();
 
-    let hash = hash_string(&tag);
-    println!("{:?} {}", tag, hash);
+    let hash = hash_string(&tag.trim());
 
     (count, hash) 
 }
