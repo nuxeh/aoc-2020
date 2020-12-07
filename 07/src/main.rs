@@ -1,8 +1,11 @@
 use aocf::Aoc;
+use std::hash::{Hash, Hasher};
+use std::collections::hash_map::DefaultHasher;
 
+#[derive(Default, Debug)]
 struct Bag {
-    contained: Vec<Box<Bag>>,
-    quantity: usize,
+    hash: u64,
+    contents: Vec<u64>,
 }
 
 fn main() {
@@ -15,13 +18,18 @@ fn main() {
     let input = aoc.get_input(false);
 
     if let Ok(i) = input {
+        let bags: Vec<_> = i
+            .lines()
+            .map(parse)
+            .collect();
 
+        println!("{:#?}", bags);
     }
 }
 
 #[cfg(test)]
 #[test]
-fn test () {
+fn test_parse () {
     let demo = "
 light red bags contain 1 bright white bag, 2 muted yellow bags.
 dark orange bags contain 3 bright white bags, 4 muted yellow bags.
@@ -33,4 +41,20 @@ vibrant plum bags contain 5 faded blue bags, 6 dotted black bags.
 faded blue bags contain no other bags.
 dotted black bags contain no other bags.
     ";
+}
+
+fn parse(spec: &str) -> Bag {
+    let mut bag = Bag::default();
+
+    let parts: Vec<_> = spec.split(" bags contain ").collect();
+    bag.hash = hash_string(parts.first().unwrap()); 
+    let contents = parts.get(1).unwrap(); 
+
+    bag
+}
+
+fn hash_string(text: &str) -> u64 {
+    let mut s = DefaultHasher::new();
+    text.hash(&mut s);
+    s.finish()
 }
