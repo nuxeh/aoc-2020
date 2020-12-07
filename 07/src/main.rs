@@ -24,7 +24,26 @@ fn main() {
             .collect();
 
         println!("{:#?}", bags);
+
+        let mut good_bags: Vec<u64> = vec![hash_string("shiny gold")];
+
+        loop {
+            bags
+                .iter()
+                .filter(|b| is_good(b, &good_bags))
+                .for_each(|b| good_bags.push(b.hash));
+        }
     }
+}
+
+fn is_good(bag: &Bag, good_bags: &Vec<u64>) -> bool {
+    for hash in good_bags {
+        if bag.contents.contains(hash) {
+            return true;
+        }
+    }
+
+    false
 }
 
 #[cfg(test)]
