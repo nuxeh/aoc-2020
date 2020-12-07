@@ -89,6 +89,9 @@ fn run_2(i: &str) {
     get_contained_bags(&bags, hash_string("shiny gold"), &mut relevant_bags);
     println!("{}", relevant_bags.iter().count());
 
+    // Ensure top level bag is relevant
+    relevant_bags.insert(hash_string("shiny gold"));
+
     // Filter only relevant bags
     bags = bags
         .into_iter()
@@ -153,7 +156,7 @@ fn run_2(i: &str) {
         println!("{:#?}", weights.iter().count());
     }
 
-    //println!("{:#?}", bags);
+    println!("{:#?}", weights);
     println!("{:#?}", weights.values().sum::<usize>() - 1);
 }
 
