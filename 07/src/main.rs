@@ -2,6 +2,7 @@ use aocf::Aoc;
 use std::hash::{Hash, Hasher};
 use std::collections::{
     HashSet,
+    HashMap,
     hash_map::DefaultHasher,
 };
 
@@ -9,6 +10,7 @@ use std::collections::{
 struct Bag {
     hash: u64,
     contents: Vec<u64>,
+    weight: usize,
 }
 
 fn main() {
@@ -22,6 +24,7 @@ fn main() {
 
     if let Ok(i) = input {
         run(&i);
+        run_2(&i);
     }
 }
 
@@ -57,6 +60,48 @@ fn run(i: &str) {
         last_len = good_bags.len();
 
         println!("{}", good_bags.len() - 1);
+    }
+}
+
+fn run_2(i: &str) {
+    let mut bags: Vec<_> = i
+        .lines()
+        .map(parse)
+        .collect();
+
+    let mut weights: HashMap<_, _> = HashMap::new();
+
+    bags
+        .iter_mut()
+        .for_each(|bag| {
+            if bag.contents.len() == 0 {
+                bag.weight = 1;
+                weights.insert(bag.hash, bag.weight);
+            }
+        });
+
+    loop {
+        weights = {
+            let mut new_weights = weights.clone();
+
+            for (hash, weight) in &weights {
+                bags
+                    .iter_mut()
+                    .for_each(|bag| {
+                        if let Ok(index) = bag.contents.binary_search(hash) {
+                            bag.weight += weight;
+                            bag.contents.remove(index);
+                        }
+                        if bag.contents.is_empty() {
+                            new_weights.insert(bag.hash, bag.weight);
+                        }
+                    });
+            }
+
+            new_weights
+        };
+
+        println!("{:#?}", weights);
     }
 }
 
