@@ -1,6 +1,9 @@
 use aocf::Aoc;
 use std::hash::{Hash, Hasher};
-use std::collections::hash_map::DefaultHasher;
+use std::collections::{
+    HashSet,
+    hash_map::DefaultHasher,
+};
 
 #[derive(Default, Debug)]
 struct Bag {
@@ -25,25 +28,18 @@ fn main() {
 
         println!("{:#?}", bags);
 
-        let mut good_bags: Vec<u64> = vec![hash_string("shiny gold")];
+        let mut good_bags: HashSet<u64> = vec![hash_string("shiny gold")].into_iter().collect();
 
         loop {
-            bags
-                .iter()
-                .filter(|b| is_good(b, &good_bags))
-                .for_each(|b| good_bags.push(b.hash));
+            for good_bag in good_bags {
+                for bag in bags {
+                    if bag.contents.contains(&good_bag) {
+                        good_bags.insert(bag.hash);
+                    }
+                }
+            }
         }
     }
-}
-
-fn is_good(bag: &Bag, good_bags: &Vec<u64>) -> bool {
-    for hash in good_bags {
-        if bag.contents.contains(hash) {
-            return true;
-        }
-    }
-
-    false
 }
 
 #[cfg(test)]
