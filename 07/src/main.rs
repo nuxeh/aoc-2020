@@ -100,12 +100,12 @@ fn run_2(i: &str) {
 
     println!("{}", bags.iter().count());
 
-    // Give root bags weights
+    // Give root bags weights (and indeed every bag a weight of 1)
     bags
         .iter_mut()
         .for_each(|bag| {
+            bag.weight = 1;
             if bag.contents.len() == 0 {
-                bag.weight = 1;
                 weights.insert(bag.hash, bag.weight);
             }
         });
@@ -157,8 +157,9 @@ fn run_2(i: &str) {
     }
 
     println!("{:#?}", weights);
+    println!("{:#?}", bags);
     println!("{:#?}", weights.values().sum::<usize>() - 1);
-    println!("{:?}", weights.get(&hash_string("shiny gold")));
+    println!("{:?}", weights.get(&hash_string("shiny gold")).map(|w| w - 1));
 }
 
 #[cfg(test)]
