@@ -70,7 +70,22 @@ fn parse(spec: &str) -> Bag {
 }
 
 fn parse_contents(spec: &str) -> (usize, u64) {
-   (0, hash_string(spec)) 
+    let count: usize = spec.split(' ')
+        .nth(0)
+        .map(|v| v.parse().ok())
+        .flatten()
+        .unwrap();
+
+    let tag: String = spec.split(' ')
+        .skip(1)
+        .map(|v| format!("{} ", v))
+        .collect();
+
+    println!("{}", tag);
+
+    let hash = hash_string(&tag);
+
+    (count, hash) 
 }
 
 fn hash_string(text: &str) -> u64 {
