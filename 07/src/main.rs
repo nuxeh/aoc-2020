@@ -31,10 +31,11 @@ fn main() {
         let mut good_bags: HashSet<u64> = vec![hash_string("shiny gold")].into_iter().collect();
 
         loop {
-            for good_bag in good_bags {
-                for bag in bags {
+            let mut new_good_bags = good_bags.clone();
+            for good_bag in &good_bags {
+                for bag in &bags {
                     if bag.contents.contains(&good_bag) {
-                        good_bags.insert(bag.hash);
+                        new_good_bags.insert(bag.hash);
                     }
                 }
             }
