@@ -21,31 +21,39 @@ fn main() {
     let input = aoc.get_input(false);
 
     if let Ok(i) = input {
-        let bags: Vec<_> = i
-            .lines()
-            .map(parse)
-            .collect();
+        run(&i);
+    }
+}
 
-        println!("{:#?}", bags);
+fn run(i: &str) {
+    let bags: Vec<_> = i
+        .lines()
+        .map(parse)
+        .collect();
 
-        let mut good_bags: HashSet<u64> = vec![hash_string("shiny gold")].into_iter().collect();
+    //println!("{:#?}", bags);
 
-        loop {
-            good_bags = {
-                let mut new_good_bags = good_bags.clone();
+    let mut good_bags: HashSet<u64> = vec![hash_string("shiny gold")].into_iter().collect();
 
-                for good_bag in &good_bags {
-                    for bag in &bags {
-                        if bag.contents.contains(&good_bag) {
-                            new_good_bags.insert(bag.hash);
-                        }
+    loop {
+        good_bags = {
+            let mut new_good_bags = good_bags.clone();
+
+            for good_bag in &good_bags {
+                println!("{:?}", good_bag);
+                for bag in &bags {
+                    println!("{:?}", bag);
+                    if bag.contents.contains(&good_bag) {
+                        new_good_bags.insert(bag.hash);
                     }
                 }
+            }
 
-                new_good_bags
-            };
-            println!("{}", good_bags.len());
-        }
+            new_good_bags
+        };
+
+        println!("{}", good_bags.len());
+        break;
     }
 }
 
