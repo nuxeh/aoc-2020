@@ -64,6 +64,19 @@ fn run(i: &str) {
     }
 }
 
+fn get_contained_bags(bags: &Vec<Bag>, bag: u64, mut set: HashSet<u64>) -> HashSet<u64> {
+    let bag = bags.iter().filter(|b| b.hash == bag).nth(0).unwrap();
+
+    if !bag.contents.is_empty() {
+        for bag in &bag.contents {
+            set.insert(*bag);
+            get_contained_bags(bags, *bag, set);
+        }
+    }
+
+    set
+}
+
 fn run_2(i: &str) {
     let mut bags: Vec<_> = i
         .lines()
@@ -73,6 +86,7 @@ fn run_2(i: &str) {
     let mut weights: HashMap<_, _> = HashMap::new();
     let mut last_len = 1;
 
+    // Give root bags weights
     bags
         .iter_mut()
         .for_each(|bag| {
