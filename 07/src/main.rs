@@ -50,6 +50,21 @@ fn parse(spec: &str) -> Bag {
     bag.hash = hash_string(parts.first().unwrap()); 
     let contents = parts.get(1).unwrap(); 
 
+    if contents.contains("no other bags") {
+        return bag;
+    }
+
+    let contents = contents.clone()
+        .replace('.', "")
+        .replace(" bags", "")
+        .replace(" bag", "");
+        
+    let contents: Vec<_> = contents
+        .split(", ")
+        .collect();
+
+    println!("{:?}", contents);
+
     bag
 }
 
