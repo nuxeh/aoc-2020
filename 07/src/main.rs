@@ -158,6 +158,7 @@ fn run_2(i: &str) {
 
     println!("{:#?}", weights);
     println!("{:#?}", weights.values().sum::<usize>() - 1);
+    println!("{:?}", weights.get(&hash_string("shiny gold")));
 }
 
 #[cfg(test)]
