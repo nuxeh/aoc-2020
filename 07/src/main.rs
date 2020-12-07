@@ -5,6 +5,7 @@ use std::collections::{
     HashMap,
     hash_map::DefaultHasher,
 };
+use rayon::prelude::*;
 
 #[derive(Default, Debug)]
 struct Bag {
@@ -86,9 +87,9 @@ fn run_2(i: &str) {
             let mut new_weights = weights.clone();
 
             for (hash, weight) in &weights {
-                bags
-                    .iter_mut()
-                    .for_each(|bag| {
+                let fresh_weights = bags
+                    .par_iter_mut()
+                    .fold(|| { HashMap::new() }, |mut acc, bag| {
                         while bag.contents.contains(hash) {
                             if let Ok(index) = bag.contents.binary_search(hash) {
                                 bag.weight += weight;
@@ -96,9 +97,12 @@ fn run_2(i: &str) {
                             }
                         }
                         if bag.contents.is_empty() {
-                            new_weights.insert(bag.hash, bag.weight);
+                            acc.insert(bag.hash, bag.weight);
                         }
+                        acc
                     });
+
+                new_weights.extend(fresh_weights.into_iter());
             }
 
             new_weights
