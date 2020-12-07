@@ -110,13 +110,18 @@ fn run_2(i: &str) {
     println!("{}", weights.iter().count());
 
     loop {
+        println!("{:#?}", weights.iter().count());
+
         // Update weights for all bags and known weights
         for (hash, weight) in &weights {
             bags
-                .par_iter_mut()
+                .iter_mut()
                 .for_each(|bag| {
+                    println!("==== {} ==== {} ====\n{:?}\n====", hash, weight, bag);
                     while bag.contents.contains(hash) {
+                        println!("{:?}", bag.contents.binary_search(hash));
                         if let Ok(index) = bag.contents.binary_search(hash) {
+                            println!("YES");
                             bag.weight += weight;
                             bag.contents.remove(index);
                         }
@@ -139,7 +144,7 @@ fn run_2(i: &str) {
         }
         last_len = weights.len();
 
-        //println!("{:#?}", weights);
+        println!("{:#?}", weights.iter().count());
     }
 
     //println!("{:#?}", bags);
@@ -174,8 +179,8 @@ fn parse(spec: &str) -> Bag {
     let mut bag = Bag::default();
 
     let parts: Vec<_> = spec.split(" bags contain ").collect();
-    bag.hash = hash_string(parts.first().unwrap()); 
-    let contents = parts.get(1).unwrap(); 
+    bag.hash = hash_string(parts.first().unwrap());
+    let contents = parts.get(1).unwrap();
 
     if contents.contains("no other bags") {
         return bag;
@@ -185,7 +190,7 @@ fn parse(spec: &str) -> Bag {
         .replace('.', "")
         .replace(" bags", "")
         .replace(" bag", "");
-        
+
     let contents: Vec<_> = contents
         .split(", ")
         .map(parse_contents)
@@ -216,7 +221,7 @@ fn parse_contents(spec: &str) -> (usize, u64) {
 
     let hash = hash_string(&tag.trim());
 
-    (count, hash) 
+    (count, hash)
 }
 
 fn hash_string(text: &str) -> u64 {
