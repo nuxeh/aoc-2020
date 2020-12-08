@@ -1,5 +1,16 @@
 use aocf::Aoc;
 
+struct Cpu {
+    pc: usize,
+    acc: i32,
+}
+
+impl Cpu {
+    fn ins(&mut self, ins: &(Op, i32) {
+
+    }
+}
+
 #[derive(Debug)]
 enum Op {
     Acc,
@@ -12,8 +23,8 @@ impl From<&str> for Op {
     fn from(item: &str) -> Self {
         match item {
             "acc" => Self::Acc,
-            "jmp" => Self::Acc,
-            "nop" => Self::Acc,
+            "jmp" => Self::Jmp,
+            "nop" => Self::Nop,
             _ => Self::None,
         }
     }
@@ -22,14 +33,7 @@ impl From<&str> for Op {
 /*
 acc +17
 jmp +1
-acc +16
-acc +15
-jmp +161
-acc +37
-acc +5
-acc -13
 nop +134
-jmp +426
 */
 fn main() {
     let mut aoc = Aoc::new()
