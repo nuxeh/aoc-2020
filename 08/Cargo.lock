@@ -29,6 +29,7 @@ name = "aoc2020_day07"
 version = "0.1.0"
 dependencies = [
  "aocf",
+ "failure",
 ]
 
 [[package]]

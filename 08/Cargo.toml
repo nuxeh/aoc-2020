@@ -6,3 +6,4 @@ edition = "2018"
 
 [dependencies]
 aocf = { git = "https://github.com/nuxeh/aocf" }
+failure = "0.1.8"
