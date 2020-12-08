@@ -77,6 +77,34 @@ fn main() {
 
         // Part 1
         run(&ins);
+
+        // Part 2
+        let prog_len = ins.iter().count();
+        let mut boot_codes: Vec<Vec<(Op, i32)>> = vec![];
+
+        for i in 0..prog_len {
+            let mut ins_nop_jmp = ins.clone();
+            let replacements = ins_nop_jmp
+                .iter_mut()
+                .skip(i)
+                .filter(|i| {
+                    match i {
+                        (Op::Nop, _) => true,
+                        _ => false,
+                    }
+                })
+                .take(1)
+                .map(|i| i.0 = Op::Jmp)
+                .count();
+
+            if replacements > 0 {
+                boot_codes.push(ins_nop_jmp)
+            }
+
+            println!("{}", boot_codes.len());
+        }
+
+
     }
 }
 
