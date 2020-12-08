@@ -1,3 +1,5 @@
+// TODO: In hindsight, this should probably be some simple recursions
+// Rather than this incredible mess...
 use aocf::Aoc;
 use std::hash::{Hash, Hasher};
 use std::collections::{
