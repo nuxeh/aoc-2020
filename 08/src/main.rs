@@ -29,6 +29,7 @@ impl Cpu {
         // Eww
         let op = &self.clone().mem[self.pc as usize];
         self.exec(op);
+        println!("{:?}", op);
         Some(())
     }
 }
@@ -79,7 +80,7 @@ fn main() {
 
         loop {
             cpu.tick();
-            println!("{:?}", cpu);
+            println!("pc {} acc {}", cpu.pc, cpu.acc);
 
             if used.contains(&cpu.pc) {
                 break;
