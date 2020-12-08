@@ -87,14 +87,21 @@ fn main() {
             let replacements = ins_nop_jmp
                 .iter_mut()
                 .skip(i)
+                .take(1)
                 .filter(|i| {
                     match i {
                         (Op::Nop, _) => true,
+                        (Op::Jmp, _) => true,
                         _ => false,
                     }
                 })
-                .take(1)
-                .map(|i| i.0 = Op::Jmp)
+                .map(|i| {
+                    match i.0 {
+                        Op::Nop => i.0 = Op::Jmp,
+                        Op::Jmp => i.0 = Op::Nop,
+                        _ => (),
+                    }
+                })
                 .count();
 
             if replacements > 0 {
@@ -103,6 +110,10 @@ fn main() {
 
             println!("{}", boot_codes.len());
         }
+
+        boot_codes
+            .iter()
+            .for_each(|i| run(i));
 
 
     }
