@@ -75,19 +75,23 @@ fn main() {
 
         println!("{:#?}", ins);
 
-        let mut cpu = Cpu::new(ins);
-        let mut used: HashSet<i32> = HashSet::new();
+        // Part 1
+        run(&ins);
+    }
+}
 
-        loop {
-            cpu.tick();
-            println!("pc {} acc {}", cpu.pc, cpu.acc);
+fn run(ins: &Vec<(Op, i32)>) {
+    let mut cpu = Cpu::new(ins.to_vec());
+    let mut used: HashSet<i32> = HashSet::new();
 
-            if used.contains(&cpu.pc) {
-                break;
-            } else {
-                used.insert(cpu.pc);
-            }
+    loop {
+        cpu.tick();
+        println!("pc {} acc {}", cpu.pc, cpu.acc);
+
+        if used.contains(&cpu.pc) {
+            break;
+        } else {
+            used.insert(cpu.pc);
         }
-
     }
 }
