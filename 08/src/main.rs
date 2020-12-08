@@ -1,5 +1,6 @@
 use aocf::Aoc;
 
+#[derive(Debug)]
 enum Op {
     Acc,
     Jmp,
@@ -40,10 +41,12 @@ fn main() {
     let input = aoc.get_input(false);
 
     if let Ok(i) = input {
-        let ins: (Op, i32) = i.lines()
-            .map(|v| v.split(' ').collect::Vec<&str>())
-            .map(|v| (v.iter.nth(0).unwrap().into(), v.iter.nth(1).unwrap().parse()));
+        let ins: Vec<(Op, i32)> = i.lines()
+            .map(|v| v.split(' '))
+            .map(|mut v| (v.next().unwrap().into(), v.next().unwrap().parse().unwrap()))
+            .collect();
 
+        println!("{:#?}", ins);
 
     }
 }
