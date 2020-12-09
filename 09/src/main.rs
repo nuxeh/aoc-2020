@@ -65,10 +65,38 @@ fn main() {
 fn get_contiguous(numbers: &[u64], target: u64) {
     for i in 0..numbers.len() {
         let mut sum = 0;
-        numbers
-            .iter()
-            .skip(i)
-            .map_while(sum != target, |v| sum += v);
+        let mut minimum = None;
+        let mut maximum = None;
 
+        for n in numbers.iter().skip(i) {
+            sum += n;
+
+            // Track minimum
+            if let Some(min) = minimum {
+                if n < min {
+                    minimum = Some(n);
+                }
+            } else {
+                minimum = Some(n)
+            }
+
+            // Track maximum
+            if let Some(max) = maximum {
+                if n > max {
+                    maximum = Some(n);
+                }
+            } else {
+                maximum = Some(n)
+            }
+
+            if sum > target {
+                break;
+            }
+
+            if sum == target {
+                println!("{:?} {:?}", minimum, maximum);
+                println!("{}", minimum.unwrap() + maximum.unwrap());
+            }
+        }
     }
 }
