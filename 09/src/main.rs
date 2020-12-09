@@ -53,5 +53,9 @@ fn main() {
 
         println!("{:#?}", res);
 
+        numbers
+            .iter()
+            .zip(res.iter())
+            .for_each(|(n, count)| println!("{} {}", n, count));
     }
 }
