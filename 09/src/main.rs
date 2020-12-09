@@ -19,7 +19,7 @@ fn main() {
 
         println!("{:#?}", numbers);
 
-        let possible_sums: Vec<Vec<u64>> = numbers
+        let possible_sums: Vec<(u64, Vec<u64>)> = numbers
             .windows(n)
             .map(|v| {
                 let first = v.get(0).unwrap();
@@ -30,15 +30,14 @@ fn main() {
                     .filter(|v| v != &first)
                     .for_each(|v| sums.push(v + first));
 
-                sums
+                (*first, sums)
             })
             .collect();
 
         println!("{:#?}", possible_sums);
-        numbers
-            .iter()
-            .zip(possible_sums.iter())
-            .for_each(|(n, s)| println!("{} {:?}", n, s));
+        possible_sums.iter().for_each(|(n, s)| println!("{} {:?}", n, s));
+
+
     }
 }
 
