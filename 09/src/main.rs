@@ -10,6 +10,12 @@ fn main() {
     let input = aoc.get_input(false);
 
     if let Ok(i) = input {
+        let numbers: Vec<u64> = i.lines()
+            .map(|l| l.parse())
+            .flatten()
+            .collect();
+
+        println!("{:#?}", numbers);
 
     }
 }
