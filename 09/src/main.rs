@@ -15,7 +15,13 @@ fn main() {
             .flatten()
             .collect();
 
-        println!("{:#?}", numbers);
+        println!("{:#?}", numbers.chunks_exact(25));
+
+
 
     }
+}
+
+fn is_sum() {
+
 }
