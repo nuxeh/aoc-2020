@@ -36,26 +36,18 @@ fn main() {
 
         possible_sums.iter().for_each(|(n, s)| println!("{} {:?}", n, s));
 
-        let res: Vec<_> = possible_sums
+        possible_sums
             .windows(n+1)
-            .map(|slice| {
+            .for_each(|slice| {
                 if let Some((c, _)) = slice.last() {
-                    slice
+                    let count = slice
                         .iter()
                         .take(n)
                         .filter(|v| v.1.contains(c))
-                        .count()
-                } else {
-                    0
+                        .count();
+
+                    println!("{} {}", c, count);
                 }
-            })
-            .collect();
-
-        println!("{:#?}", res);
-
-        numbers
-            .iter()
-            .zip(res.iter())
-            .for_each(|(n, count)| println!("{} {}", n, count));
+            });
     }
 }
