@@ -16,6 +16,7 @@ fn main() {
             .collect();
 
         let n = 25;
+        let n = 5;
 
         println!("{:#?}", numbers);
 
@@ -36,7 +37,7 @@ fn main() {
 
         possible_sums.iter().for_each(|(n, s)| println!("{} {:?}", n, s));
 
-        possible_sums
+        let target = possible_sums
             .windows(n+1)
             .map(|slice| {
                 if let Some((c, _)) = slice.last() {
@@ -50,7 +51,24 @@ fn main() {
                 }
             })
             .filter(|c| c.1 == 0)
-            .take(1)
-            .for_each(|c| println!("{} {}", c.0, c.1));
+            .nth(0)
+            .unwrap();
+
+        // Part 1
+        println!("{} {}", target.0, target.1);
+
+        // Part 2
+        get_contiguous(numbers.as_slice(), target.0);
+    }
+}
+
+fn get_contiguous(numbers: &[u64], target: u64) {
+    for i in 0..numbers.len() {
+        let mut sum = 0;
+        numbers
+            .iter()
+            .skip(i)
+            .map_while(sum != target, |v| sum += v);
+
     }
 }
