@@ -17,11 +17,15 @@ fn main() {
 
         println!("{:#?}", numbers.chunks_exact(25));
 
-
+        let prev_25: &[u64] = numbers
+            .iter()
+            .skip(0)
+            .take(25)
+            .collect();
 
     }
 }
 
-fn is_sum() {
+fn is_sum(chunk: &[u64]) {
 
 }
