@@ -38,16 +38,19 @@ fn main() {
 
         possible_sums
             .windows(n+1)
-            .for_each(|slice| {
+            .map(|slice| {
                 if let Some((c, _)) = slice.last() {
-                    let count = slice
+                    (*c, slice
                         .iter()
                         .take(n)
                         .filter(|v| v.1.contains(c))
-                        .count();
-
-                    println!("{} {}", c, count);
+                        .count())
+                } else {
+                    (0, 0)
                 }
-            });
+            })
+            .filter(|c| c.1 == 0)
+            .take(1)
+            .for_each(|c| println!("{} {}", c.0, c.1));
     }
 }
