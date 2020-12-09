@@ -35,6 +35,7 @@ fn main() {
             .collect();
 
         println!("{:#?}", possible_sums);
+        println!("{:#?}", numbers.iter().zip(possible_sums.iter()).for_each(|(n, s)| println!("{} {:?}", n, s)));
     }
 }
 
