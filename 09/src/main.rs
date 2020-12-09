@@ -34,13 +34,24 @@ fn main() {
             })
             .collect();
 
-        println!("{:#?}", possible_sums);
         possible_sums.iter().for_each(|(n, s)| println!("{} {:?}", n, s));
 
+        let res: Vec<_> = possible_sums
+            .windows(n+1)
+            .map(|slice| {
+                if let Some((c, _)) = slice.last() {
+                    slice
+                        .iter()
+                        .take(n)
+                        .filter(|v| v.1.contains(c))
+                        .count()
+                } else {
+                    0
+                }
+            })
+            .collect();
+
+        println!("{:#?}", res);
 
     }
-}
-
-fn is_sum(chunk: &[u64]) {
-
 }
