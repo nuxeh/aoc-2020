@@ -15,13 +15,13 @@ fn main() {
             .flatten()
             .collect();
 
-        println!("{:#?}", numbers.chunks_exact(25));
+        let n = 5;
 
-        let prev_25: &[u64] = numbers
-            .iter()
-            .skip(0)
-            .take(25)
-            .collect();
+        println!("{:#?}", numbers);
+
+        let possible_sums = numbers
+            .windows(n)
+            .for_each(|v| println!("{:?}", v));
 
     }
 }
