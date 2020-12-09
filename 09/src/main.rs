@@ -15,7 +15,7 @@ fn main() {
             .flatten()
             .collect();
 
-        let n = 5;
+        let n = 25;
 
         println!("{:#?}", numbers);
 
