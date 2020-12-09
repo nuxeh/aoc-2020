@@ -19,10 +19,22 @@ fn main() {
 
         println!("{:#?}", numbers);
 
-        let possible_sums = numbers
+        let possible_sums: Vec<Vec<u64>> = numbers
             .windows(n)
-            .for_each(|v| println!("{:?}", v));
+            .map(|v| {
+                let first = v.get(0).unwrap();
+                let mut sums = vec![];
 
+                v
+                    .iter()
+                    .filter(|v| v != &first)
+                    .for_each(|v| sums.push(v + first));
+
+                sums
+            })
+            .collect();
+
+        println!("{:#?}", possible_sums);
     }
 }
 
