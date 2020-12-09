@@ -16,7 +16,7 @@ fn main() {
             .collect();
 
         let n = 25;
-        let n = 5;
+        //let n = 5;
 
         println!("{:#?}", numbers);
 
