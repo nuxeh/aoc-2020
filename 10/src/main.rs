@@ -41,8 +41,14 @@ fn main() {
     }
 }
 
-
-
 fn part_2(i: &[u16]) {
+    println!("{}", count(i, 0));
+}
 
+fn count(adapters: &[u16], n: u16) -> u32 {
+    adapters
+        .iter()
+        .filter(|a| (**a as i16 - n as i16).abs() <= 3)
+        .map(|a| count(adapters, *a))
+        .sum()
 }
