@@ -1,4 +1,5 @@
 use aocf::Aoc;
+use std::collections::HashMap;
 
 fn main() {
     let mut aoc = Aoc::new()
@@ -42,14 +43,31 @@ fn main() {
     }
 }
 
-fn part_2(i: &[u16]) {
-    println!("{}", count(i, 0));
+fn part_2(adapters: &[u16]) {
+    let mut weights = HashMap::new();
+
+    // Last first
+    for n in adapters {
+        weights.insert(n, count(&adapters, &weights, *n));
+    }
+
+    println!("{}", weights.get(&0).unwrap());
 }
 
-fn count(adapters: &[u16], n: u16) -> u32 {
+fn count(adapters: &[u16], weights: &HashMap<&u16, u32>, n: u16) -> u32 {
+    if n == *adapters.first().unwrap() {
+        return 1;
+    }
+
     adapters
         .iter()
-        .filter(|a| (**a as i16 - n as i16).abs() <= 3)
-        .map(|a| count(adapters, *a))
+        .filter(|v| (**v as i32 - n as i32).abs() <= 3)
+        .map(|v| {
+            if let Some(w) = weights.get(v) {
+                *w
+            } else {
+                count(adapters, weights, *v)
+            }
+        })
         .sum()
 }
