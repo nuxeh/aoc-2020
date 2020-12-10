@@ -1,0 +1,8 @@
+[package]
+name = "aoc2020_day10"
+version = "0.1.0"
+authors = ["Ed Cragg <ed.cragg@eipi.xyz>"]
+edition = "2018"
+
+[dependencies]
+aocf = { path = "/home/ed/git/aocf" }
