@@ -55,6 +55,7 @@ fn part_2(adapters: &[u16]) {
 }
 
 fn count(adapters: &[u16], weights: &HashMap<&u16, u32>, n: u16) -> u32 {
+    println!("{} {:?}", n, weights);
     if n == *adapters.first().unwrap() {
         return 1;
     }
