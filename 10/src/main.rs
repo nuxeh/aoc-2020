@@ -27,11 +27,11 @@ fn main() {
         let threes = differences
             .iter()
             .filter(|v| **v == 3)
-            .count();
+            .count() + 1;
         let ones = differences
             .iter()
             .filter(|v| **v == 1)
-            .count();
+            .count() + 1;
 
         println!("{:#?}", differences);
         println!("threes {} ones {} product {}", threes, ones, threes * ones);
