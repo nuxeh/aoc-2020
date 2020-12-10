@@ -37,18 +37,19 @@ fn main() {
         println!("threes {} ones {} product {}", threes, ones, threes * ones);
 
         // Part 2
+        joltage_adapters.reverse();
         part_2(joltage_adapters.as_slice());
     }
 }
 
 fn part_2(i: &[u16]) {
-    println!("{}", count(i, 0, 0));
+    println!("{}", count(i, 0));
 }
 
-fn count(adapters: &[u16], n: u16, c: u32) -> u32 {
-    let mut c = c;
-    for a in adapters.iter().filter(|a| (**a as i16 - n as i16).abs() <= 3) {
-        c += count(adapters, *a, c);
-    }
-    c
+fn count(adapters: &[u16], n: u16) -> u32 {
+    adapters
+        .iter()
+        .filter(|a| (**a as i16 - n as i16).abs() <= 3)
+        .map(|a| count(adapters, *a))
+        .sum()
 }
