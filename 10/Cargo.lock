@@ -43,6 +43,7 @@ dependencies = [
 [[package]]
 name = "aocf"
 version = "0.1.10"
+source = "git+https://github.com/nuxeh/aocf#e9f64bb07b1814a6e6f15ad6640c9480ccff2065"
 dependencies = [
  "atty",
  "failure",

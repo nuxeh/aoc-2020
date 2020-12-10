@@ -36,5 +36,13 @@ fn main() {
         println!("{:#?}", differences);
         println!("threes {} ones {} product {}", threes, ones, threes * ones);
 
+        // Part 2
+        part_2(joltage_adapters.as_slice());
     }
+}
+
+
+
+fn part_2(i: &[u16]) {
+
 }
