@@ -2,7 +2,7 @@ use aocf::Aoc;
 use std::fmt;
 use itertools::izip;
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 enum Cell {
     None,
     Floor,
@@ -88,8 +88,35 @@ fn tick_window(window: &[(&Cell, &Cell, &Cell)]) -> Vec<(Cell, Cell, Cell)> {
                     _ => 0,
                 }
             } else {
-                l.iter().filter(|c| c == Cell::OccupiedSeat).count()
+                if let (a, b, c) = l {
+                    let mut count = 0;
+                    if **a == Cell::OccupiedSeat {
+                        count += 1;
+                    }
+                    if **b == Cell::OccupiedSeat {
+                        count += 1;
+                    }
+                    if **c == Cell::OccupiedSeat {
+                        count += 1;
+                    }
+                    count
+                } else {
+                    0
+                }
             }
-        });
+        })
+        .sum();
 
+    let seat = window[1].1;
+
+    let new_seat = match (seat, occupied) {
+        (Cell::EmptySeat, 0) => Cell::OccupiedSeat,
+        (Cell::OccupiedSeat, n) if n >= 4 => Cell::OccupiedSeat,
+        _ => *seat,
+    };
+
+    let mut new_window = window.clone();
+    new_window[1].1 = &new_seat;
+
+    new_window
 }
