@@ -62,7 +62,8 @@ fn main() {
         initial
             .windows(3)
             .for_each(|v| {
-                v
+                v[0].iter().zip(v[1].iter().zip(v[2].iter()))
+                    .collect::<Vec<Vec<Cell>>>()
                     .windows(3)
                     .for_each(|w| println!("{:?}", w))
             });
