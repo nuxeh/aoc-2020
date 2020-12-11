@@ -1,5 +1,6 @@
 use aocf::Aoc;
 use std::fmt;
+use itertools::izip;
 
 #[derive(Debug, Clone, Copy)]
 enum Cell {
@@ -62,8 +63,8 @@ fn main() {
         initial
             .windows(3)
             .for_each(|v| {
-                v[0].iter().zip(v[1].iter().zip(v[2].iter()))
-                    .collect::<Vec<Vec<Cell>>>()
+                izip!(&v[0], &v[1], &v[2])
+                    .collect::<Vec<(&Cell, &Cell, &Cell)>>()
                     .windows(3)
                     .for_each(|w| println!("{:?}", w))
             });

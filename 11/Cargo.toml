@@ -6,3 +6,4 @@ edition = "2018"
 
 [dependencies]
 aocf = { path = "/home/ed/git/aocf" }
+itertools = "0.9.0"
