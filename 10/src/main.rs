@@ -61,15 +61,19 @@ fn count(adapters: &[u16], weights: &HashMap<&u16, u32>, n: u16) -> u32 {
         return 1;
     }
 
+    if let Some(w) = weights.get(&n) {
+        return *w;
+    }
+
     adapters
         .iter()
         .rev()
         .filter(|v| (**v as i32 - n as i32).abs() <= 3)
         .map(|v| {
-            println!("{}", v);
             if let Some(w) = weights.get(v) {
                 *w
             } else {
+            println!("{}", v);
                 count(adapters, weights, get_next(adapters, *v))
             }
         })
