@@ -1,4 +1,5 @@
 use aocf::Aoc;
+use std::fmt;
 
 #[derive(Debug, Clone, Copy)]
 enum Cell {
@@ -6,6 +7,17 @@ enum Cell {
     Floor,
     EmptySeat,
     OccupiedSeat,
+}
+
+impl fmt::Display for Cell {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Self::Floor => write!(f, "{}", '.'),
+            Self::EmptySeat => write!(f, "{}", 'L'),
+            Self::OccupiedSeat => write!(f, "{}", '#'),
+            Self::None => write!(f, "{}", '!'),
+        }
+    }
 }
 
 fn main() {
@@ -34,5 +46,20 @@ fn main() {
             .collect();
 
         println!("{:#?}", initial);
+        draw(initial.as_slice());
+
+        loop {
+            break;
+        }
     }
+}
+
+fn draw(field: &[Vec<Cell>]) {
+   field
+       .iter()
+       .for_each(|r| {
+           r
+               .iter()
+               .for_each(|c| println!("{}", c))
+       });
 }
