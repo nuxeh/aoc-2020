@@ -1,3 +1,4 @@
+// TODO: revisit
 use aocf::Aoc;
 use std::collections::HashMap;
 
@@ -38,7 +39,6 @@ fn main() {
         println!("threes {} ones {} product {}", threes, ones, threes * ones);
 
         // Part 2
-        joltage_adapters.reverse();
         part_2(joltage_adapters.as_slice());
     }
 }
@@ -47,7 +47,7 @@ fn part_2(adapters: &[u16]) {
     let mut weights = HashMap::new();
 
     // Last first
-    for n in adapters {
+    for n in adapters.iter().rev() {
         weights.insert(n, count(&adapters, &weights, *n));
     }
 
@@ -56,19 +56,35 @@ fn part_2(adapters: &[u16]) {
 
 fn count(adapters: &[u16], weights: &HashMap<&u16, u32>, n: u16) -> u32 {
     println!("{} {:?}", n, weights);
-    if n == *adapters.first().unwrap() {
+
+    if n == *adapters.last().unwrap() {
         return 1;
     }
 
     adapters
         .iter()
+        .rev()
         .filter(|v| (**v as i32 - n as i32).abs() <= 3)
         .map(|v| {
+            println!("{}", v);
             if let Some(w) = weights.get(v) {
                 *w
             } else {
-                count(adapters, weights, *v)
+                count(adapters, weights, get_next(adapters, *v))
             }
         })
         .sum()
+}
+
+fn get_next(adapters: &[u16], n: u16) -> u16 {
+    let next = adapters
+        .iter()
+        .skip_while(|v| **v != n)
+        .skip(1)
+        .nth(0)
+        .unwrap();
+
+    println!("{} -> {}", n, next);
+
+    *next
 }
