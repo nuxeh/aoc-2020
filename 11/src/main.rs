@@ -75,6 +75,21 @@ fn main() {
     }
 }
 
-fn tick_generation() {
+fn tick_window(window: &[(&Cell, &Cell, &Cell)]) -> Vec<(Cell, Cell, Cell)> {
+    let occupied = window
+        .iter()
+        .enumerate()
+        .map(|(n, l)| {
+            if n == 1 {
+                match l {
+                    (Cell::OccupiedSeat, _, Cell::OccupiedSeat) => 2,
+                    (Cell::OccupiedSeat, _, Cell::EmptySeat) => 1,
+                    (Cell::EmptySeat, _, Cell::OccupiedSeat) => 1,
+                    _ => 0,
+                }
+            } else {
+                l.iter().filter(|c| c == Cell::OccupiedSeat).count()
+            }
+        });
 
 }
