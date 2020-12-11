@@ -61,7 +61,11 @@ fn main() {
 
         initial
             .windows(3)
-            .for_each(|v| println!("{:?}", v));
+            .for_each(|v| {
+                v
+                    .windows(3)
+                    .for_each(|w| println!("{:?}", w))
+            });
 
         loop {
             break;
