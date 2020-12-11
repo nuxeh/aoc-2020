@@ -20,6 +20,17 @@ impl fmt::Display for Cell {
     }
 }
 
+fn draw(field: &[Vec<Cell>]) {
+   field
+       .iter()
+       .for_each(|r| {
+           r
+               .iter()
+               .for_each(|c| print!("{}", c));
+           print!("\n");
+       });
+}
+
 fn main() {
     let mut aoc = Aoc::new()
         .year(Some(2020))
@@ -48,19 +59,16 @@ fn main() {
         println!("{:#?}", initial);
         draw(initial.as_slice());
 
+        initial
+            .windows(3)
+            .for_each(|v| println!("{:?}", v));
+
         loop {
             break;
         }
     }
 }
 
-fn draw(field: &[Vec<Cell>]) {
-   field
-       .iter()
-       .for_each(|r| {
-           r
-               .iter()
-               .for_each(|c| print!("{}", c));
-           print!("\n");
-       });
+fn tick_generation() {
+
 }
