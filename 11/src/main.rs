@@ -60,6 +60,7 @@ fn draw(field: &[Vec<Cell>]) {
        .for_each(|r| {
            r
                .iter()
-               .for_each(|c| println!("{}", c))
+               .for_each(|c| print!("{}", c));
+           print!("\n");
        });
 }
