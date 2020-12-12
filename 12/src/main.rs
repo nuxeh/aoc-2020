@@ -52,7 +52,7 @@ enum Direction {
     West,
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 struct Coord {
     pub x: i32,
     pub y: i32,
@@ -145,11 +145,28 @@ impl Ship {
             self.coord.move_towards(d, a.param);
         }
     }
+
+    fn exec_2(&mut self, a: Action) {
+        match a.command {
+            Command::N => self.waypoint.coord.move_towards(Direction::South, a.param),
+            Command::S => self.waypoint.coord.move_towards(Direction::North, a.param),
+            Command::E => self.waypoint.coord.move_towards(Direction::East, a.param),
+            Command::W => self.waypoint.coord.move_towards(Direction::West, a.param),
+            Command::L => self.waypoint.rotate(-1 * a.param),
+            Command::R => self.waypoint.rotate(a.param),
+            Command::F => {
+                for _ in 0..a.param {
+                    self.coord.move_to(self.coord.x + self.waypoint.coord.x, self.coord.y + self.waypoint.coord.y);
+                }
+            },
+            _ => (),
+        };
+    }
 }
 
 use std::f32::consts::PI;
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 struct Waypoint {
     coord: Coord,
 }
@@ -183,24 +200,28 @@ impl Waypoint {
 
 impl Default for Waypoint {
     fn default() -> Self {
-        Self { coord: Coord::new(0, 0) }
+        Self { coord: Coord::new(10, -1) }
     }
 }
 
 #[cfg(test)]
 #[test]
 fn test_waypoint_rotate() {
-    let mut wp = Waypoint { x: 1, y: -3};
+    let mut wp = Waypoint { coord: Coord { x: 1, y: -3 }};
     wp.rotate(90);
-    assert_eq!(wp, Waypoint { x: 3, y: 1});
+    assert_eq!(wp, Waypoint { coord: Coord { x: 3, y: 1 }});
     wp.rotate(90);
-    assert_eq!(wp, Waypoint { x: -1, y: 3});
+    assert_eq!(wp, Waypoint { coord: Coord { x: -1, y: 3 }});
     wp.rotate(90);
-    assert_eq!(wp, Waypoint { x: -3, y: -1});
+    assert_eq!(wp, Waypoint { coord: Coord { x: -3, y: -1 }});
     wp.rotate(180);
-    assert_eq!(wp, Waypoint { x: 3, y: 1});
+    assert_eq!(wp, Waypoint { coord: Coord { x: 3, y: 1 }});
     wp.rotate(270);
-    assert_eq!(wp, Waypoint { x: 1, y: -3});
+    assert_eq!(wp, Waypoint { coord: Coord { x: 1, y: -3 }});
+
+    let mut wp = Waypoint { coord: Coord { x: 3, y: 1 }};
+    wp.rotate(-90);
+    assert_eq!(wp, Waypoint { coord: Coord { x: 1, y: -3 }});
 }
 
 fn main() {
@@ -224,6 +245,21 @@ fn main() {
             .iter()
             .map(|a| {
                 ship.exec(*a);
+                (a, ship)
+            });
+
+        course
+            .for_each(|s| println!("{:?}", s));
+
+        println!("{:#?}", ship);
+        println!("{}", ship.coord.x.abs() + ship.coord.y.abs());
+
+        // Part 2
+        let mut ship = Ship::default();
+        let course = actions
+            .iter()
+            .map(|a| {
+                ship.exec_2(*a);
                 (a, ship)
             });
 
