@@ -67,7 +67,7 @@ fn main() {
                     .collect::<Vec<(&Cell, &Cell, &Cell)>>()
                     .windows(3)
                     .map(tick_window)
-                    .collect::<Vec<(Cell, Cell, Cell)>>()
+                    .map(|v| v.iter().map(|v| vec![v.0, v.1, v.2]).collect())
             })
             .collect();
 
