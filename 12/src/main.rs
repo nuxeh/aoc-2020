@@ -110,6 +110,40 @@ impl Ship {
     }
 }
 
+struct Waypoint {
+    x: i32,
+    y: i32,
+}
+
+
+impl Waypoint {
+    ///               | * (1, -3)
+    ///               |
+    /// (-3,-1) *     |
+    ///         -------------
+    ///               |     * (3, 1)
+    ///               |
+    ///      (-1,3) * |
+    fn rotate(&mut self, d: i32) {
+        match d {
+            0 => (),
+            90 => {
+                self.x = self.y;
+                self.y = self.x;
+            },
+            180 => {
+                self.x = -1 * self.x;
+                self.y = -1 * self.x;
+            },
+            270 => {
+                self.x = self.y;
+                self.y = self.x;
+            },
+            _ => panic!(format!("bad degrees ({})", d)),
+        }
+    }
+}
+
 fn main() {
     let mut aoc = Aoc::new()
         .year(Some(2020))
