@@ -52,13 +52,23 @@ enum Direction {
     West,
 }
 
-impl (i32, i32) {
-    fn move_to(&mut self: &mut T, x: i32, y: i32) {
+#[derive(Debug, Clone, Copy)]
+struct Coord {
+    pub x: i32,
+    pub y: i32,
+}
+
+impl Coord {
+    fn new(x: i32, y: i32) -> Self {
+        Self { x, y }
+    }
+
+    fn move_to(&mut self, x: i32, y: i32) {
         self.x = x;
         self.y = y;
     }
 
-    fn move_towards(&mut self: &mut T, dir: Direction, amount: i32) {
+    fn move_towards(&mut self, dir: Direction, amount: i32) {
         match dir {
             Direction::North => self.y += amount,
             Direction::South => self.y -= amount,
@@ -101,16 +111,14 @@ impl Direction {
 
 #[derive(Debug, Clone, Copy)]
 struct Ship {
-    pub coord: (i32, i32),
+    pub coord: Coord,
     heading: Direction,
     waypoint: Waypoint,
 }
 
-impl Mover for Ship {}
-
 impl Default for Ship {
     fn default() -> Self {
-        Self { x:0, y:0, heading: Direction::East, waypoint: Waypoint::default() }
+        Self { coord: Coord::new(0, 0), heading: Direction::East, waypoint: Waypoint::default() }
     }
 }
 
@@ -134,16 +142,16 @@ impl Ship {
         };
 
         if let Some(d) = dir {
-            self.move_towards(d, a.param);
+            self.coord.move_towards(d, a.param);
         }
     }
 }
 
 use std::f32::consts::PI;
 
-#[derive(Debug, PartialEq, Clone, Copy)]
+#[derive(Debug, Clone, Copy)]
 struct Waypoint {
-    coord: (i32, i32),
+    coord: Coord,
 }
 
 impl Waypoint {
@@ -159,25 +167,23 @@ impl Waypoint {
         match d {
             0 => (),
             180 => {
-                self.x = -1 * self.x;
-                self.y = -1 * self.y;
+                self.coord.x = -1 * self.coord.x;
+                self.coord.y = -1 * self.coord.y;
             },
             _ => {
                 let sin = theta.sin() as i32;
                 let cos = theta.cos() as i32;
-                let new_x = (cos * self.x) + (-1 * sin * self.y);
-                self.y = (sin * self.x) + (-1 * cos * self.y);
-                self.x = new_x;
+                let new_x = (cos * self.coord.x) + (-1 * sin * self.coord.y);
+                self.coord.y = (sin * self.coord.x) + (-1 * cos * self.coord.y);
+                self.coord.x = new_x;
             },
         }
     }
 }
 
-impl Mover for Waypoint {}
-
 impl Default for Waypoint {
     fn default() -> Self {
-        Self { x: 0, y: 0 }
+        Self { coord: Coord::new(0, 0) }
     }
 }
 
@@ -225,6 +231,6 @@ fn main() {
             .for_each(|s| println!("{:?}", s));
 
         println!("{:#?}", ship);
-        println!("{}", ship.x.abs() + ship.y.abs());
+        println!("{}", ship.coord.x.abs() + ship.coord.y.abs());
     }
 }
