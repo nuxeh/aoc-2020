@@ -161,6 +161,7 @@ fn part_2(initial: &Vec<Vec<Cell>>) {
             for y in 0..max_y {
                 let seat = cur_gen[y][x];
                 let occupied = eval_cell_sightlines(&cur_gen, x, y, max_x - 1, max_y - 1);
+                //println!("{}", occupied);
 
                 let new_seat = match (seat, occupied) {
                     (Cell::EmptySeat, 0) => Cell::OccupiedSeat,
@@ -186,6 +187,8 @@ fn part_2(initial: &Vec<Vec<Cell>>) {
             cur_occ = occupied;
         }
     }
+
+    println!("{}", cur_occ);
 }
 
 fn eval_cell_sightlines(field: &Vec<Vec<Cell>>, x: usize, y: usize, max_x: usize, max_y: usize) -> usize {
