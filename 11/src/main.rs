@@ -60,18 +60,23 @@ fn main() {
         println!("{:#?}", initial);
         draw(initial.as_slice());
 
-        let gen1: Vec<Vec<Cell>> = initial
+        let mut new_gen = initial.clone();
+
+        initial
             .windows(3)
             .enumerate()
-            .map(|(l, v)| {
+            .for_each(|(l, v)| {
                 izip!(&v[0], &v[1], &v[2])
                     .map(|(a, b, c)| vec![*a, *b, *c])
                     .collect::<Vec<Vec<Cell>>>()
                     .windows(3)
                     .enumerate()
-                    .for_each(tick_window)
-                    .collect()
+                    .for_each(|(c, v)| {
+                        new_gen[l+1][c+1] = evaluate_window(v);
+                    })
             });
+
+        draw(&new_gen);
 
         loop {
             break;
@@ -79,7 +84,7 @@ fn main() {
     }
 }
 
-fn tick_window(window: &[Vec<Cell>]) -> Cell {
+fn evaluate_window(window: &[Vec<Cell>]) -> Cell {
     draw(window);
 
     let occupied = window
