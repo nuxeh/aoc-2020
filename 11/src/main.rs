@@ -1,5 +1,6 @@
 use aocf::Aoc;
 use std::fmt;
+use std::iter;
 use itertools::izip;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -42,9 +43,19 @@ fn main() {
     let input = aoc.get_input(false);
 
     if let Ok(i) = input {
-        let initial: Vec<Vec<Cell>> = i.lines()
+        let line_length: usize = i.lines().nth(0).unwrap().len();
+        let pad: String = iter::repeat('.').take(line_length).collect();
+
+        let j = format!("{}\n{}{}", pad, i, pad);
+
+        println!("{}", i);
+        println!("{}", j);
+
+        let initial: Vec<Vec<Cell>> = j.lines()
             .map(|l| {
-                l.chars()
+                iter::once('.')
+                    .chain(l.chars())
+                    .chain(iter::once('.'))
                     .map(|c| {
                         match c {
                             '.' => Cell::Floor,
@@ -57,7 +68,7 @@ fn main() {
             })
             .collect();
 
-        println!("{:#?}", initial);
+        //println!("{:#?}", initial);
         draw(initial.as_slice());
 
         let mut new_gen = initial.clone();
@@ -85,7 +96,7 @@ fn main() {
 }
 
 fn evaluate_window(window: &[Vec<Cell>]) -> Cell {
-    draw(window);
+    //draw(window);
 
     let occupied = window
         .iter()
@@ -107,7 +118,7 @@ fn evaluate_window(window: &[Vec<Cell>]) -> Cell {
         })
         .sum();
 
-    println!("{}\n", occupied);
+    //println!("{}\n", occupied);
 
     let seat = window[1][1];
 
