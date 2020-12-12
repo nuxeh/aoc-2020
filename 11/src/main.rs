@@ -75,7 +75,7 @@ fn main() {
     }
 }
 
-fn tick_window(window: &[(&Cell, &Cell, &Cell)]) -> Vec<(Cell, Cell, Cell)> {
+fn tick_window<'a>(window: &'a [(&'a Cell, &'a Cell, &'a Cell)]) -> &'a [(&'a Cell, &'a Cell, &'a Cell)] {
     let occupied = window
         .iter()
         .enumerate()
