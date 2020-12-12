@@ -9,6 +9,7 @@ enum Cell {
     Floor,
     EmptySeat,
     OccupiedSeat,
+    Seen,
 }
 
 impl fmt::Display for Cell {
@@ -17,6 +18,7 @@ impl fmt::Display for Cell {
             Self::Floor => write!(f, "{}", '.'),
             Self::EmptySeat => write!(f, "{}", 'L'),
             Self::OccupiedSeat => write!(f, "{}", '#'),
+            Self::Seen => write!(f, "{}", '*'),
             Self::None => write!(f, "{}", '!'),
         }
     }
@@ -174,9 +176,8 @@ fn part_2(initial: &Vec<Vec<Cell>>) {
         }
 
         draw(&new_gen);
-        cur_gen = new_gen;
 
-        let occupied: usize = cur_gen
+        let occupied: usize = new_gen
             .iter()
             .map(|l| l.iter().filter(|s| **s == Cell::OccupiedSeat).count())
             .sum();
@@ -186,12 +187,17 @@ fn part_2(initial: &Vec<Vec<Cell>>) {
         } else {
             cur_occ = occupied;
         }
+
+        cur_gen = new_gen;
     }
 
     println!("{}", cur_occ);
 }
 
 fn eval_cell_sightlines(field: &Vec<Vec<Cell>>, x: usize, y: usize, max_x: usize, max_y: usize) -> usize {
+    print!("{} {} | ", x, y);
+    let mut seen = field.clone();
+
     let mut count = 0;
 
     let mut cur_x = x;
@@ -199,6 +205,7 @@ fn eval_cell_sightlines(field: &Vec<Vec<Cell>>, x: usize, y: usize, max_x: usize
         if cur_x == max_x { break 0 }
         cur_x += 1;
         if field[y][cur_x] == Cell::OccupiedSeat { break 1 }
+        seen[y][cur_x] = Cell::Seen;
     };
 
     let mut cur_x = x;
@@ -206,6 +213,7 @@ fn eval_cell_sightlines(field: &Vec<Vec<Cell>>, x: usize, y: usize, max_x: usize
         if cur_x == 0 { break 0}
         cur_x -= 1;
         if field[y][cur_x] == Cell::OccupiedSeat { break 1 }
+        seen[y][cur_x] = Cell::Seen;
     };
 
     let mut cur_y = x;
@@ -213,6 +221,7 @@ fn eval_cell_sightlines(field: &Vec<Vec<Cell>>, x: usize, y: usize, max_x: usize
         if cur_y == max_y { break 0}
         cur_y += 1;
         if field[cur_y][x] == Cell::OccupiedSeat { break 1 }
+        seen[y][cur_x] = Cell::Seen;
     };
 
     let mut cur_y = y;
@@ -220,6 +229,7 @@ fn eval_cell_sightlines(field: &Vec<Vec<Cell>>, x: usize, y: usize, max_x: usize
         if cur_y == 0 { break 0}
         cur_y -= 1;
         if field[cur_y][x] == Cell::OccupiedSeat { break 1 }
+        seen[y][cur_x] = Cell::Seen;
     };
 
     let mut cur_x = x;
@@ -229,6 +239,7 @@ fn eval_cell_sightlines(field: &Vec<Vec<Cell>>, x: usize, y: usize, max_x: usize
         cur_x += 1;
         cur_y += 1;
         if field[cur_y][cur_x] == Cell::OccupiedSeat { break 1 }
+        seen[y][cur_x] = Cell::Seen;
     };
 
     let mut cur_x = x;
@@ -238,6 +249,7 @@ fn eval_cell_sightlines(field: &Vec<Vec<Cell>>, x: usize, y: usize, max_x: usize
         cur_x -= 1;
         cur_y -= 1;
         if field[cur_y][cur_x] == Cell::OccupiedSeat { break 1 }
+        seen[y][cur_x] = Cell::Seen;
     };
 
     let mut cur_x = x;
@@ -247,6 +259,7 @@ fn eval_cell_sightlines(field: &Vec<Vec<Cell>>, x: usize, y: usize, max_x: usize
         cur_x += 1;
         cur_y -= 1;
         if field[cur_y][cur_x] == Cell::OccupiedSeat { break 1 }
+        seen[y][cur_x] = Cell::Seen;
     };
 
     let mut cur_x = x;
@@ -256,7 +269,10 @@ fn eval_cell_sightlines(field: &Vec<Vec<Cell>>, x: usize, y: usize, max_x: usize
         cur_x -= 1;
         cur_y += 1;
         if field[cur_y][cur_x] == Cell::OccupiedSeat { break 1 }
+        seen[y][cur_x] = Cell::Seen;
     };
+
+    draw(&seen);
 
     count
 }
