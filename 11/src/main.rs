@@ -62,15 +62,16 @@ fn main() {
 
         let gen1: Vec<Vec<Cell>> = initial
             .windows(3)
-            .map(|v| {
+            .enumerate()
+            .map(|(l, v)| {
                 izip!(&v[0], &v[1], &v[2])
                     .map(|(a, b, c)| vec![*a, *b, *c])
                     .collect::<Vec<Vec<Cell>>>()
                     .windows(3)
-                    .map(tick_window)
+                    .enumerate()
+                    .for_each(tick_window)
                     .collect()
-            })
-            .collect();
+            });
 
         loop {
             break;
@@ -78,52 +79,38 @@ fn main() {
     }
 }
 
-fn tick_window(window: &[Vec<Cell>]) -> Vec<Vec<Cell>> {
+fn tick_window(window: &[Vec<Cell>]) -> Cell {
+    draw(window);
+
     let occupied = window
         .iter()
         .enumerate()
         .map(|(n, l)| {
             if n == 1 {
-                match l {
-                    (Cell::OccupiedSeat, _, Cell::OccupiedSeat) => 2,
-                    (Cell::OccupiedSeat, _, Cell::EmptySeat) => 1,
-                    (Cell::EmptySeat, _, Cell::OccupiedSeat) => 1,
-                    _ => 0,
-                }
+                l
+                    .iter()
+                    .enumerate()
+                    .filter(|(n, _)| *n != 1)
+                    .filter(|(_, s)| **s == Cell::OccupiedSeat)
+                    .count()
             } else {
-                if let (a, b, c) = l {
-                    let mut count = 0;
-                    if **a == Cell::OccupiedSeat {
-                        count += 1;
-                    }
-                    if **b == Cell::OccupiedSeat {
-                        count += 1;
-                    }
-                    if **c == Cell::OccupiedSeat {
-                        count += 1;
-                    }
-                    count
-                } else {
-                    0
-                }
+                l
+                    .iter()
+                    .filter(|v| **v == Cell::OccupiedSeat)
+                    .count()
             }
         })
         .sum();
 
-    let seat = window[1].1;
+    println!("{}\n", occupied);
+
+    let seat = window[1][1];
 
     let new_seat = match (seat, occupied) {
         (Cell::EmptySeat, 0) => Cell::OccupiedSeat,
         (Cell::OccupiedSeat, n) if n >= 4 => Cell::OccupiedSeat,
-        _ => *seat,
+        _ => seat,
     };
 
-    let mut new_window: Vec<(Cell, Cell, Cell)> = window.clone()
-        .iter()
-        .map(|v| (*v.0, *v.1, *v.2))
-        .collect();
-
-    new_window[1].1 = new_seat;
-
-    new_window
+    new_seat
 }
