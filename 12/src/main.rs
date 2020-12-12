@@ -87,24 +87,24 @@ impl Default for Ship {
 impl Ship {
     fn exec(&mut self, a: Action) {
         let dir = match a.dir {
-            Direction::North | Direction::South | Direction::East | Direction::West => a.dir,
-            Direction::Forward => self.heading,
+            Direction::North | Direction::South | Direction::East | Direction::West => Some(a.dir),
+            Direction::Forward => Some(self.heading),
             Direction::Left => {
                 self.heading = self.heading.rotate(-1 * a.param);
-                Direction::None
+                None
             },
             Direction::Right => {
                 self.heading = self.heading.rotate(a.param);
-                Direction::None
+                None
             },
-            _ => Direction::None,
+            _ => None,
         };
 
         match dir {
-            Direction::North => self.y += a.param,
-            Direction::South => self.y -= a.param,
-            Direction::East => self.x += a.param,
-            Direction::West => self.x -= a.param,
+            Some(Direction::North) => self.y += a.param,
+            Some(Direction::South) => self.y -= a.param,
+            Some(Direction::East) => self.x += a.param,
+            Some(Direction::West) => self.x -= a.param,
             _ => (),
         }
     }
@@ -127,11 +127,16 @@ fn main() {
 
         // Part 1
         let mut ship = Ship::default();
-        actions
+        let course = actions
             .iter()
-            .for_each(|a| ship.exec(*a));
+            .map(|a| {
+                ship.exec(*a);
+                (a, ship)
+            });
 
-        println!("{:#?}", actions);
+        course
+            .for_each(|s| println!("{:?}", s));
+
         println!("{:#?}", ship);
         println!("{}", ship.x.abs() + ship.y.abs());
     }
