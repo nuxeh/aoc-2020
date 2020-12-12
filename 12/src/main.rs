@@ -132,10 +132,9 @@ impl Waypoint {
             0 => (),
             180 => {
                 self.x = -1 * self.x;
-                self.y = -1 * self.x;
+                self.y = -1 * self.y;
             },
             _ => {
-                println!("cos {} sin {}", theta.cos() as i32, theta.sin() as i32);
                 let sin = theta.sin() as i32;
                 let cos = theta.cos() as i32;
                 let new_x = (cos * self.x) + (-1 * sin * self.y);
@@ -156,6 +155,10 @@ fn test_waypoint_rotate() {
     assert_eq!(wp, Waypoint { x: -1, y: 3});
     wp.rotate(90);
     assert_eq!(wp, Waypoint { x: -3, y: -1});
+    wp.rotate(180);
+    assert_eq!(wp, Waypoint { x: 3, y: 1});
+    wp.rotate(270);
+    assert_eq!(wp, Waypoint { x: 1, y: -3});
 }
 
 fn main() {
