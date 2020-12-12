@@ -160,7 +160,7 @@ fn part_2(initial: &Vec<Vec<Cell>>) {
         for x in 0..max_x {
             for y in 0..max_y {
                 let seat = cur_gen[y][x];
-                let occupied = eval_cell_sightlines(&cur_gen, x, y, max_x, max_y);
+                let occupied = eval_cell_sightlines(&cur_gen, x, y, max_x - 1, max_y - 1);
 
                 let new_seat = match (seat, occupied) {
                     (Cell::EmptySeat, 0) => Cell::OccupiedSeat,
@@ -193,66 +193,66 @@ fn eval_cell_sightlines(field: &Vec<Vec<Cell>>, x: usize, y: usize, max_x: usize
 
     let mut cur_x = x;
     count += loop {
+        if cur_x == max_x { break 0 }
         cur_x += 1;
         if field[y][cur_x] == Cell::OccupiedSeat { break 1 }
-        if cur_x == max_x { break 0}
     };
 
     let mut cur_x = x;
     count += loop {
+        if cur_x == 0 { break 0}
         cur_x -= 1;
         if field[y][cur_x] == Cell::OccupiedSeat { break 1 }
-        if cur_x == 0 { break 0}
     };
 
     let mut cur_y = x;
     count += loop {
-        cur_y += 1;
-        if field[cur_y][x] == Cell::OccupiedSeat { break 1 }
         if cur_y == max_y { break 0}
+        cur_y += 1;
+        if field[cur_y][x] == Cell::OccupiedSeat { break 1 }
     };
 
     let mut cur_y = y;
     count += loop {
+        if cur_y == 0 { break 0}
         cur_y -= 1;
         if field[cur_y][x] == Cell::OccupiedSeat { break 1 }
-        if cur_y == 0 { break 0}
     };
 
     let mut cur_x = x;
     let mut cur_y = y;
     count += loop {
-        cur_x += 1;
-        cur_y += 1;
-        if field[cur_y][cur_x] == Cell::OccupiedSeat { break 1 }
         if cur_x == max_x || cur_y == max_y { break 0}
+        cur_x += 1;
+        cur_y += 1;
+        if field[cur_y][cur_x] == Cell::OccupiedSeat { break 1 }
     };
 
     let mut cur_x = x;
     let mut cur_y = y;
     count += loop {
+        if cur_x == 0 || cur_y == 0 { break 0}
         cur_x -= 1;
         cur_y -= 1;
         if field[cur_y][cur_x] == Cell::OccupiedSeat { break 1 }
-        if cur_x == 0 || cur_y == 0 { break 0}
     };
 
     let mut cur_x = x;
     let mut cur_y = y;
     count += loop {
+        if cur_x == max_x || cur_y == 0 { break 0}
         cur_x += 1;
         cur_y -= 1;
         if field[cur_y][cur_x] == Cell::OccupiedSeat { break 1 }
-        if cur_x == max_x || cur_y == 0 { break 0}
     };
 
     let mut cur_x = x;
     let mut cur_y = y;
     count += loop {
+        if cur_x == 0 || cur_y == max_y { break 0}
         cur_x -= 1;
         cur_y += 1;
         if field[cur_y][cur_x] == Cell::OccupiedSeat { break 1 }
-        if cur_x == 0 || cur_y == max_y { break 0}
     };
 
     count
