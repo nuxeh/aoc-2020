@@ -40,39 +40,37 @@ impl Direction {
             'F' => Self::Forward,
             _ => Self::None,
         }
+    }
 
-        fn degrees_left(&self, d: u32) -> Self {
-            match (self, d {
-                (Self::North, 90) => ,
-                (Self::East, 90) => ,
-                (Self::South, 90) => ,
-                (Self::West, 90) => ,
-                (Self::North, 180) => ,
-                (Self::East, 180) => ,
-                (Self::South, 180) => ,
-                (Self::West, 180) => ,
-                (Self::North, 270) => ,
-                (Self::East, 270) => ,
-                (Self::South, 270) => ,
-                (Self::West, 270) => ,
-            }
+    fn from_degrees(d: u32) -> Self {
+        match d {
+            0 => Self::North,
+            90 => Self::East,
+            180 => Self::South,
+            270 => Self::West,
+            _ => Self::None,
         }
+    }
 
-        fn degrees_left(&self, d: u32) -> Self {
-            match (self, d {
-                (Self::North, 90) => ,
-                (Self::East, 90) => ,
-                (Self::South, 90) => ,
-                (Self::West, 90) => ,
-                (Self::North, 180) => ,
-                (Self::East, 180) => ,
-                (Self::South, 180) => ,
-                (Self::West, 180) => ,
-                (Self::North, 270) => ,
-                (Self::East, 270) => ,
-                (Self::South, 270) => ,
-                (Self::West, 270) => ,
+    fn get_degrees(&self) -> Option<u32> {
+        match self {
+            Self::North => Some(0),
+            Self::East => Some(90),
+            Self::South => Some(180),
+            Self::West => Some(270),
+            _ => None,
+        }
+    }
+
+    fn rotate(self, d: u32, left: bool) -> Self {
+        if let Some(deg) = self.get_degrees() {
+            if left {
+                Self::from_degrees(deg - d)
+            } else {
+                Self::from_degrees(deg + d)
             }
+        } else {
+            Self::None
         }
     }
 }
@@ -92,6 +90,7 @@ impl Default for Ship {
 
 impl Ship {
     fn exec(&mut self, a: Action) {
+        /*
         match a.dir {
             Self::North => self.,
             Self::South => self.,
@@ -100,7 +99,7 @@ impl Ship {
             Self::Left => self.,
             Self::Right => self.,
             Self::Forward => self.,
-        }
+        }*/
     }
 }
 
