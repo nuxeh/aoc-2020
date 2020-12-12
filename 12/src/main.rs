@@ -2,7 +2,7 @@ use aocf::Aoc;
 
 #[derive(Debug, Clone, Copy)]
 struct Action {
-    pub dir: Direction,
+    pub command: Command,
     pub param: i32,
 }
 
@@ -10,38 +10,54 @@ impl Action {
     fn from_str(s: &str) -> Self {
         let mut chars = s.chars();
         Self {
-            dir: Direction::from_char(chars.next().unwrap()),
+            command: Command::from_char(chars.next().unwrap()),
             param: chars.collect::<String>().parse().unwrap(),
         }
     }
 }
 
 #[derive(Debug, Clone, Copy)]
+enum Command {
+    None,
+    N,
+    S,
+    E,
+    W,
+    L,
+    R,
+    F,
+}
+
+impl Command {
+    fn from_char(c: char) -> Self {
+        match c {
+            'N' => Self::N,
+            'S' => Self::S,
+            'E' => Self::E,
+            'W' => Self::W,
+            'L' => Self::L,
+            'R' => Self::R,
+            'F' => Self::F,
+            _ => Self::None,
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy)]
 enum Direction {
-    NoneDirection,
+    None,
     North,
     South,
     East,
     West,
-    Left,
-    Right,
-    Forward,
+}
+
+trait Mover {
+    fn move_to(&mut self, x: i32, y: i32);
+    fn exec_move(&mut self, action: Action);
 }
 
 impl Direction {
-    fn from_char(c: char) -> Self {
-        match c {
-            'N' => Self::North,
-            'S' => Self::South,
-            'E' => Self::East,
-            'W' => Self::West,
-            'L' => Self::Left,
-            'R' => Self::Right,
-            'F' => Self::Forward,
-            _ => Self::NoneDirection,
-        }
-    }
-
     fn from_degrees(d: i32) -> Self {
         match d {
             0 => Self::North,
@@ -76,24 +92,28 @@ struct Ship {
     pub x: i32,
     pub y: i32,
     heading: Direction,
+    waypoint: Waypoint,
 }
 
 impl Default for Ship {
     fn default() -> Self {
-        Self { x:0, y:0, heading: Direction::East }
+        Self { x:0, y:0, heading: Direction::East, waypoint: Waypoint::default() }
     }
 }
 
 impl Ship {
     fn exec(&mut self, a: Action) {
-        let dir = match a.dir {
-            Direction::North | Direction::South | Direction::East | Direction::West => Some(a.dir),
-            Direction::Forward => Some(self.heading),
-            Direction::Left => {
+        let dir = match a.command {
+            Command::N => Some(Direction::North),
+            Command::E => Some(Direction::East),
+            Command::S => Some(Direction::South),
+            Command::W => Some(Direction::West),
+            Command::F => Some(self.heading),
+            Command::L => {
                 self.heading = self.heading.rotate(-1 * a.param);
                 None
             },
-            Direction::Right => {
+            Command::R => {
                 self.heading = self.heading.rotate(a.param);
                 None
             },
@@ -112,7 +132,7 @@ impl Ship {
 
 use std::f32::consts::PI;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone, Copy)]
 struct Waypoint {
     x: i32,
     y: i32,
@@ -142,6 +162,12 @@ impl Waypoint {
                 self.x = new_x;
             },
         }
+    }
+}
+
+impl Default for Waypoint {
+    fn default() -> Self {
+        Self { x: 0, y: 0 }
     }
 }
 
