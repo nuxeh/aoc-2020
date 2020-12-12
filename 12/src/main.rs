@@ -18,7 +18,7 @@ impl Action {
 
 #[derive(Debug, Clone, Copy)]
 enum Direction {
-    None,
+    NoneDirection,
     North,
     South,
     East,
@@ -38,17 +38,17 @@ impl Direction {
             'L' => Self::Left,
             'R' => Self::Right,
             'F' => Self::Forward,
-            _ => Self::None,
+            _ => Self::NoneDirection,
         }
     }
 
     fn from_degrees(d: i32) -> Self {
         match d {
             0 => Self::North,
-            90 => Self::East,
-            180 => Self::South,
-            270 => Self::West,
-            _ => Self::None,
+            -270 | 90 => Self::East,
+            -180 | 180 => Self::South,
+            -90 | 270 => Self::West,
+            _ => panic!(format!("bad degrees ({})", d)),
         }
     }
 
@@ -58,7 +58,7 @@ impl Direction {
             Self::East => Some(90),
             Self::South => Some(180),
             Self::West => Some(270),
-            _ => None,
+            _ => panic!(format!("{:?}", self)),
         }
     }
 
@@ -66,7 +66,7 @@ impl Direction {
         if let Some(deg) = self.get_degrees() {
             Self::from_degrees((deg + d) % 360)
         } else {
-            Self::None
+            panic!(format!("{:?} {}", self, d))
         }
     }
 }
