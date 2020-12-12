@@ -3,7 +3,7 @@ use aocf::Aoc;
 #[derive(Debug, Clone, Copy)]
 struct Action {
     pub dir: Direction,
-    pub param: u32,
+    pub param: i32,
 }
 
 impl Action {
@@ -42,7 +42,7 @@ impl Direction {
         }
     }
 
-    fn from_degrees(d: u32) -> Self {
+    fn from_degrees(d: i32) -> Self {
         match d {
             0 => Self::North,
             90 => Self::East,
@@ -52,7 +52,7 @@ impl Direction {
         }
     }
 
-    fn get_degrees(&self) -> Option<u32> {
+    fn get_degrees(&self) -> Option<i32> {
         match self {
             Self::North => Some(0),
             Self::East => Some(90),
@@ -62,13 +62,9 @@ impl Direction {
         }
     }
 
-    fn rotate(self, d: u32, left: bool) -> Self {
+    fn rotate(self, d: i32) -> Self {
         if let Some(deg) = self.get_degrees() {
-            if left {
-                Self::from_degrees(deg - d)
-            } else {
-                Self::from_degrees(deg + d)
-            }
+            Self::from_degrees((deg + d) % 360)
         } else {
             Self::None
         }
@@ -90,16 +86,16 @@ impl Default for Ship {
 
 impl Ship {
     fn exec(&mut self, a: Action) {
-        /*
         match a.dir {
-            Self::North => self.,
-            Self::South => self.,
-            Self::East => self.,
-            Self::West => self.,
-            Self::Left => self.,
-            Self::Right => self.,
-            Self::Forward => self.,
-        }*/
+            Direction::North => self.y += a.param,
+            Direction::South => self.y -= a.param,
+            Direction::East => self.x += a.param,
+            Direction::West => self.x -= a.param,
+            Direction::Left => self.heading = self.heading.rotate(-1 * a.param),
+            Direction::Right => self.heading = self.heading.rotate(a.param),
+            //Direction::Forward => self.,
+            _ => (),
+        }
     }
 }
 
