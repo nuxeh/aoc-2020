@@ -107,6 +107,8 @@ fn main() {
         }
 
         println!("{}", cur_occ);
+
+        part_2(&initial);
     }
 }
 
@@ -139,9 +141,119 @@ fn evaluate_window(window: &[Vec<Cell>]) -> Cell {
 
     let new_seat = match (seat, occupied) {
         (Cell::EmptySeat, 0) => Cell::OccupiedSeat,
-        (Cell::OccupiedSeat, n) if n >= 4=> Cell::EmptySeat,
+        (Cell::OccupiedSeat, n) if n >= 4 => Cell::EmptySeat,
         _ => seat,
     };
 
     new_seat
+}
+
+fn part_2(initial: &Vec<Vec<Cell>>) {
+    let mut cur_gen = initial.clone();
+    let mut cur_occ = 0;
+    let max_y = initial.iter().count();
+    let max_x = initial.iter().nth(0).unwrap().len();
+
+    loop {
+        let mut new_gen = initial.clone();
+
+        for x in 0..max_x {
+            for y in 0..max_y {
+                let seat = cur_gen[y][x];
+                let occupied = eval_cell_sightlines(&cur_gen, x, y, max_x, max_y);
+
+                let new_seat = match (seat, occupied) {
+                    (Cell::EmptySeat, 0) => Cell::OccupiedSeat,
+                    (Cell::OccupiedSeat, n) if n >= 5 => Cell::EmptySeat,
+                    _ => seat,
+                };
+
+                new_gen[y][x] = new_seat;
+            }
+        }
+
+        draw(&new_gen);
+        cur_gen = new_gen;
+
+        let occupied: usize = cur_gen
+            .iter()
+            .map(|l| l.iter().filter(|s| **s == Cell::OccupiedSeat).count())
+            .sum();
+
+        if occupied == cur_occ {
+            break;
+        } else {
+            cur_occ = occupied;
+        }
+    }
+}
+
+fn eval_cell_sightlines(field: &Vec<Vec<Cell>>, x: usize, y: usize, max_x: usize, max_y: usize) -> usize {
+    let mut count = 0;
+
+    let mut cur_x = x;
+    count += loop {
+        cur_x += 1;
+        if field[y][cur_x] == Cell::OccupiedSeat { break 1 }
+        if cur_x == max_x { break 0}
+    };
+
+    let mut cur_x = x;
+    count += loop {
+        cur_x -= 1;
+        if field[y][cur_x] == Cell::OccupiedSeat { break 1 }
+        if cur_x == 0 { break 0}
+    };
+
+    let mut cur_y = x;
+    count += loop {
+        cur_y += 1;
+        if field[cur_y][x] == Cell::OccupiedSeat { break 1 }
+        if cur_y == max_y { break 0}
+    };
+
+    let mut cur_y = y;
+    count += loop {
+        cur_y -= 1;
+        if field[cur_y][x] == Cell::OccupiedSeat { break 1 }
+        if cur_y == 0 { break 0}
+    };
+
+    let mut cur_x = x;
+    let mut cur_y = y;
+    count += loop {
+        cur_x += 1;
+        cur_y += 1;
+        if field[cur_y][cur_x] == Cell::OccupiedSeat { break 1 }
+        if cur_x == max_x || cur_y == max_y { break 0}
+    };
+
+    let mut cur_x = x;
+    let mut cur_y = y;
+    count += loop {
+        cur_x -= 1;
+        cur_y -= 1;
+        if field[cur_y][cur_x] == Cell::OccupiedSeat { break 1 }
+        if cur_x == 0 || cur_y == 0 { break 0}
+    };
+
+    let mut cur_x = x;
+    let mut cur_y = y;
+    count += loop {
+        cur_x += 1;
+        cur_y -= 1;
+        if field[cur_y][cur_x] == Cell::OccupiedSeat { break 1 }
+        if cur_x == max_x || cur_y == 0 { break 0}
+    };
+
+    let mut cur_x = x;
+    let mut cur_y = y;
+    count += loop {
+        cur_x -= 1;
+        cur_y += 1;
+        if field[cur_y][cur_x] == Cell::OccupiedSeat { break 1 }
+        if cur_x == 0 || cur_y == max_y { break 0}
+    };
+
+    count
 }
