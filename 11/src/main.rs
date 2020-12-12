@@ -75,7 +75,7 @@ fn main() {
     }
 }
 
-fn tick_window<'a>(window: &'a [(&'a Cell, &'a Cell, &'a Cell)]) -> &'a [(&'a Cell, &'a Cell, &'a Cell)] {
+fn tick_window<'a>(window: &'a [(&'a Cell, &'a Cell, &'a Cell)]) -> Vec<(Cell, Cell, Cell)> {
     let occupied = window
         .iter()
         .enumerate()
@@ -115,8 +115,12 @@ fn tick_window<'a>(window: &'a [(&'a Cell, &'a Cell, &'a Cell)]) -> &'a [(&'a Ce
         _ => *seat,
     };
 
-    let mut new_window = window.clone();
-    new_window[1].1 = &new_seat;
+    let mut new_window: Vec<(Cell, Cell, Cell)> = window.clone()
+        .iter()
+        .map(|v| (*v.0, *v.1, *v.2))
+        .collect();
+
+    new_window[1].1 = new_seat;
 
     new_window
 }
