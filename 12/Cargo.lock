@@ -34,7 +34,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "aoc2020_day10"
+name = "aoc2020_day12"
 version = "0.1.0"
 dependencies = [
  "aocf",
