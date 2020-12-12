@@ -86,14 +86,25 @@ impl Default for Ship {
 
 impl Ship {
     fn exec(&mut self, a: Action) {
-        match a.dir {
+        let dir = match a.dir {
+            Direction::North | Direction::South | Direction::East | Direction::West => a.dir,
+            Direction::Forward => self.heading,
+            Direction::Left => {
+                self.heading = self.heading.rotate(-1 * a.param);
+                Direction::None
+            },
+            Direction::Right => {
+                self.heading = self.heading.rotate(a.param);
+                Direction::None
+            },
+            _ => Direction::None,
+        };
+
+        match dir {
             Direction::North => self.y += a.param,
             Direction::South => self.y -= a.param,
             Direction::East => self.x += a.param,
             Direction::West => self.x -= a.param,
-            Direction::Left => self.heading = self.heading.rotate(-1 * a.param),
-            Direction::Right => self.heading = self.heading.rotate(a.param),
-            //Direction::Forward => self.,
             _ => (),
         }
     }
@@ -114,6 +125,14 @@ fn main() {
             .map(Action::from_str)
             .collect();
 
+        // Part 1
+        let mut ship = Ship::default();
+        actions
+            .iter()
+            .for_each(|a| ship.exec(*a));
+
         println!("{:#?}", actions);
+        println!("{:#?}", ship);
+        println!("{}", ship.x.abs() + ship.y.abs());
     }
 }
