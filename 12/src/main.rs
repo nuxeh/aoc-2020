@@ -128,7 +128,6 @@ impl Waypoint {
     ///      (-1,3) * |
     fn rotate(&mut self, d: i32) {
         let theta = (d as f32 / 360.0) * 2.0 * PI;
-        println!("{}", theta);
         match d {
             0 => (),
             180 => {
@@ -136,9 +135,12 @@ impl Waypoint {
                 self.y = -1 * self.x;
             },
             _ => {
-                println!("{} {}", theta.cos() as i32, theta.sin() as i32);
-                self.x = ((theta.cos() as i32 * self.x) + (theta.sin() as i32 * self.y));
-                self.y = ((-1 * theta.sin() as i32 * self.x) + (theta.cos() as i32 * self.y));
+                println!("cos {} sin {}", theta.cos() as i32, theta.sin() as i32);
+                let sin = theta.sin() as i32;
+                let cos = theta.cos() as i32;
+                let new_x = (cos * self.x) + (-1 * sin * self.y);
+                self.y = (sin * self.x) + (-1 * cos * self.y);
+                self.x = new_x;
             },
         }
     }
@@ -149,7 +151,7 @@ impl Waypoint {
 fn test_waypoint_rotate() {
     let mut wp = Waypoint { x: 1, y: -3};
     wp.rotate(90);
-    //assert_eq!(wp, Waypoint { x: 3, y: 1});
+    assert_eq!(wp, Waypoint { x: 3, y: 1});
     wp.rotate(90);
     assert_eq!(wp, Waypoint { x: -1, y: 3});
     wp.rotate(90);
