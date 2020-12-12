@@ -71,27 +71,42 @@ fn main() {
         //println!("{:#?}", initial);
         draw(initial.as_slice());
 
-        let mut new_gen = initial.clone();
-
-        initial
-            .windows(3)
-            .enumerate()
-            .for_each(|(l, v)| {
-                izip!(&v[0], &v[1], &v[2])
-                    .map(|(a, b, c)| vec![*a, *b, *c])
-                    .collect::<Vec<Vec<Cell>>>()
-                    .windows(3)
-                    .enumerate()
-                    .for_each(|(c, v)| {
-                        new_gen[l+1][c+1] = evaluate_window(v);
-                    })
-            });
-
-        draw(&new_gen);
+        let mut cur_gen = initial.clone();
+        let mut cur_occ = 0;
 
         loop {
-            break;
+            let mut new_gen = initial.clone();
+
+            cur_gen
+                .windows(3)
+                .enumerate()
+                .for_each(|(l, v)| {
+                    izip!(&v[0], &v[1], &v[2])
+                        .map(|(a, b, c)| vec![*a, *b, *c])
+                        .collect::<Vec<Vec<Cell>>>()
+                        .windows(3)
+                        .enumerate()
+                        .for_each(|(c, v)| {
+                            new_gen[l+1][c+1] = evaluate_window(v);
+                        })
+                });
+
+            draw(&new_gen);
+            cur_gen = new_gen;
+
+            let occupied: usize = cur_gen
+                .iter()
+                .map(|l| l.iter().filter(|s| **s == Cell::OccupiedSeat).count())
+                .sum();
+
+            if occupied == cur_occ {
+                break;
+            } else {
+                cur_occ = occupied;
+            }
         }
+
+        println!("{}", cur_occ);
     }
 }
 
@@ -124,7 +139,7 @@ fn evaluate_window(window: &[Vec<Cell>]) -> Cell {
 
     let new_seat = match (seat, occupied) {
         (Cell::EmptySeat, 0) => Cell::OccupiedSeat,
-        (Cell::OccupiedSeat, n) if n >= 4 => Cell::OccupiedSeat,
+        (Cell::OccupiedSeat, n) if n >= 4=> Cell::EmptySeat,
         _ => seat,
     };
 
