@@ -136,8 +136,9 @@ impl Waypoint {
                 self.y = -1 * self.x;
             },
             _ => {
-                self.x = ((theta.cos() * self.x as f32) + (theta.sin() * self.y as f32)) as i32;
-                self.y = ((-1.0 * theta.sin() * self.x as f32) + (theta.cos() * self.y as f32)) as i32;
+                println!("{} {}", theta.cos() as i32, theta.sin() as i32);
+                self.x = ((theta.cos() as i32 * self.x) + (theta.sin() as i32 * self.y));
+                self.y = ((-1 * theta.sin() as i32 * self.x) + (theta.cos() as i32 * self.y));
             },
         }
     }
