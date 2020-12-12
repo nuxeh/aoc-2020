@@ -52,9 +52,21 @@ enum Direction {
     West,
 }
 
-trait Mover {
-    fn move_to(&mut self, x: i32, y: i32);
-    fn exec_move(&mut self, action: Action);
+trait Mover<T> {
+    fn move_to(&mut self: &mut T, x: i32, y: i32) {
+        self.x = x;
+        self.y = y;
+    }
+
+    fn move_towards(&mut self: &mut T, dir: Direction, amount: i32) {
+        match dir {
+            Direction::North => self.y += amount,
+            Direction::South => self.y -= amount,
+            Direction::East => self.x += amount,
+            Direction::West => self.x -= amount,
+            _ => (),
+        }
+    }
 }
 
 impl Direction {
@@ -95,6 +107,8 @@ struct Ship {
     waypoint: Waypoint,
 }
 
+impl Mover for Ship {}
+
 impl Default for Ship {
     fn default() -> Self {
         Self { x:0, y:0, heading: Direction::East, waypoint: Waypoint::default() }
@@ -120,12 +134,8 @@ impl Ship {
             _ => None,
         };
 
-        match dir {
-            Some(Direction::North) => self.y += a.param,
-            Some(Direction::South) => self.y -= a.param,
-            Some(Direction::East) => self.x += a.param,
-            Some(Direction::West) => self.x -= a.param,
-            _ => (),
+        if let Some(d) = dir {
+            self.move_towards(d, a.param);
         }
     }
 }
@@ -164,6 +174,8 @@ impl Waypoint {
         }
     }
 }
+
+impl Mover for Waypoint {}
 
 impl Default for Waypoint {
     fn default() -> Self {
