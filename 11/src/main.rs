@@ -60,14 +60,16 @@ fn main() {
         println!("{:#?}", initial);
         draw(initial.as_slice());
 
-        initial
+        let gen1: Vec<Vec<(Cell, Cell, Cell)>> = initial
             .windows(3)
-            .for_each(|v| {
+            .map(|v| {
                 izip!(&v[0], &v[1], &v[2])
                     .collect::<Vec<(&Cell, &Cell, &Cell)>>()
                     .windows(3)
-                    .for_each(|w| println!("{:?}", w))
-            });
+                    .map(tick_window)
+                    .collect::<Vec<(Cell, Cell, Cell)>>()
+            })
+            .collect();
 
         loop {
             break;
