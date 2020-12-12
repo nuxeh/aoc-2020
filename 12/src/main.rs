@@ -52,7 +52,7 @@ enum Direction {
     West,
 }
 
-trait Mover<T> {
+impl (i32, i32) {
     fn move_to(&mut self: &mut T, x: i32, y: i32) {
         self.x = x;
         self.y = y;
@@ -101,8 +101,7 @@ impl Direction {
 
 #[derive(Debug, Clone, Copy)]
 struct Ship {
-    pub x: i32,
-    pub y: i32,
+    pub coord: (i32, i32),
     heading: Direction,
     waypoint: Waypoint,
 }
@@ -144,8 +143,7 @@ use std::f32::consts::PI;
 
 #[derive(Debug, PartialEq, Clone, Copy)]
 struct Waypoint {
-    x: i32,
-    y: i32,
+    coord: (i32, i32),
 }
 
 impl Waypoint {
