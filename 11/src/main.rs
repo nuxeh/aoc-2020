@@ -60,14 +60,15 @@ fn main() {
         println!("{:#?}", initial);
         draw(initial.as_slice());
 
-        let gen1: Vec<Vec<(Cell, Cell, Cell)>> = initial
+        let gen1: Vec<Vec<Cell>> = initial
             .windows(3)
             .map(|v| {
                 izip!(&v[0], &v[1], &v[2])
-                    .collect::<Vec<(&Cell, &Cell, &Cell)>>()
+                    .map(|(a, b, c)| vec![*a, *b, *c])
+                    .collect::<Vec<Vec<Cell>>>()
                     .windows(3)
                     .map(tick_window)
-                    .map(|v| v.iter().map(|v| vec![v.0, v.1, v.2]).collect())
+                    .collect()
             })
             .collect();
 
@@ -77,7 +78,7 @@ fn main() {
     }
 }
 
-fn tick_window<'a>(window: &'a [(&'a Cell, &'a Cell, &'a Cell)]) -> Vec<(Cell, Cell, Cell)> {
+fn tick_window(window: &[Vec<Cell>]) -> Vec<Vec<Cell>> {
     let occupied = window
         .iter()
         .enumerate()
