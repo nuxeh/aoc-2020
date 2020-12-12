@@ -110,11 +110,13 @@ impl Ship {
     }
 }
 
+use std::f32::consts::PI;
+
+#[derive(Debug, PartialEq)]
 struct Waypoint {
     x: i32,
     y: i32,
 }
-
 
 impl Waypoint {
     ///               | * (1, -3)
@@ -125,23 +127,32 @@ impl Waypoint {
     ///               |
     ///      (-1,3) * |
     fn rotate(&mut self, d: i32) {
+        let theta = (d as f32 / 360.0) * 2.0 * PI;
+        println!("{}", theta);
         match d {
             0 => (),
-            90 => {
-                self.x = self.y;
-                self.y = self.x;
-            },
             180 => {
                 self.x = -1 * self.x;
                 self.y = -1 * self.x;
             },
-            270 => {
-                self.x = self.y;
-                self.y = self.x;
+            _ => {
+                self.x = ((theta.cos() * self.x as f32) + (theta.sin() * self.y as f32)) as i32;
+                self.y = ((-1.0 * theta.sin() * self.x as f32) + (theta.cos() * self.y as f32)) as i32;
             },
-            _ => panic!(format!("bad degrees ({})", d)),
         }
     }
+}
+
+#[cfg(test)]
+#[test]
+fn test_waypoint_rotate() {
+    let mut wp = Waypoint { x: 1, y: -3};
+    wp.rotate(90);
+    //assert_eq!(wp, Waypoint { x: 3, y: 1});
+    wp.rotate(90);
+    assert_eq!(wp, Waypoint { x: -1, y: 3});
+    wp.rotate(90);
+    assert_eq!(wp, Waypoint { x: -3, y: -1});
 }
 
 fn main() {
