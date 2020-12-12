@@ -2,8 +2,8 @@ use aocf::Aoc;
 
 #[derive(Debug, Clone, Copy)]
 struct Action {
-    dir: Direction,
-    dist: u32,
+    pub dir: Direction,
+    pub param: u32,
 }
 
 impl Action {
@@ -11,7 +11,7 @@ impl Action {
         let mut chars = s.chars();
         Self {
             dir: Direction::from_char(chars.next().unwrap()),
-            dist: chars.collect::<String>().parse().unwrap(),
+            param: chars.collect::<String>().parse().unwrap(),
         }
     }
 }
@@ -39,6 +39,67 @@ impl Direction {
             'R' => Self::Right,
             'F' => Self::Forward,
             _ => Self::None,
+        }
+
+        fn degrees_left(&self, d: u32) -> Self {
+            match (self, d {
+                (Self::North, 90) => ,
+                (Self::East, 90) => ,
+                (Self::South, 90) => ,
+                (Self::West, 90) => ,
+                (Self::North, 180) => ,
+                (Self::East, 180) => ,
+                (Self::South, 180) => ,
+                (Self::West, 180) => ,
+                (Self::North, 270) => ,
+                (Self::East, 270) => ,
+                (Self::South, 270) => ,
+                (Self::West, 270) => ,
+            }
+        }
+
+        fn degrees_left(&self, d: u32) -> Self {
+            match (self, d {
+                (Self::North, 90) => ,
+                (Self::East, 90) => ,
+                (Self::South, 90) => ,
+                (Self::West, 90) => ,
+                (Self::North, 180) => ,
+                (Self::East, 180) => ,
+                (Self::South, 180) => ,
+                (Self::West, 180) => ,
+                (Self::North, 270) => ,
+                (Self::East, 270) => ,
+                (Self::South, 270) => ,
+                (Self::West, 270) => ,
+            }
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy)]
+struct Ship {
+    pub x: i32,
+    pub y: i32,
+    heading: Direction,
+}
+
+impl Default for Ship {
+    fn default() -> Self {
+        Self { x:0, y:0, heading: Direction::East }
+    }
+}
+
+impl Ship {
+    fn exec(&mut self, a: Action) {
+        match a.dir {
+            Self::North => self.,
+            Self::South => self.,
+            Self::East => self.,
+            Self::West => self.,
+            Self::Left => self.,
+            Self::Right => self.,
+            Self::Forward => self.,
         }
     }
 }
