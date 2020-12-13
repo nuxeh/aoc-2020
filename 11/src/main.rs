@@ -52,8 +52,8 @@ fn main() {
 
         let j = format!("{}\n{}{}", pad, i, pad);
 
-        println!("{}", i);
-        println!("{}", j);
+        //println!("{}", i);
+        //println!("{}", j);
 
         let initial: Vec<Vec<Cell>> = j.lines()
             .map(|l| {
@@ -166,7 +166,7 @@ fn part_2(initial: &Vec<Vec<Cell>>) {
                 let seat = cur_gen[y][x];
                 let occupied = eval_cell_sightlines(&cur_gen, x, y, max_x - 1, max_y - 1);
                 //println!("{}", occupied);
-                println!("{:?}", seat);
+                //println!("{:?}", seat);
 
                 let new_seat = match (seat, occupied) {
                     (Cell::EmptySeat, 0) => Cell::OccupiedSeat,
@@ -178,7 +178,7 @@ fn part_2(initial: &Vec<Vec<Cell>>) {
             }
         }
 
-        draw(&new_gen);
+        //draw(&new_gen);
 
         let occupied: usize = new_gen
             .iter()
@@ -285,7 +285,7 @@ fn eval_cell_sightlines(field: &Vec<Vec<Cell>>, x: usize, y: usize, max_x: usize
     };
 
     //draw(&seen);
-    println!("{}", count);
+    //println!("{}", count);
 
     count
 }
