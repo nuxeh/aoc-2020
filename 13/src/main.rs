@@ -93,8 +93,10 @@ fn part_2(buses: &[Option<usize>]) {
 
 fn part_2_take_two(buses: &[Option<usize>]) {
     let num_buses = buses.len();
+    let largest_bus = buses.iter().flatten().max().unwrap();
 
-    let mut factors: Vec<usize> = vec![0; buses.iter().flatten().count()];
+    let mut factors: Vec<usize> = vec![1; buses.iter().flatten().count()];
+    factors[0] = *largest_bus;
 
     let bus_offsets: Vec<_> = buses
         .iter()
@@ -122,6 +124,8 @@ fn part_2_take_two(buses: &[Option<usize>]) {
     let mut factor = 1;
 
     loop {
+        println!("{:?}", factors);
+
         factors[factor] += 1;
 
         // We're on the first factor, proceed to the next
@@ -131,7 +135,7 @@ fn part_2_take_two(buses: &[Option<usize>]) {
 
         let cur_val = factors[factor] * buses[factor];
         let prev_val = buses[factor - 1] * factors[factor - 1];
-        let target_value = prev_val + bus_offsets[factor];
+        let target_val = prev_val + bus_offsets[factor];
 
         // Gone too far, increase factors from root
         if cur_val > (prev_val + num_buses) {
@@ -140,7 +144,7 @@ fn part_2_take_two(buses: &[Option<usize>]) {
         }
 
         // Matched target value, proceed to next factor
-        if cur_val % 99 == 0 {
+        if cur_val % target_val == 0 {
             factor += 1;
         }
     }
