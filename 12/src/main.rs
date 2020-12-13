@@ -70,8 +70,8 @@ impl Coord {
 
     fn move_towards(&mut self, dir: Direction, amount: i32) {
         match dir {
-            Direction::North => self.y += amount,
-            Direction::South => self.y -= amount,
+            Direction::North => self.y -= amount,
+            Direction::South => self.y += amount,
             Direction::East => self.x += amount,
             Direction::West => self.x -= amount,
             _ => (),
@@ -148,8 +148,8 @@ impl Ship {
 
     fn exec_2(&mut self, a: Action) {
         match a.command {
-            Command::N => self.waypoint.coord.move_towards(Direction::South, a.param),
-            Command::S => self.waypoint.coord.move_towards(Direction::North, a.param),
+            Command::N => self.waypoint.coord.move_towards(Direction::North, a.param),
+            Command::S => self.waypoint.coord.move_towards(Direction::South, a.param),
             Command::E => self.waypoint.coord.move_towards(Direction::East, a.param),
             Command::W => self.waypoint.coord.move_towards(Direction::West, a.param),
             Command::L => self.waypoint.rotate(-1 * a.param),
@@ -183,13 +183,10 @@ impl Waypoint {
         let theta = (d as f32 / 360.0) * 2.0 * PI;
         match d {
             0 => (),
-            180 => {
-                self.coord.x = -1 * self.coord.x;
-                self.coord.y = -1 * self.coord.y;
-            },
             _ => {
                 let sin = theta.sin() as i32;
                 let cos = theta.cos() as i32;
+                println!("{} {}", sin, cos);
                 let new_x = (cos * self.coord.x) + (-1 * sin * self.coord.y);
                 self.coord.y = (sin * self.coord.x) + (-1 * cos * self.coord.y);
                 self.coord.x = new_x;
@@ -214,14 +211,22 @@ fn test_waypoint_rotate() {
     assert_eq!(wp, Waypoint { coord: Coord { x: -1, y: 3 }});
     wp.rotate(90);
     assert_eq!(wp, Waypoint { coord: Coord { x: -3, y: -1 }});
+
+    let mut wp = Waypoint { coord: Coord { x: 1, y: -3 }};
     wp.rotate(180);
-    assert_eq!(wp, Waypoint { coord: Coord { x: 3, y: 1 }});
-    wp.rotate(270);
-    assert_eq!(wp, Waypoint { coord: Coord { x: 1, y: -3 }});
+    assert_eq!(wp, Waypoint { coord: Coord { x: -1, y: 3 }});
+    //wp.rotate(270);
+    //assert_eq!(wp, Waypoint { coord: Coord { x: 1, y: -3 }});
 
     let mut wp = Waypoint { coord: Coord { x: 3, y: 1 }};
     wp.rotate(-90);
     assert_eq!(wp, Waypoint { coord: Coord { x: 1, y: -3 }});
+
+    let mut wp = Waypoint { coord: Coord { x: 3, y: 1 }};
+    wp.rotate(-270);
+    assert_eq!(wp, Waypoint { coord: Coord { x: -1, y: 3 }});
+    wp.rotate(270);
+    assert_eq!(wp, Waypoint { coord: Coord { x: 3, y: 1 }});
 }
 
 fn main() {
@@ -248,8 +253,8 @@ fn main() {
                 (a, ship)
             });
 
-        course
-            .for_each(|s| println!("{:?}", s));
+        //course
+        //    .for_each(|s| println!("{:?}", s));
 
         println!("{:#?}", ship);
         println!("{}", ship.coord.x.abs() + ship.coord.y.abs());
@@ -264,7 +269,7 @@ fn main() {
             });
 
         course
-            .for_each(|s| println!("{:?}", s));
+            .for_each(|s| println!("{:#?}", s));
 
         println!("{:#?}", ship);
         println!("{}", ship.coord.x.abs() + ship.coord.y.abs());
