@@ -27,6 +27,7 @@ fn main() {
 
 fn part_1(dep: u32, buses: &[u32]) {
     for t in dep..dep+40 {
+        print!("{} | ", t);
         buses
             .iter()
             .for_each(|b| {
@@ -36,5 +37,6 @@ fn part_1(dep: u32, buses: &[u32]) {
                     print!("__");
                 }
             });
+        print!("\n");
     }
 }
