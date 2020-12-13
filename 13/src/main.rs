@@ -23,7 +23,7 @@ fn main() {
 
         part_1(depart_at, buses.as_slice());
 
-        let buses: Vec<Option<u32>> = i.lines().nth(1).unwrap()
+        let buses: Vec<Option<usize>> = i.lines().nth(1).unwrap()
             .split(',')
             .map(|v| v.parse().ok())
             .collect();
@@ -45,19 +45,20 @@ fn part_1(dep: u32, buses: &[u32]) {
     }
 }
 
-fn part_2(buses: &[Option<u32>]) {
+fn part_2(buses: &[Option<usize>]) {
     let mut t: usize = 0;
     let num_buses = buses.len();
 
     loop {
         for (n, u) in (t..(t+num_buses)).enumerate() {
-            buses
+            if let Some(b) = buses
                 .iter()
-                .enumerate()
-                .skip(n)
-                .filter_map(|(o, b)| b.map(|b| (o, b)))
-                .filter(|(o, _)| t % o == 0)
-                .for_each(|(o, b)| println!("{} {} {} {}", o, b, t));
+                .nth(n)
+                .map(|b| *b)
+                .flatten()
+                .filter(|b| u % b == 0) {
+                    println!("{} {}", b, t);
+                };
         }
 
         t += 1;
