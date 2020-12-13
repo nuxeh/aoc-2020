@@ -32,9 +32,7 @@ fn part_1(dep: u32, buses: &[u32]) {
             .iter()
             .for_each(|b| {
                 if t % b == 0 {
-                    print!("{}", b);
-                } else {
-                    print!("__");
+                    print!("{} ({}) ", b, b * (t - dep));
                 }
             });
         print!("\n");
