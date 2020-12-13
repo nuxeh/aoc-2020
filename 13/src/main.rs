@@ -30,7 +30,8 @@ fn main() {
 
         println!("{:?}", buses);
 
-        part_2(buses.as_slice());
+        //part_2(buses.as_slice());
+        part_2_take_two(buses.as_slice());
     }
 }
 
@@ -49,12 +50,14 @@ fn part_2(buses: &[Option<usize>]) {
     let num_buses = buses.len();
     let num_valid_buses = buses.iter().flatten().count();
     let largest_bus = buses.iter().flatten().max().unwrap();
-    //let mut t: usize = 100000000000000;
-    let mut t: usize = 1202161486;//*largest_bus;
+
+    let start: usize = buses.iter().flatten().product::<usize>() / (num_buses * 2);
+    let mut t: usize = (start / largest_bus) * largest_bus;
 
     println!("evaluating part 2.\nbus count: {} valid bus count: {}",
              num_buses, num_valid_buses);
     println!("largest bus: {}", largest_bus);
+    println!("start at: {}", start);
 
     loop {
         let mut count = 0;
@@ -74,7 +77,9 @@ fn part_2(buses: &[Option<usize>]) {
                 };
         }
 
-        //println!("{} {}", t, count);
+        if t % 100000 == 0 {
+            println!("{} {}", t, count);
+        }
 
         if count == num_valid_buses {
             break;
@@ -84,4 +89,60 @@ fn part_2(buses: &[Option<usize>]) {
     }
 
     println!("{}", t);
+}
+
+fn part_2_take_two(buses: &[Option<usize>]) {
+    let num_buses = buses.len();
+
+    let mut factors: Vec<usize> = vec![0; buses.iter().flatten().count()];
+    factors[0] = 1;
+
+    let bus_offsets: Vec<_> = buses
+        .iter()
+        .enumerate()
+        .map(|(n, v)| {
+            v.map(|_| n)
+        })
+        .flatten()
+        .collect();
+
+    println!("{:?}", factors);
+    println!("{:?}", bus_offsets);
+
+    let buses: Vec<_> = buses.iter().flatten().collect();
+
+    println!("{:?}", buses);
+
+    /*
+    factors
+        .iter_mut()
+        .windows(2)
+        .for_each(|f| ());
+        */
+
+    let mut factor = 1;
+
+    loop {
+        factors[factor] += 1;
+
+        // We're on the first factor, proceed to the next
+        if factor == 0 {
+            continue;
+        }
+
+        let cur_val = factors[factor] * buses[factor];
+        let prev_val = buses[factor - 1] * factors[factor - 1])
+        let target_value = prev_val + bus_offsets[factor];
+
+        // Gone too far, increase factors from root
+        if cur_val > (prev_val + num_buses) {
+            factor = 0;
+            continue;
+        }
+
+        // Matched target value, proceed to next factor
+        if cur_val % 99 == 0 {
+            factor += 1;
+        }
+    }
 }
