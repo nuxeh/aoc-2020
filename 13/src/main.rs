@@ -1,4 +1,5 @@
 use aocf::Aoc;
+use std::collections::HashMap;
 
 fn main() {
     let mut aoc = Aoc::new()
@@ -97,6 +98,8 @@ fn part_2_take_two(buses: &[Option<usize>]) {
     let mut factors: Vec<usize> = vec![0; buses.iter().flatten().count()];
     let num_factors = factors.len();
 
+    //factors[0] = (100000000000000 / 23) - 1;
+
     let bus_offsets: Vec<_> = buses
         .iter()
         .enumerate()
@@ -109,8 +112,20 @@ fn part_2_take_two(buses: &[Option<usize>]) {
     println!("{:?}", factors);
     println!("{:?}", bus_offsets);
 
-    let buses: Vec<_> = buses.iter().flatten().collect();
+    let mut buses: Vec<_> = buses.iter().flatten().collect();
 
+    println!("{:?}", buses);
+
+    let mut bus_offsets_map: HashMap<usize, usize> = HashMap::new();
+
+    buses
+        .iter()
+        .zip(bus_offsets.iter())
+        .for_each(|(b, o)| { bus_offsets_map.insert(**b, *o); () });
+
+    buses.sort_by(|a, b| b.cmp(a));
+
+    println!("{:?}", bus_offsets_map);
     println!("{:?}", buses);
 
     let mut factor = 1;
@@ -134,7 +149,8 @@ fn part_2_take_two(buses: &[Option<usize>]) {
 
         let cur_val = factors[factor] * buses[factor];
         let root_val = buses[0] * factors[0];
-        let target_val = root_val + bus_offsets[factor];
+        let offset: usize = *bus_offsets_map.get(&buses[factor]).unwrap();
+        let target_val = root_val + offset;
 
         // Gone too far, increase factors from root
         if cur_val > (root_val + num_buses) {
@@ -152,6 +168,8 @@ fn part_2_take_two(buses: &[Option<usize>]) {
             }
         }
     }
+
+
 
     println!("{}", factors[0] * buses[0]);
 }
