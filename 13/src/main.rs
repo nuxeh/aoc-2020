@@ -18,11 +18,23 @@ fn main() {
             .flatten()
             .collect();
 
-        println!("departure {}", depart_at);
-        println!("buses     {:?}", buses);
+        println!("departure: {}", depart_at);
+        println!("buses:     {:?}", buses);
 
-        part_1();
+        part_1(depart_at, buses.as_slice());
     }
 }
 
-fn part_1() {}
+fn part_1(dep: u32, buses: &[u32]) {
+    for t in dep..dep+40 {
+        buses
+            .iter()
+            .for_each(|b| {
+                if t % b == 0 {
+                    print!("{}", b);
+                } else {
+                    print!("__");
+                }
+            });
+    }
+}
