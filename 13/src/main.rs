@@ -95,7 +95,6 @@ fn part_2_take_two(buses: &[Option<usize>]) {
     let num_buses = buses.len();
 
     let mut factors: Vec<usize> = vec![0; buses.iter().flatten().count()];
-    factors[0] = 1;
 
     let bus_offsets: Vec<_> = buses
         .iter()
@@ -131,7 +130,7 @@ fn part_2_take_two(buses: &[Option<usize>]) {
         }
 
         let cur_val = factors[factor] * buses[factor];
-        let prev_val = buses[factor - 1] * factors[factor - 1])
+        let prev_val = buses[factor - 1] * factors[factor - 1];
         let target_value = prev_val + bus_offsets[factor];
 
         // Gone too far, increase factors from root
