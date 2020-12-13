@@ -22,6 +22,14 @@ fn main() {
         println!("buses:     {:?}", buses);
 
         part_1(depart_at, buses.as_slice());
+
+        let buses: Vec<Option<u32>> = i.lines().nth(1).unwrap()
+            .split(',')
+            .map(|v| v.parse().ok())
+            .collect();
+
+        println!("{:?}", buses);
+
         part_2(buses.as_slice());
     }
 }
@@ -37,12 +45,17 @@ fn part_1(dep: u32, buses: &[u32]) {
     }
 }
 
-fn part_2(buses: &[u32]) {
+fn part_2(buses: &[Option<u32>]) {
     let mut t = 0;
 
     loop {
-            
-
+        /*
+        buses
+            .iter()
+            .enumerate()
+            .filter(
+            .filter(|n, b| t % n == 0);
+*/
         t += 1;
     }
 }
