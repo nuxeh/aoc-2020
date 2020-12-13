@@ -22,6 +22,7 @@ fn main() {
         println!("buses:     {:?}", buses);
 
         part_1(depart_at, buses.as_slice());
+        part_2(buses.as_slice());
     }
 }
 
@@ -33,5 +34,15 @@ fn part_1(dep: u32, buses: &[u32]) {
             .filter(|b| t % **b == 0)
             .for_each(|b| print!("{} ({}) ", b, b * (t - dep)));
         print!("\n");
+    }
+}
+
+fn part_2(buses: &[u32]) {
+    let mut t = 0;
+
+    loop {
+            
+
+        t += 1;
     }
 }
