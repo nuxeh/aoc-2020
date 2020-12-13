@@ -30,11 +30,8 @@ fn part_1(dep: u32, buses: &[u32]) {
         print!("{} | ", t);
         buses
             .iter()
-            .for_each(|b| {
-                if t % b == 0 {
-                    print!("{} ({}) ", b, b * (t - dep));
-                }
-            });
+            .filter(|b| t % **b == 0)
+            .for_each(|b| print!("{} ({}) ", b, b * (t - dep)));
         print!("\n");
     }
 }
