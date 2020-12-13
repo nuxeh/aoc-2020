@@ -1,4 +1,5 @@
 use aocf::Aoc;
+use rayon::prelude::*;
 
 fn main() {
     let mut aoc = Aoc::new()
@@ -56,17 +57,20 @@ fn part_2(buses: &[Option<usize>]) {
     loop {
         let mut count = 0;
 
-        for (n, u) in (t..(t+num_buses)).enumerate() {
-            if let Some(_) = buses
-                .iter()
-                .nth(n)
-                .map(|b| *b)
-                .flatten()
-                .filter(|b| u % b == 0) {
-                    //println!("{} {} {}", b, u, u % b);
-                    count += 1;
-                };
-        }
+        (t..(t+num_buses))
+            .enumerate()
+            .par_iter()
+            .for_each(|(n, u)| {
+                if let Some(_) = buses
+                    .iter()
+                    .nth(n)
+                    .map(|b| *b)
+                    .flatten()
+                    .filter(|b| u % b == 0) {
+                        //println!("{} {} {}", b, u, u % b);
+                        count += 1;
+                    };
+            });
 
         //println!("{} {}", t, count);
 
