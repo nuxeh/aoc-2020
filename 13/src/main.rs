@@ -146,6 +146,10 @@ fn part_2_take_two(buses: &[Option<usize>]) {
         // Matched target value, proceed to next factor
         if cur_val % target_val == 0 {
             factor += 1;
+
+            if factor < num_factors {
+                factors[factor] = root_val / buses[factor];
+            }
         }
     }
 
