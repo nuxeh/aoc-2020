@@ -159,13 +159,14 @@ fn part_2(initial: &Vec<Vec<Cell>>) {
     let max_x = initial.iter().nth(0).unwrap().len();
 
     loop {
-        let mut new_gen = initial.clone();
+        let mut new_gen = cur_gen.clone();
 
-    for y in 0..max_y {
-        for x in 0..max_x {
+        for y in 0..max_y {
+            for x in 0..max_x {
                 let seat = cur_gen[y][x];
                 let occupied = eval_cell_sightlines(&cur_gen, x, y, max_x - 1, max_y - 1);
                 //println!("{}", occupied);
+                println!("{:?}", seat);
 
                 let new_seat = match (seat, occupied) {
                     (Cell::EmptySeat, 0) => Cell::OccupiedSeat,
@@ -208,6 +209,7 @@ fn eval_cell_sightlines(field: &Vec<Vec<Cell>>, x: usize, y: usize, max_x: usize
         if cur_x == max_x { break 0 }
         cur_x += 1;
         if field[y][cur_x] == Cell::OccupiedSeat { break 1 }
+        if field[y][cur_x] == Cell::EmptySeat { break 0 }
         seen[y][cur_x] = Cell::Seen;
     };
 
@@ -216,6 +218,7 @@ fn eval_cell_sightlines(field: &Vec<Vec<Cell>>, x: usize, y: usize, max_x: usize
         if cur_x == 0 { break 0}
         cur_x -= 1;
         if field[y][cur_x] == Cell::OccupiedSeat { break 1 }
+        if field[y][cur_x] == Cell::EmptySeat { break 0 }
         seen[y][cur_x] = Cell::Seen;
     };
 
@@ -224,6 +227,7 @@ fn eval_cell_sightlines(field: &Vec<Vec<Cell>>, x: usize, y: usize, max_x: usize
         if cur_y == max_y { break 0}
         cur_y += 1;
         if field[cur_y][x] == Cell::OccupiedSeat { break 1 }
+        if field[cur_y][x] == Cell::EmptySeat { break 0 }
         seen[cur_y][x] = Cell::Seen;
     };
 
@@ -232,6 +236,7 @@ fn eval_cell_sightlines(field: &Vec<Vec<Cell>>, x: usize, y: usize, max_x: usize
         if cur_y == 0 { break 0}
         cur_y -= 1;
         if field[cur_y][x] == Cell::OccupiedSeat { break 1 }
+        if field[cur_y][x] == Cell::EmptySeat { break 0 }
         seen[cur_y][x] = Cell::Seen;
     };
 
@@ -242,6 +247,7 @@ fn eval_cell_sightlines(field: &Vec<Vec<Cell>>, x: usize, y: usize, max_x: usize
         cur_x += 1;
         cur_y += 1;
         if field[cur_y][cur_x] == Cell::OccupiedSeat { break 1 }
+        if field[cur_y][cur_x] == Cell::EmptySeat { break 0 }
         seen[cur_y][cur_x] = Cell::Seen;
     };
 
@@ -252,6 +258,7 @@ fn eval_cell_sightlines(field: &Vec<Vec<Cell>>, x: usize, y: usize, max_x: usize
         cur_x -= 1;
         cur_y -= 1;
         if field[cur_y][cur_x] == Cell::OccupiedSeat { break 1 }
+        if field[cur_y][cur_x] == Cell::EmptySeat { break 0 }
         seen[cur_y][cur_x] = Cell::Seen;
     };
 
@@ -262,6 +269,7 @@ fn eval_cell_sightlines(field: &Vec<Vec<Cell>>, x: usize, y: usize, max_x: usize
         cur_x += 1;
         cur_y -= 1;
         if field[cur_y][cur_x] == Cell::OccupiedSeat { break 1 }
+        if field[cur_y][cur_x] == Cell::EmptySeat { break 0 }
         seen[cur_y][cur_x] = Cell::Seen;
     };
 
@@ -272,10 +280,12 @@ fn eval_cell_sightlines(field: &Vec<Vec<Cell>>, x: usize, y: usize, max_x: usize
         cur_x -= 1;
         cur_y += 1;
         if field[cur_y][cur_x] == Cell::OccupiedSeat { break 1 }
+        if field[cur_y][cur_x] == Cell::EmptySeat { break 0 }
         seen[cur_y][cur_x] = Cell::Seen;
     };
 
     //draw(&seen);
+    println!("{}", count);
 
     count
 }
