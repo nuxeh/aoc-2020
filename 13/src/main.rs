@@ -46,16 +46,20 @@ fn part_1(dep: u32, buses: &[u32]) {
 }
 
 fn part_2(buses: &[Option<u32>]) {
-    let mut t = 0;
+    let mut t: usize = 0;
+    let num_buses = buses.len();
 
     loop {
-        /*
-        buses
-            .iter()
-            .enumerate()
-            .filter(
-            .filter(|n, b| t % n == 0);
-*/
+        for (n, u) in (t..(t+num_buses)).enumerate() {
+            buses
+                .iter()
+                .enumerate()
+                .skip(n)
+                .filter_map(|(o, b)| b.map(|b| (o, b)))
+                .filter(|(o, _)| t % o == 0)
+                .for_each(|(o, b)| println!("{} {} {} {}", o, b, t));
+        }
+
         t += 1;
     }
 }
