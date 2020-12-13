@@ -1,5 +1,4 @@
 use aocf::Aoc;
-use rayon::prelude::*;
 
 fn main() {
     let mut aoc = Aoc::new()
@@ -47,30 +46,33 @@ fn part_1(dep: u32, buses: &[u32]) {
 }
 
 fn part_2(buses: &[Option<usize>]) {
-    let mut t: usize = 0;
     let num_buses = buses.len();
     let num_valid_buses = buses.iter().flatten().count();
+    let largest_bus = buses.iter().flatten().max().unwrap();
+    //let mut t: usize = 100000000000000;
+    let mut t: usize = 1202161486;//*largest_bus;
 
     println!("evaluating part 2.\nbus count: {} valid bus count: {}",
              num_buses, num_valid_buses);
+    println!("largest bus: {}", largest_bus);
 
     loop {
         let mut count = 0;
 
-        (t..(t+num_buses))
-            .enumerate()
-            .par_iter()
-            .for_each(|(n, u)| {
-                if let Some(_) = buses
-                    .iter()
-                    .nth(n)
-                    .map(|b| *b)
-                    .flatten()
-                    .filter(|b| u % b == 0) {
-                        //println!("{} {} {}", b, u, u % b);
+        for (n, u) in (t..(t+num_buses)).enumerate() {
+            if let Some(b) = buses
+                .iter()
+                .nth(n)
+                .map(|b| *b)
+                .flatten() {
+                    //println!("{} {} {}", b, u, u % b);
+                    if u % b == 0 {
                         count += 1;
-                    };
-            });
+                    } else {
+                        break;
+                    }
+                };
+        }
 
         //println!("{} {}", t, count);
 
@@ -78,6 +80,8 @@ fn part_2(buses: &[Option<usize>]) {
             break;
         }
 
-        t += 1;
+        t += largest_bus;
     }
+
+    println!("{}", t);
 }
