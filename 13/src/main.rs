@@ -93,9 +93,9 @@ fn part_2(buses: &[Option<usize>]) {
 
 fn part_2_take_two(buses: &[Option<usize>]) {
     let num_buses = buses.len();
-    let largest_bus = buses.iter().flatten().max().unwrap();
 
     let mut factors: Vec<usize> = vec![0; buses.iter().flatten().count()];
+    let num_factors = factors.len();
 
     let bus_offsets: Vec<_> = buses
         .iter()
@@ -113,18 +113,17 @@ fn part_2_take_two(buses: &[Option<usize>]) {
 
     println!("{:?}", buses);
 
-    /*
-    factors
-        .iter_mut()
-        .windows(2)
-        .for_each(|f| ());
-        */
-
     let mut factor = 1;
 
     loop {
-        println!("{:?}", factors);
+        //println!("{:?}", factors);
 
+        // Reached the end
+        if factor == num_factors {
+            break;
+        }
+
+        // Increment the factor
         factors[factor] += 1;
 
         // We're on the first factor, proceed to the next
@@ -134,11 +133,11 @@ fn part_2_take_two(buses: &[Option<usize>]) {
         }
 
         let cur_val = factors[factor] * buses[factor];
-        let prev_val = buses[factor - 1] * factors[factor - 1];
-        let target_val = prev_val + bus_offsets[factor];
+        let root_val = buses[0] * factors[0];
+        let target_val = root_val + bus_offsets[factor];
 
         // Gone too far, increase factors from root
-        if cur_val > (prev_val + num_buses) {
+        if cur_val > (root_val + num_buses) {
             //factors.iter_mut().skip(1).map(|v| *v = 0);
             factor = 0;
             continue;
@@ -149,4 +148,6 @@ fn part_2_take_two(buses: &[Option<usize>]) {
             factor += 1;
         }
     }
+
+    println!("{}", factors[0] * buses[0]);
 }
