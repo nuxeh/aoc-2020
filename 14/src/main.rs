@@ -84,9 +84,7 @@ fn vec_to_val(vec: &[bool]) -> u32 {
         })
         .collect();
 
-    format!("0b{}", string)
-        .parse()
-        .unwrap()
+    u32::from_str_radix(&string, 2).unwrap()
 }
 
 fn main() {
