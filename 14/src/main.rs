@@ -9,7 +9,22 @@ struct Ins {
 
 impl Ins {
     fn from_str(s: &str) -> Self {
-        Self::default()
+        let mut ret = Self::default();
+
+        ret.mask = s
+            .replace("mask = ", "")
+            .chars()
+            .map(|c| {
+                match c {
+                    'X' => None,
+                    '1' => Some(true),
+                    '0' => Some(false),
+                    _ => panic!("bad char"),
+                }
+            })
+            .collect();
+
+        ret
     }
 
     fn add_set_str(&mut self, s: &str) -> &mut Self {
