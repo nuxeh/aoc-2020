@@ -29,17 +29,18 @@ impl Ins {
     }
 
     fn add_set_str(&mut self, s: &str) -> &mut Self {
-        let set: Vec<(u32, u32)> = s
+        let string = s
             .replace("mem[", "")
-            .replace("] = ", ",")
-            .split(",")
-            .chunks(2)
-            .into_iter()
-            .take(1)
-            .map(|mut c| (c.nth(0).unwrap().parse::<u32>().unwrap(), c.nth(1).unwrap().parse::<u32>().unwrap()))
-            .collect();
+            .replace("] = ", ",");
 
-        self.sets.push(*set.first().unwrap());
+        let mut nums = string
+            .split(",")
+            .take(2);
+
+        let num_1 = nums.next().expect("get").parse::<u32>().expect("parse");
+        let num_2 = nums.next().expect("get").parse::<u32>().expect("parse");
+
+        self.sets.push((num_1, num_2));
         self
     }
 }
