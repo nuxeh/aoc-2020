@@ -59,7 +59,7 @@ impl Ins {
                             (new_val, None) => vec[n] = *new_val,
                         }
                     })
-            })
+            });
     }
 }
 
@@ -71,8 +71,20 @@ fn val_to_vec(val: u32) -> Vec<bool> {
 }
 
 fn vec_to_val(vec: &[bool]) -> u32 {
-    0
+    let string: String = vec
+        .iter()
+        .map(|v| {
+            if *v {
+                "1"
+            } else {
+                "0"
+            }
+        })
+        .collect();
 
+    format!("0b{}", string)
+        .parse()
+        .unwrap()
 }
 
 fn main() {
