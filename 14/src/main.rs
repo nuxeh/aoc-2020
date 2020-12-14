@@ -44,21 +44,24 @@ impl Ins {
         self
     }
 
-    fn apply(&self, vec: &mut Vec<bool>) {
+    fn apply(&self, map: &mut HashMap<u32, u32>) {
         let masked = self.sets
             .iter()
             .map(|s| {
-                val_to_vec(s.1)
+                let vec: Vec<_> = val_to_vec(s.1)
                     .iter()
                     .zip(self.mask.iter())
-                    .enumerate()
-                    .map(|(n, v)| {
+                    .map(|v| {
                         match v {
-                            (_, Some(true)) => vec[n] = true,
-                            (_, Some(false)) => vec[n] = false,
-                            (new_val, None) => vec[n] = *new_val,
+                            (_, Some(true)) => true,
+                            (_, Some(false)) => false,
+                            (new_val, None) => *new_val,
                         }
                     })
+                    .collect();
+
+                let val = vec_to_val(&vec);
+                map.insert(s.0, val);
             });
     }
 }
