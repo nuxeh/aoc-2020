@@ -1,5 +1,6 @@
 // TODO: serde
 use aocf::Aoc;
+use itertools::Itertools;
 
 #[derive(Debug, Default)]
 struct Ins {
@@ -28,7 +29,17 @@ impl Ins {
     }
 
     fn add_set_str(&mut self, s: &str) -> &mut Self {
-        self.sets.push((1,1));
+        let set: Vec<(u32, u32)> = s
+            .replace("mem[", "")
+            .replace("] = ", ",")
+            .split(",")
+            .chunks(2)
+            .into_iter()
+            .take(1)
+            .map(|mut c| (c.nth(0).unwrap().parse::<u32>().unwrap(), c.nth(1).unwrap().parse::<u32>().unwrap()))
+            .collect();
+
+        self.sets.push(*set.first().unwrap());
         self
     }
 }
