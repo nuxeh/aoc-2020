@@ -94,9 +94,12 @@ fn part_2(buses: &[Option<usize>]) {
 
 fn part_2_take_two(buses: &[Option<usize>]) {
     let num_buses = buses.len();
+    let largest_bus = buses.iter().flatten().max().unwrap();
 
     let mut factors: Vec<usize> = vec![0; buses.iter().flatten().count()];
     let num_factors = factors.len();
+
+    factors[0] = 100000000000000 / largest_bus;
 
     //factors[0] = (100000000000000 / 23) - 1;
 
