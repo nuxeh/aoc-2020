@@ -123,5 +123,7 @@ fn part_1(ins: &[Ins]) {
 
     ins
         .iter()
-        .for_each(|i| i.apply(&mut mem))
+        .for_each(|i| i.apply(&mut mem));
+
+    println!("{:#?}", mem);
 }
