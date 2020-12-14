@@ -125,4 +125,11 @@ fn part_1(ins: &[Ins]) {
         .for_each(|i| i.apply(&mut mem));
 
     println!("{:#?}", mem);
+
+    let sum = mem
+        .iter()
+        .map(|(_, v)| v)
+        .sum::<usize>();
+
+    println!("sum {}", sum);
 }
