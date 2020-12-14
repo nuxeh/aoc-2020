@@ -6,6 +6,7 @@ use std::collections::HashMap;
 struct Ins {
     mask: Vec<Option<bool>>,
     sets: Vec<(u32, u32)>,
+    address_mask: Vec<Option<bool>>,
 }
 
 impl Ins {
@@ -64,24 +65,40 @@ impl Ins {
             });
     }
 
-    fn get_memory_addresses() -> Vec<u32> {
+    fn get_memory_addresses(&self) -> Vec<usize> {
         let addresses: Vec<u32> = Vec::new();
 
+        self.address_mask
+            .iter()
+            .enumerate()
+            .fold(vec![vec![]], |mut acc, (n, v)| {
+                match v {
+                    Some(val) => {
+                        acc
+                            .iter_mut()
+                            .for_each(|a| a.push(*val));
+                        acc
+                    },
+                    None => {
+                        let mut new = acc.clone();
+                        new
+                            .iter()
+                            .for_each(|a| a.push(false));
 
-        get_memory_addresses()
+                        let mut new_2 = acc.clone();
+                        new_2
+                            .iter()
+                            .for_each(|a| a.push(true));
+
+                        new.extend_from_slice(&new_2);
+                        new
+                    },
+                }
+            })
+            .iter()
+            .map(|a| vec_to_val(a.as_slice()))
+            .collect()
     }
-}
-
-fn recurse(a: &Vec<bool>, path: &Vec<Vec<bool>>) -> Vec<u32> {
-    if n == a.len() {
-        return vec_to_val(a.as_slice());
-    }
-
-    let v = a.clone();
-
-
-
-    v.push();
 }
 
 fn val_to_vec(val: u32) -> Vec<bool> {
