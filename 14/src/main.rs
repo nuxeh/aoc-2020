@@ -48,9 +48,26 @@ impl Ins {
         self.sets
             .iter()
             .for_each(|s| {
-
+                val_to_vec(s.1)
+                    .iter()
+                    .zip(self.mask.iter())
+                    .for_each(|v| {
+                        match v {
+                            (_, Some(true)) => (),
+                            (_, Some(false)) => (),
+                            (new_val, None) => (),
+                            _ => panic!("bad mask/set value combination"),
+                        }
+                    })
             })
     }
+}
+
+fn val_to_vec(val: u32) -> Vec<bool> {
+    format!("{:036b}", val)
+        .chars()
+        .map(|c| c == '1')
+        .collect()
 }
 
 fn main() {
