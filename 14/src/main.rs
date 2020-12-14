@@ -44,7 +44,7 @@ impl Ins {
         self
     }
 
-    fn apply(&self, map: &mut HashMap<u32, u32>) {
+    fn apply(&self, map: &mut HashMap<u32, usize>) {
         self.sets
             .iter()
             .for_each(|s| {
@@ -72,7 +72,7 @@ fn val_to_vec(val: u32) -> Vec<bool> {
         .collect()
 }
 
-fn vec_to_val(vec: &[bool]) -> u32 {
+fn vec_to_val(vec: &[bool]) -> usize {
     let string: String = vec
         .iter()
         .map(|v| {
@@ -84,7 +84,8 @@ fn vec_to_val(vec: &[bool]) -> u32 {
         })
         .collect();
 
-    u32::from_str_radix(&string, 2).unwrap()
+    println!("{}", string);
+    usize::from_str_radix(&string, 2).unwrap()
 }
 
 fn main() {
@@ -117,7 +118,7 @@ fn main() {
 }
 
 fn part_1(ins: &[Ins]) {
-    let mut mem: HashMap<u32, u32> = HashMap::new();
+    let mut mem: HashMap<u32, usize> = HashMap::new();
 
     ins
         .iter()
