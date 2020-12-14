@@ -63,6 +63,25 @@ impl Ins {
                 map.insert(s.0, vec_to_val(&vec));
             });
     }
+
+    fn get_memory_addresses() -> Vec<u32> {
+        let addresses: Vec<u32> = Vec::new();
+
+
+        get_memory_addresses()
+    }
+}
+
+fn recurse(a: &Vec<bool>, path: &Vec<Vec<bool>>) -> Vec<u32> {
+    if n == a.len() {
+        return vec_to_val(a.as_slice());
+    }
+
+    let v = a.clone();
+
+
+
+    v.push();
 }
 
 fn val_to_vec(val: u32) -> Vec<bool> {
