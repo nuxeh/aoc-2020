@@ -45,9 +45,9 @@ impl Ins {
     }
 
     fn apply(&self, map: &mut HashMap<u32, u32>) {
-        let masked = self.sets
+        self.sets
             .iter()
-            .map(|s| {
+            .for_each(|s| {
                 let vec: Vec<_> = val_to_vec(s.1)
                     .iter()
                     .zip(self.mask.iter())
@@ -60,8 +60,7 @@ impl Ins {
                     })
                     .collect();
 
-                let val = vec_to_val(&vec);
-                map.insert(s.0, val);
+                map.insert(s.0, vec_to_val(&vec));
             });
     }
 }
@@ -115,11 +114,14 @@ fn main() {
 
         println!("{:?}", ins);
 
-        part_1();
+        part_1(ins.as_slice());
     }
 }
 
-fn part_1() {
-    let mem: HashMap<u32, u32> = HashMap::new();
+fn part_1(ins: &[Ins]) {
+    let mut mem: HashMap<u32, u32> = HashMap::new();
 
+    ins
+        .iter()
+        .for_each(|i| i.apply(&mut mem))
 }
