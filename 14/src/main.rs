@@ -1,6 +1,6 @@
 // TODO: serde
 use aocf::Aoc;
-use itertools::Itertools;
+use std::collections::HashMap;
 
 #[derive(Debug, Default)]
 struct Ins {
@@ -44,19 +44,19 @@ impl Ins {
         self
     }
 
-    fn apply(&self, v: &mut Vec<bool>) {
-        self.sets
+    fn apply(&self, vec: &mut Vec<bool>) {
+        let masked = self.sets
             .iter()
-            .for_each(|s| {
+            .map(|s| {
                 val_to_vec(s.1)
                     .iter()
                     .zip(self.mask.iter())
-                    .for_each(|v| {
+                    .enumerate()
+                    .map(|(n, v)| {
                         match v {
-                            (_, Some(true)) => (),
-                            (_, Some(false)) => (),
-                            (new_val, None) => (),
-                            _ => panic!("bad mask/set value combination"),
+                            (_, Some(true)) => vec[n] = true,
+                            (_, Some(false)) => vec[n] = false,
+                            (new_val, None) => vec[n] = *new_val,
                         }
                     })
             })
@@ -68,6 +68,11 @@ fn val_to_vec(val: u32) -> Vec<bool> {
         .chars()
         .map(|c| c == '1')
         .collect()
+}
+
+fn vec_to_val(vec: &[bool]) -> u32 {
+    0
+
 }
 
 fn main() {
@@ -95,20 +100,11 @@ fn main() {
 
         println!("{:?}", ins);
 
-        println!("{:036b}", 11);
-
-        let vec: Vec<_> = format!("{:036b}", 11)
-            .chars()
-            .map(|c| c == '1')
-            .collect();
-
-        println!("{:?}", vec);
-
         part_1();
     }
 }
 
 fn part_1() {
-    let iv = vec![false; 36];
+    let mem: HashMap<u32, u32> = HashMap::new();
 
 }
