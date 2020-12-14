@@ -43,6 +43,14 @@ impl Ins {
         self.sets.push((num_1, num_2));
         self
     }
+
+    fn apply(&self, v: &mut Vec<bool>) {
+        self.sets
+            .iter()
+            .for_each(|s| {
+
+            })
+    }
 }
 
 fn main() {
@@ -70,11 +78,20 @@ fn main() {
 
         println!("{:?}", ins);
 
+        println!("{:036b}", 11);
+
+        let vec: Vec<_> = format!("{:036b}", 11)
+            .chars()
+            .map(|c| c == '1')
+            .collect();
+
+        println!("{:?}", vec);
+
         part_1();
     }
 }
 
 fn part_1() {
-    let iv = vec![0; 36];
+    let iv = vec![false; 36];
 
 }
