@@ -124,13 +124,13 @@ impl Ins {
                     })
                     .collect();
 
-                println!("{:?}", self.get_memory_addresses_for_mask(mask.as_slice()));
+                //println!("{:?}", self.get_memory_addresses_for_mask(mask.as_slice()));
 
                 self.get_memory_addresses_for_mask(mask.as_slice())
                     .iter()
-                    .map(|a| { map.insert(*a as u32, s.1 as usize); () });
+                    .for_each(|a| { map.insert(*a as u32, s.1 as usize); () });
 
-                println!("{:#?}", map);
+                //println!("{:#?}", map);
             });
     }
 }
@@ -220,4 +220,12 @@ fn part_2(ins: &[Ins]) {
         .sum::<usize>();
 
     println!("sum {}", sum);
+
+    let max = mem
+        .keys()
+        .max();
+
+    println!("{:036b}", max.unwrap());
+    // Hmm
+    // 000011111100111001011110111111111101
 }
