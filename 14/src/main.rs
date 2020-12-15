@@ -68,15 +68,26 @@ impl Ins {
     fn get_memory_addresses_for_mask(&self, mask: &[Option<bool>]) -> Vec<usize> {
         mask
             .iter()
-            .fold(vec![vec![]], |mut acc, v| {
-                match v {
-                    Some(val) => {
+            .enumerate()
+            .fold(vec![vec![]], |mut acc, (n, v)| {
+                match (n, v) {
+                    (_, Some(val)) => {
                         acc
                             .iter_mut()
                             .for_each(|a| a.push(*val));
                         acc
                     },
-                    None => {
+                    // First needs special consideration, since it will have an empty vector
+                    /*
+                    (0, None) => {
+                        println!("first");
+                        //acc.push(vec![false]);
+                        //acc.push(vec![true]);
+                        println!("{:?}", acc);
+                        acc
+                    },
+                    */
+                    (_, None) => {
                         let mut new = acc.clone();
                         new
                             .iter_mut()
@@ -117,7 +128,9 @@ impl Ins {
 
                 self.get_memory_addresses_for_mask(mask.as_slice())
                     .iter()
-                    .for_each(|a| { map.insert(*a as u32, s.1 as usize); () });
+                    .map(|a| { map.insert(*a as u32, s.1 as usize); () });
+
+                println!("{:#?}", map);
             });
     }
 }
@@ -141,7 +154,7 @@ fn vec_to_val(vec: &[bool]) -> usize {
         })
         .collect();
 
-    println!("{}", string);
+    //println!("{}", string);
     usize::from_str_radix(&string, 2).unwrap()
 }
 
@@ -168,7 +181,7 @@ fn main() {
                 acc
             });
 
-        println!("{:?}", ins);
+        //println!("{:?}", ins);
 
         part_1(ins.as_slice());
         part_2(ins.as_slice());
