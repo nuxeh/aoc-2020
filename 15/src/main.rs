@@ -24,11 +24,13 @@ fn main() {
         let mut last_spoken = None;
 
         for turn in 1..=2020 {
-            let considered = if turn < starting_list.len() {
+            let considered = if turn <= starting_list.len() {
                 Some(starting_list[turn-1])
             } else {
                 last_spoken
             };
+
+            print!("[{}] ", considered.unwrap());
 
             // Get record
             let (times_spoken, prev_turn, prev_prev_turn) = if map.contains_key(&considered.unwrap()) {
@@ -37,7 +39,9 @@ fn main() {
                 (0, None, None)
             };
 
-            let spoken = if times_spoken == 1 {
+            let spoken = if turn <= starting_list.len() {
+                considered.unwrap()
+            } else if times_spoken == 1 {
                 0
             } else {
                 prev_turn.unwrap() - prev_prev_turn.unwrap()
@@ -50,6 +54,7 @@ fn main() {
                 map.insert(spoken, (1, Some(turn as u32), None));
             }
 
+            print!("{}, ", spoken);
             last_spoken = Some(spoken);
         }
     }
