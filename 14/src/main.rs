@@ -65,13 +65,10 @@ impl Ins {
             });
     }
 
-    fn get_memory_addresses(&self) -> Vec<usize> {
-        let addresses: Vec<u32> = Vec::new();
-
-        self.address_mask
+    fn get_memory_addresses_for_mask(&self, mask: &[Option<bool>]) -> Vec<usize> {
+        mask
             .iter()
-            .enumerate()
-            .fold(vec![vec![]], |mut acc, (n, v)| {
+            .fold(vec![vec![]], |mut acc, v| {
                 match v {
                     Some(val) => {
                         acc
@@ -100,8 +97,28 @@ impl Ins {
             .collect()
     }
 
-    fn get_address_mask() {
+    fn apply_2(&self, map: &mut HashMap<u32, usize>) {
+        self.sets
+            .iter()
+            .for_each(|s| {
+                let mask: Vec<Option<bool>> = val_to_vec(s.0)
+                    .iter()
+                    .zip(self.mask.iter())
+                    .map(|v| {
+                        match v {
+                            (_, Some(true)) => Some(true),
+                            (new_val, Some(false)) => Some(*new_val),
+                            (_, None) => None,
+                        }
+                    })
+                    .collect();
 
+                println!("{:?}", self.get_memory_addresses_for_mask(mask.as_slice()));
+
+                self.get_memory_addresses_for_mask(mask.as_slice())
+                    .iter()
+                    .for_each(|a| { map.insert(*a as u32, s.1 as usize); () });
+            });
     }
 }
 
@@ -154,6 +171,7 @@ fn main() {
         println!("{:?}", ins);
 
         part_1(ins.as_slice());
+        part_2(ins.as_slice());
     }
 }
 
@@ -163,6 +181,23 @@ fn part_1(ins: &[Ins]) {
     ins
         .iter()
         .for_each(|i| i.apply(&mut mem));
+
+    println!("{:#?}", mem);
+
+    let sum = mem
+        .iter()
+        .map(|(_, v)| v)
+        .sum::<usize>();
+
+    println!("sum {}", sum);
+}
+
+fn part_2(ins: &[Ins]) {
+    let mut mem: HashMap<u32, usize> = HashMap::new();
+
+    ins
+        .iter()
+        .for_each(|i| i.apply_2(&mut mem));
 
     println!("{:#?}", mem);
 
