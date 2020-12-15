@@ -30,7 +30,7 @@ fn main() {
                 last_spoken
             };
 
-            print!("[{}] {:?} ", considered.unwrap(), map);
+            //print!("[{}] {:?} ", considered.unwrap(), map);
 
             // Get record
             let (times_spoken, prev_turn, prev_prev_turn) = if map.contains_key(&considered.unwrap()) {
@@ -48,7 +48,7 @@ fn main() {
             };
 
             // Get record
-            let (times_spoken, prev_turn, prev_prev_turn) = if map.contains_key(&spoken) {
+            let (times_spoken, prev_turn, _) = if map.contains_key(&spoken) {
                 *map.get(&spoken).unwrap()
             } else {
                 (0, None, None)
@@ -61,8 +61,10 @@ fn main() {
                 map.insert(spoken, (1, Some(turn as u32), None));
             }
 
-            println!("{}, ", spoken);
+            //println!("{}, ", spoken);
             last_spoken = Some(spoken);
         }
+
+        println!("{:?}", last_spoken);
     }
 }
