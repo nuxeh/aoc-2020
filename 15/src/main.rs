@@ -23,7 +23,7 @@ fn main() {
         let mut map: HashMap<u32, (u32, Option<u32>, Option<u32>)> = HashMap::new();
         let mut last_spoken = None;
 
-        for turn in 1..=2020 {
+        for turn in 1..=30000000 {
             let considered = if turn <= starting_list.len() {
                 Some(starting_list[turn-1])
             } else {
