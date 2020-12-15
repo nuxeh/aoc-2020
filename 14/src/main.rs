@@ -5,7 +5,7 @@ use std::collections::HashMap;
 #[derive(Debug, Default)]
 struct Ins {
     mask: Vec<Option<bool>>,
-    sets: Vec<(u32, u32)>,
+    sets: Vec<(usize, usize)>,
     address_mask: Vec<Option<bool>>,
 }
 
@@ -38,14 +38,14 @@ impl Ins {
             .split(",")
             .take(2);
 
-        let num_1 = nums.next().expect("get").parse::<u32>().expect("parse");
-        let num_2 = nums.next().expect("get").parse::<u32>().expect("parse");
+        let num_1 = nums.next().expect("get").parse::<usize>().expect("parse");
+        let num_2 = nums.next().expect("get").parse::<usize>().expect("parse");
 
         self.sets.push((num_1, num_2));
         self
     }
 
-    fn apply(&self, map: &mut HashMap<u32, usize>) {
+    fn apply(&self, map: &mut HashMap<usize, usize>) {
         self.sets
             .iter()
             .for_each(|s| {
@@ -108,7 +108,7 @@ impl Ins {
             .collect()
     }
 
-    fn apply_2(&self, map: &mut HashMap<u32, usize>) {
+    fn apply_2(&self, map: &mut HashMap<usize, usize>) {
         self.sets
             .iter()
             .for_each(|s| {
@@ -128,14 +128,14 @@ impl Ins {
 
                 self.get_memory_addresses_for_mask(mask.as_slice())
                     .iter()
-                    .for_each(|a| { map.insert(*a as u32, s.1 as usize); () });
+                    .for_each(|a| { map.insert(*a as usize, s.1 as usize); () });
 
                 //println!("{:#?}", map);
             });
     }
 }
 
-fn val_to_vec(val: u32) -> Vec<bool> {
+fn val_to_vec(val: usize) -> Vec<bool> {
     format!("{:036b}", val)
         .chars()
         .map(|c| c == '1')
@@ -189,7 +189,7 @@ fn main() {
 }
 
 fn part_1(ins: &[Ins]) {
-    let mut mem: HashMap<u32, usize> = HashMap::new();
+    let mut mem: HashMap<usize, usize> = HashMap::new();
 
     ins
         .iter()
@@ -206,7 +206,7 @@ fn part_1(ins: &[Ins]) {
 }
 
 fn part_2(ins: &[Ins]) {
-    let mut mem: HashMap<u32, usize> = HashMap::new();
+    let mut mem: HashMap<usize, usize> = HashMap::new();
 
     ins
         .iter()
