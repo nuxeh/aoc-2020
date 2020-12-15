@@ -1,4 +1,5 @@
 use aocf::Aoc;
+use std::collections::HashMap;
 
 fn main() {
     let mut aoc = Aoc::new()
@@ -19,5 +20,37 @@ fn main() {
 
         println!("{:?}", starting_list);
 
+        let mut map: HashMap<u32, (u32, Option<u32>, Option<u32>)> = HashMap::new();
+        let mut last_spoken = None;
+
+        for turn in 1..=2020 {
+            let considered = if turn < starting_list.len() {
+                Some(starting_list[turn-1])
+            } else {
+                last_spoken
+            };
+
+            // Get record
+            let (times_spoken, prev_turn, prev_prev_turn) = if map.contains_key(&considered.unwrap()) {
+                *map.get(&considered.unwrap()).unwrap()
+            } else {
+                (0, None, None)
+            };
+
+            let spoken = if times_spoken == 1 {
+                0
+            } else {
+                prev_turn.unwrap() - prev_prev_turn.unwrap()
+            };
+
+            // Update record
+            if map.contains_key(&considered.unwrap()) {
+                map.insert(spoken, (times_spoken + 1, Some(turn as u32), prev_turn));
+            } else {
+                map.insert(spoken, (1, Some(turn as u32), None));
+            }
+
+            last_spoken = Some(spoken);
+        }
     }
 }
