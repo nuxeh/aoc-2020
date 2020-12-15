@@ -82,12 +82,12 @@ impl Ins {
                     None => {
                         let mut new = acc.clone();
                         new
-                            .iter()
+                            .iter_mut()
                             .for_each(|a| a.push(false));
 
                         let mut new_2 = acc.clone();
                         new_2
-                            .iter()
+                            .iter_mut()
                             .for_each(|a| a.push(true));
 
                         new.extend_from_slice(&new_2);
@@ -98,6 +98,10 @@ impl Ins {
             .iter()
             .map(|a| vec_to_val(a.as_slice()))
             .collect()
+    }
+
+    fn get_address_mask() {
+
     }
 }
 
