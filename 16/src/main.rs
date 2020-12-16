@@ -47,5 +47,37 @@ fn main() {
             .iter()
             .for_each(|t| println!("{:?}", t));
 
+        part_1(&tickets, &rules);
     }
+}
+
+fn part_1(tickets: &Vec<Vec<u32>>, rules: &Vec<Vec<Vec<u32>>>) {
+    let res: Vec<u32> = tickets
+        .iter()
+        .map(|ticket| {
+            ticket
+                .iter()
+                .map(|field| {
+                    rules
+                        .iter()
+                        .map(|ruleset| {
+                            ruleset
+                                .iter()
+                                .map(|rule| (rule[0]..=rule[1]).contains(field))
+                                .map(|res| {
+                                    if res {
+                                        0
+                                    } else {
+                                        1
+                                    }
+                                })
+                                .sum::<u32>()
+                        })
+                        .sum::<u32>()
+                })
+                .sum::<u32>()
+        })
+        .collect();
+
+        println!("{:?}", res);
 }
