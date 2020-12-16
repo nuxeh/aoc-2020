@@ -54,7 +54,7 @@ fn main() {
 fn part_1(tickets: &Vec<Vec<u32>>, rules: &Vec<Vec<Vec<u32>>>) {
     let mut set: HashSet<u32> = HashSet::new();
 
-    let res: Vec<Vec<u32>> = tickets
+    let res: Vec<u32> = tickets
         .iter()
         .skip(1) // your ticket
         .map(|ticket| {
@@ -71,7 +71,6 @@ fn part_1(tickets: &Vec<Vec<u32>>, rules: &Vec<Vec<Vec<u32>>>) {
                                     if res {
                                         0
                                     } else {
-                                        set.insert(*field);
                                         1
                                     }
                                 })
@@ -79,9 +78,10 @@ fn part_1(tickets: &Vec<Vec<u32>>, rules: &Vec<Vec<Vec<u32>>>) {
                         })
                         .sum::<u32>()
                 })
-                .collect()
+                .max()
         })
+        .flatten()
         .collect();
 
-        println!("{:?}", set);
+        println!("{:?}", res);
 }
