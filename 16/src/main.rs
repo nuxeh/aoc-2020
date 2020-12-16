@@ -30,7 +30,7 @@ fn main() {
             })
             .collect();
 
-        println!("{:?}", rules);
+        println!("{:#?}", rules);
 
         let tickets: Vec<Vec<u32>> = i.lines()
             .filter(|l| l.contains(','))
@@ -53,6 +53,7 @@ fn main() {
 
 fn part_1(tickets: &Vec<Vec<u32>>, rules: &Vec<Vec<Vec<u32>>>) {
     let mut set: HashSet<u32> = HashSet::new();
+    let num_rules = 6;
 
     let res: Vec<u32> = tickets
         .iter()
@@ -61,7 +62,7 @@ fn part_1(tickets: &Vec<Vec<u32>>, rules: &Vec<Vec<Vec<u32>>>) {
             ticket
                 .iter()
                 .map(|field| {
-                    rules
+                    let res = rules
                         .iter()
                         .map(|ruleset| {
                             ruleset
@@ -76,7 +77,13 @@ fn part_1(tickets: &Vec<Vec<u32>>, rules: &Vec<Vec<Vec<u32>>>) {
                                 })
                                 .sum::<u32>()
                         })
-                        .sum::<u32>()
+                        .sum::<u32>();
+
+                        if res == num_rules {
+                            set.insert(*field);
+                        }
+
+                        res
                 })
                 .max()
         })
@@ -84,4 +91,5 @@ fn part_1(tickets: &Vec<Vec<u32>>, rules: &Vec<Vec<Vec<u32>>>) {
         .collect();
 
         println!("{:?}", res);
+        println!("{:?}", set);
 }
