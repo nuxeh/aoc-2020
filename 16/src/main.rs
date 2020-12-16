@@ -30,7 +30,7 @@ fn main() {
             })
             .collect();
 
-        println!("{:#?}", rules);
+        println!("{:?}", rules);
 
         let tickets: Vec<Vec<u32>> = i.lines()
             .filter(|l| l.contains(','))
@@ -51,19 +51,41 @@ fn main() {
         println!("number of rules: {}", num_rules);
 
         let ticket_failures = part_1(&tickets, &rules, num_rules);
-        part_2(&tickets, &ticket_failures, num_rules);
+        part_2(&tickets, &ticket_failures, &rules, num_rules);
     }
 }
 
-fn part_2(tickets: &Vec<Vec<u32>>, failures: &Vec<u32>, num_rules: usize) {
+fn part_2(tickets: &Vec<Vec<u32>>, failures: &Vec<u32>, rules: &Vec<Vec<Vec<u32>>>, num_rules: usize) {
     let tickets: Vec<Vec<u32>> = tickets
         .iter()
         .zip(failures.iter())
-        .filter(|(t, f)| **f != num_rules as u32)
-        .map(|(t, f)| t.clone())
+        .filter(|(_, f)| **f != num_rules as u32)
+        .map(|(t, _)| t.clone())
         .collect();
 
-    println!("{:?}", tickets)
+    println!("{:?}", tickets);
+
+    let candidate_fields: Vec<Vec<Vec<usize>>> = tickets
+        .iter()
+        .map(|ticket| {
+            ticket
+                .iter()
+                .map(|field| {
+                    rules
+                        .iter()
+                        .enumerate()
+                        .filter(|(_, ruleset)| {
+                            (ruleset[0][0]..=ruleset[0][1]).contains(field) ||
+                                (ruleset[1][0]..=ruleset[1][1]).contains(field)
+                        })
+                        .map(|(n, _)| n)
+                        .collect::<Vec<usize>>()
+                })
+                .collect()
+        })
+        .collect();
+
+        println!("{:?}", candidate_fields);
 }
 
 fn part_1(tickets: &Vec<Vec<u32>>, rules: &Vec<Vec<Vec<u32>>>, num_rules: usize) -> Vec<u32> {
