@@ -52,8 +52,9 @@ fn main() {
 }
 
 fn part_1(tickets: &Vec<Vec<u32>>, rules: &Vec<Vec<Vec<u32>>>) {
-    let res: Vec<u32> = tickets
+    let res: Vec<Vec<u32>> = tickets
         .iter()
+        .skip(1) // your ticket
         .map(|ticket| {
             ticket
                 .iter()
@@ -75,7 +76,7 @@ fn part_1(tickets: &Vec<Vec<u32>>, rules: &Vec<Vec<Vec<u32>>>) {
                         })
                         .sum::<u32>()
                 })
-                .sum::<u32>()
+                .collect()
         })
         .collect();
 
