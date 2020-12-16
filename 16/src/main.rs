@@ -30,7 +30,22 @@ fn main() {
             })
             .collect();
 
-            println!("{:?}", rules);
+        println!("{:?}", rules);
+
+        let tickets: Vec<Vec<u32>> = i.lines()
+            .filter(|l| l.contains(','))
+            .map(|l| {
+                l
+                    .split(',')
+                    .map(|v| v.parse())
+                    .flatten()
+                    .collect()
+            })
+            .collect();
+
+        tickets
+            .iter()
+            .for_each(|t| println!("{:?}", t));
 
     }
 }
