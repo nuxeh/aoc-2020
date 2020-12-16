@@ -1,5 +1,5 @@
 use aocf::Aoc;
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
 fn main() {
     let mut aoc = Aoc::new()
@@ -52,6 +52,8 @@ fn main() {
 }
 
 fn part_1(tickets: &Vec<Vec<u32>>, rules: &Vec<Vec<Vec<u32>>>) {
+    let mut set: HashSet<u32> = HashSet::new();
+
     let res: Vec<Vec<u32>> = tickets
         .iter()
         .skip(1) // your ticket
@@ -69,6 +71,7 @@ fn part_1(tickets: &Vec<Vec<u32>>, rules: &Vec<Vec<Vec<u32>>>) {
                                     if res {
                                         0
                                     } else {
+                                        set.insert(*field);
                                         1
                                     }
                                 })
@@ -80,5 +83,5 @@ fn part_1(tickets: &Vec<Vec<u32>>, rules: &Vec<Vec<Vec<u32>>>) {
         })
         .collect();
 
-        println!("{:?}", res);
+        println!("{:?}", set);
 }
