@@ -92,4 +92,5 @@ fn part_1(tickets: &Vec<Vec<u32>>, rules: &Vec<Vec<Vec<u32>>>) {
 
         println!("{:?}", res);
         println!("{:?}", set);
+        println!("sum {}", set.iter().sum::<u32>());
 }
