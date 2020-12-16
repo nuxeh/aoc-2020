@@ -47,16 +47,27 @@ fn main() {
             .iter()
             .for_each(|t| println!("{:?}", t));
 
-        part_1(&tickets, &rules);
+        let num_rules = rules.iter().map(|s| s.iter().count()).sum::<usize>();
+        println!("number of rules: {}", num_rules);
+
+        let ticket_failures = part_1(&tickets, &rules, num_rules);
+        part_2(&tickets, &ticket_failures, num_rules);
     }
 }
 
-fn part_1(tickets: &Vec<Vec<u32>>, rules: &Vec<Vec<Vec<u32>>>) {
+fn part_2(tickets: &Vec<Vec<u32>>, failures: &Vec<u32>, num_rules: usize) {
+    let tickets: Vec<Vec<u32>> = tickets
+        .iter()
+        .zip(failures.iter())
+        .filter(|(t, f)| **f != num_rules as u32)
+        .map(|(t, f)| t.clone())
+        .collect();
+
+    println!("{:?}", tickets)
+}
+
+fn part_1(tickets: &Vec<Vec<u32>>, rules: &Vec<Vec<Vec<u32>>>, num_rules: usize) -> Vec<u32> {
     let mut set: HashSet<u32> = HashSet::new();
-
-    let num_rules = rules.iter().map(|s| s.iter().count()).sum::<usize>();
-    println!("num rules: {}", num_rules);
-
     let mut sum = 0;
 
     let res: Vec<u32> = tickets
@@ -99,4 +110,6 @@ fn part_1(tickets: &Vec<Vec<u32>>, rules: &Vec<Vec<Vec<u32>>>) {
         println!("{:?}", set);
         println!("sum unique {}", set.iter().sum::<u32>());
         println!("sum non-unique {}", sum);
+
+        res
 }
