@@ -96,24 +96,20 @@ fn part_2(tickets: &Vec<Vec<u32>>, failures: &Vec<u32>, rules: &Vec<Vec<Vec<u32>
         println!("{:?}", candidate_fields);
         let matches = candidate_fields
             .iter()
-            .map(|t| {
-                // [[1, 2], [0, 1, 2], [0, 1, 2]]
-                t
-                    .iter()
-                    .fold(vec![init_set.clone(); 3], |acc, fs| {
-                        acc
-                            .iter_mut()
-                            .zip(fs.iter())
-                            .map(|(a, f)| {
-                                 f
-                                    .iter()
-                                    .filter(|c| !(0..num_rules).contains(c))
-                                    .for_each(|c| a.remove(c));
-                                 a
-                            });
-                        acc
-                    })
+            .fold(vec![vec![init_set.clone(); 3]], |mut acc, t| {
+                acc
+                    .iter_mut()
+                    .zip(t.iter())
+                    .for_each(|(a, f)| {
+                         f
+                            .iter()
+                            .filter(|c| !(0..num_rules).contains(c))
+                            .for_each(|c| { a.remove(*c); () });
+                    });
+                acc
             });
+
+        println!("{:?}", matches);
 }
 
 fn part_1(tickets: &Vec<Vec<u32>>, rules: &Vec<Vec<Vec<u32>>>, num_rules: usize) -> Vec<u32> {
