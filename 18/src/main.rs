@@ -4,7 +4,6 @@ use aocf::Aoc;
 enum Op {
     Add,
     Mult,
-    None
 }
 
 fn main() {
@@ -31,7 +30,7 @@ fn main() {
             .map(|l| {
                 l
                     .split(' ')
-                    .fold((vec![None], vec![Op::None]), |mut acc, c| {
+                    .fold((vec![None], vec![None]), |mut acc, c| {
                         match (c.parse::<u32>(), c) {
                             (_, "(") => acc.0.push(None),
                             (_, ")") => acc.0.push(None),
@@ -39,9 +38,9 @@ fn main() {
                             (_, "+") => acc.0.push(None),
                             (Ok(n), _) => {
                                 match (acc.1.pop(), acc.0.pop()) {
-                                    (Some(Op::None), _) => acc.0.push(Some(n)),
-                                    (Some(Op::Add), Some(Some(l))) => acc.0.push(Some(l + n)),
-                                    (Some(Op::Mult), Some(Some(l))) => acc.0.push(Some(l * n)),
+                                    (Some(None), _) => acc.0.push(Some(n)),
+                                    (Some(Some(Op::Add)), Some(Some(l))) => acc.0.push(Some(l + n)),
+                                    (Some(Some(Op::Mult)), Some(Some(l))) => acc.0.push(Some(l * n)),
                                     (a, b) => panic!("something's missing: ({:?}, {:?})", a, b),
                                 }
                             },
