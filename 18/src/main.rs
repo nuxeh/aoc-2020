@@ -42,7 +42,10 @@ fn main() {
                                 match (acc.1.pop(), acc.0.pop(), acc.0.pop()) {
                                     (Some(Some(Op::Add)), Some(Some(l)), Some(Some(p))) => acc.0.push(Some(l + p)),
                                     (Some(Some(Op::Mult)), Some(Some(l)), Some(Some(p))) => acc.0.push(Some(l * p)),
-                                    _ => (),
+                                    (Some(None), Some(Some(v)), _) => acc.0.push(Some(v)),
+                                    (o, v1, v2) => {
+                                        println!("{:?} {:?} {:?}", o, v1, v2)
+                                    },
                                 }
                             },
                             (Ok(n), _) => {
