@@ -32,7 +32,10 @@ fn main() {
                     .split(' ')
                     .fold((vec![None], vec![None]), |mut acc, c| {
                         match (c.parse::<u32>(), c) {
-                            (_, "(") => acc.0.push(None),
+                            (_, "(") => {
+                                acc.1.push(None);
+                                acc.0.push(None);
+                            },
                             (_, "*") => acc.1.push(Some(Op::Mult)),
                             (_, "+") => acc.1.push(Some(Op::Add)),
                             (_, ")") => {
@@ -51,7 +54,7 @@ fn main() {
                             },
                             _ => (),
                         };
-                        println!("{:?}", acc);
+                        println!("{} | {:?}", c, acc);
                         acc
                     }).0[0]
             })
