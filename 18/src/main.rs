@@ -1,5 +1,12 @@
 use aocf::Aoc;
 
+#[derive(Debug)]
+enum Op {
+    Add,
+    Mult,
+    None
+}
+
 fn main() {
     let mut aoc = Aoc::new()
         .year(Some(2020))
@@ -19,17 +26,29 @@ fn main() {
 
         println!("{:?}", i);
 
-        let r: Vec<u32> = i
+        let r: Vec<Option<u32>> = i
             .iter()
             .map(|l| {
                 l
                     .split(' ')
-                    .fold(vec![], |mut acc, c| {
+                    .fold((vec![None], vec![Op::None]), |mut acc, c| {
                         match (c.parse::<u32>(), c) {
-                            _ => acc.push(1u32),
+                            (_, "(") => acc.0.push(None),
+                            (_, ")") => acc.0.push(None),
+                            (_, "*") => acc.0.push(None),
+                            (_, "+") => acc.0.push(None),
+                            (Ok(n), _) => {
+                                match (acc.1.pop(), acc.0.pop()) {
+                                    (Some(Op::None), _) => acc.0.push(Some(n)),
+                                    (Some(Op::Add), Some(Some(l))) => acc.0.push(Some(l + n)),
+                                    (Some(Op::Mult), Some(Some(l))) => acc.0.push(Some(l * n)),
+                                    (a, b) => panic!("something's missing: ({:?}, {:?})", a, b),
+                                }
+                            },
+                            _ => (),
                         };
                         acc
-                    })[0]
+                    }).0[0]
             })
             .collect();
 
