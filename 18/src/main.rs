@@ -33,9 +33,14 @@ fn main() {
                     .fold((vec![None], vec![None]), |mut acc, c| {
                         match (c.parse::<u32>(), c) {
                             (_, "(") => acc.0.push(None),
-                            (_, ")") => acc.0.push(None),
-                            (_, "*") => acc.0.push(None),
-                            (_, "+") => acc.0.push(None),
+                            (_, "*") => acc.1.push(Some(Op::Mult)),
+                            (_, "+") => acc.1.push(Some(Op::Add)),
+                            (_, ")") => {
+                                match (acc.1.pop(), acc.0.pop()) {
+                                    _ => (),
+                                }
+                                acc.0.push(None)
+                            },
                             (Ok(n), _) => {
                                 match (acc.1.pop(), acc.0.pop()) {
                                     (Some(None), _) => acc.0.push(Some(n)),
@@ -46,6 +51,7 @@ fn main() {
                             },
                             _ => (),
                         };
+                        println!("{:?}", acc);
                         acc
                     }).0[0]
             })
