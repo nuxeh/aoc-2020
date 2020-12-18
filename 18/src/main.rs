@@ -39,7 +39,9 @@ fn main() {
                             (_, "*") => acc.1.push(Some(Op::Mult)),
                             (_, "+") => acc.1.push(Some(Op::Add)),
                             (_, ")") => {
-                                match (acc.1.pop(), acc.0.pop()) {
+                                match (acc.1.pop(), acc.0.pop(), acc.0.pop()) {
+                                    (Some(Some(Op::Add)), Some(Some(l)), Some(Some(p))) => acc.0.push(Some(l + p)),
+                                    (Some(Some(Op::Mult)), Some(Some(l)), Some(Some(p))) => acc.0.push(Some(l * p)),
                                     _ => (),
                                 }
                                 acc.0.push(None)
