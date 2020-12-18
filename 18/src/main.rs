@@ -44,7 +44,6 @@ fn main() {
                                     (Some(Some(Op::Mult)), Some(Some(l)), Some(Some(p))) => acc.0.push(Some(l * p)),
                                     _ => (),
                                 }
-                                acc.0.push(None)
                             },
                             (Ok(n), _) => {
                                 match (acc.1.pop(), acc.0.pop()) {
