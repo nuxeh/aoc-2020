@@ -25,13 +25,13 @@ fn main() {
 
         println!("{:?}", i);
 
-        let r: Vec<Option<u32>> = i
+        let r: Vec<Option<usize>> = i
             .iter()
             .map(|l| {
                 l
                     .split(' ')
                     .fold((vec![None], vec![None]), |mut acc, c| {
-                        match (c.parse::<u32>(), c) {
+                        match (c.parse::<usize>(), c) {
                             (_, "(") => {
                                 acc.1.push(None);
                                 acc.0.push(None);
@@ -66,5 +66,11 @@ fn main() {
 
         println!("{:?}", r);
 
+        let s: usize = r
+            .iter()
+            .map(|v| v.unwrap())
+            .sum();
+
+        println!("{}", s);
     }
 }
