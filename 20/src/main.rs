@@ -45,14 +45,33 @@ fn main() {
 }
 
 fn part_1(tiles: &HashMap<usize, Vec<Vec<bool>>>) {
-    let edge_vals: HashMap<usize, Vec<usize>> = HashMap::new();
+    let mut edge_vals: HashMap<usize, Vec<usize>> = HashMap::new();
 
     tiles
         .iter()
         .for_each(|(k, v)| {
             let top = v.first().unwrap();
-            let top: usize = top.iter().map(|col| if *col { "1" } else { "0" }).collect::<String>().parse().unwrap();
+            let top = top.iter().map(|col| if *col { "1" } else { "0" }).collect::<String>();
+            let top = usize::from_str_radix(&top, 2).unwrap();
 
-            //edge_vals.insert(&k, vec![top, bottom, left, right]);
+            let btm = v.last().unwrap();
+            let btm = btm.iter().map(|col| if *col { "1" } else { "0" }).collect::<String>();
+            let btm = usize::from_str_radix(&btm, 2).unwrap();
+
+            let lft = v
+                .iter()
+                .map(|row| if *row.first().unwrap() { "1" } else { "0" })
+                .fold(String::new(), |acc, v| format!("{}{}", acc, v));
+            let lft = usize::from_str_radix(&lft, 2).unwrap();
+
+            let rgt = v
+                .iter()
+                .map(|row| if *row.last().unwrap() { "1" } else { "0" })
+                .fold(String::new(), |acc, v| format!("{}{}", acc, v));
+            let rgt = usize::from_str_radix(&rgt, 2).unwrap();
+
+            edge_vals.insert(*k, vec![top, btm, lft, rgt]);
         });
+
+    println!("{:?}", edge_vals);
 }
