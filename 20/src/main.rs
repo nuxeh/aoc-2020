@@ -11,11 +11,13 @@ fn main() {
     let input = aoc.get_input(false);
 
     if let Ok(i) = input {
-        let tiles: HashMap<usize, Vec<Vec<bool>>> = i
+        let mut tiles: HashMap<usize, Vec<Vec<bool>>> = HashMap::new();
+
+        i
             .lines()
-            .fold((0usize, HashMap::new()), |mut acc, line| {
+            .fold(0usize, |mut acc, line| {
                 if line.contains("Tile") {
-                    acc.0 = line
+                    acc = line
                         .replace(":", "")
                         .split(" ")
                         .nth(1).unwrap()
@@ -26,14 +28,14 @@ fn main() {
                         .map(|c| c == '#')
                         .collect();
 
-                    if let Some(t) = acc.1.get_mut::<usize>(&acc.0) {
+                    if let Some(t) = tiles.get_mut(&acc) {
                         t.push(img_row);
                     } else {
-                        acc.1.insert(acc.0, vec![img_row]);
+                        tiles.insert(acc, vec![img_row]);
                     }
                 }
                 acc
-            }).1;
+            });
 
         println!("{:?}", tiles);
 
