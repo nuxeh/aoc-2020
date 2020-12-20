@@ -40,5 +40,19 @@ fn main() {
 
         println!("{:?}", tiles);
 
+        part_1(&tiles);
     }
+}
+
+fn part_1(tiles: &HashMap<usize, Vec<Vec<bool>>>) {
+    let edge_vals: HashMap<usize, Vec<usize>> = HashMap::new();
+
+    tiles
+        .iter()
+        .for_each(|(k, v)| {
+            let top = v.first().unwrap();
+            let top: usize = top.iter().map(|col| if *col { "1" } else { "0" }).collect::<String>().parse().unwrap();
+
+            //edge_vals.insert(&k, vec![top, bottom, left, right]);
+        });
 }
