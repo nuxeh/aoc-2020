@@ -15,6 +15,7 @@ fn main() {
 
         i
             .lines()
+            .filter(|v| !v.is_empty())
             .fold(0usize, |mut acc, line| {
                 if line.contains("Tile") {
                     acc = line
