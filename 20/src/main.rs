@@ -39,6 +39,7 @@ fn main() {
             });
 
         println!("{:?}", tiles);
+        println!("number of tiles: {}", tiles.len());
 
         part_1(&tiles);
     }
@@ -74,4 +75,19 @@ fn part_1(tiles: &HashMap<usize, Vec<Vec<bool>>>) {
         });
 
     println!("{:?}", edge_vals);
+
+    let mut all_edge_vals: Vec<usize> = edge_vals
+        .iter()
+        .fold(vec![], |mut acc, (_, v)| { acc.extend(v); acc });
+
+    let num_vals = all_edge_vals.len();
+    println!("unmodified length: {}", num_vals);
+
+    all_edge_vals.sort();
+    all_edge_vals.dedup();
+
+    println!("{:?}", all_edge_vals);
+    println!("dedup length: {}", all_edge_vals.len());
+    println!("difference: {}", num_vals - all_edge_vals.len());
+
 }
